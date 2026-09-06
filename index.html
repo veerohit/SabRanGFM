@@ -518,6 +518,8 @@ body:before{
   align-items:center;
 
   cursor:pointer;
+
+  touch-action:none;
 }
 
 .progress-track{
@@ -1598,7 +1600,8 @@ function updateProgress(){
 
   if(
     youtube &&
-    youtubeReady
+    youtubeReady &&
+    !isSeeking
   ){
 
     try{
@@ -1651,43 +1654,126 @@ updateProgress();
    SEEK
 ========================= */
 
+let isSeeking = false;
+let seekPercent = 0;
+
+
+function percentFromEvent(event,rect){
+
+  const clientX =
+    event.clientX;
+
+  return Math.max(
+    0,
+    Math.min(
+      1,
+      (clientX - rect.left) /
+      rect.width
+    )
+  );
+
+}
+
+
+function updateSeekVisual(event){
+
+  const rect =
+    progress.getBoundingClientRect();
+
+  seekPercent =
+    percentFromEvent(event,rect);
+
+  progressFill.style.transform =
+    `scaleX(${seekPercent})`;
+
+  if(youtubeReady){
+
+    try{
+
+      const total =
+        youtube.getDuration();
+
+      if(total > 0){
+
+        currentTime.textContent =
+          formatTime(
+            total * seekPercent
+          );
+
+      }
+
+    }catch(e){}
+
+  }
+
+}
+
+
 progress.addEventListener(
-  "click",
+  "pointerdown",
   event=>{
 
     if(!youtubeReady) return;
 
+    isSeeking = true;
 
-    const rect =
-      progress.getBoundingClientRect();
+    progress.setPointerCapture(
+      event.pointerId
+    );
+
+    updateSeekVisual(event);
+
+  }
+);
 
 
-    const percent =
-      Math.max(
-        0,
-        Math.min(
-          1,
-          (event.clientX -
-            rect.left) /
-          rect.width
-        )
-      );
+progress.addEventListener(
+  "pointermove",
+  event=>{
 
+    if(!isSeeking) return;
+
+    updateSeekVisual(event);
+
+  }
+);
+
+
+function finishSeek(event){
+
+  if(!isSeeking) return;
+
+  isSeeking = false;
+
+  if(!youtubeReady) return;
+
+  try{
 
     const total =
       youtube.getDuration();
 
-
     if(total > 0){
 
       youtube.seekTo(
-        total * percent,
+        total * seekPercent,
         true
       );
 
     }
 
-  }
+  }catch(e){}
+
+}
+
+
+progress.addEventListener(
+  "pointerup",
+  finishSeek
+);
+
+progress.addEventListener(
+  "pointercancel",
+  finishSeek
 );
 
 
