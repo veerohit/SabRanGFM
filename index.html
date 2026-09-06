@@ -268,24 +268,10 @@ body:before{
   font-weight:bold;
   line-height:1.1;
   letter-spacing:1px;
-
   z-index:2;
 }
 
-.cd-thumb{
-  position:absolute;
-  inset:0;
-
-  width:100%;
-  height:100%;
-
-  border-radius:50%;
-  object-fit:cover;
-
-  display:none;
-
-  z-index:1;
-}
+/* MAIN CD THUMBNAIL REMOVED */
 
 .cd-hole{
   position:absolute;
@@ -391,6 +377,8 @@ body:before{
   align-items:center;
 }
 
+/* MINI CD */
+
 .mini-cd{
   width:42px;
   height:42px;
@@ -412,7 +400,13 @@ body:before{
       #eee
     );
 
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+
   border:2px solid rgba(57,37,24,.3);
+
+  overflow:hidden;
 }
 
 .mini-cd.playing{
@@ -444,6 +438,8 @@ body:before{
   overflow:hidden;
   text-overflow:ellipsis;
 }
+
+/* CONTROLS */
 
 .controls{
   display:flex;
@@ -775,12 +771,13 @@ body:before{
         id="main-cd">
 
         <div class="cd-label">
-          <img class="cd-thumb" id="cd-thumb" alt="">
+
           <div class="cd-text" id="cd-text">
             SAB<br>
             RANG<br>
             FM
           </div>
+
         </div>
 
         <div class="cd-hole"></div>
@@ -1049,9 +1046,6 @@ const mainCD =
 const miniCD =
   document.getElementById("mini-cd");
 
-const cdThumb =
-  document.getElementById("cd-thumb");
-
 const cdText =
   document.getElementById("cd-text");
 
@@ -1282,7 +1276,7 @@ function updateCurrentVideo(){
 
     if(data?.video_id){
 
-      setCDThumbnail(
+      setMiniCDThumbnail(
         data.video_id
       );
 
@@ -1293,28 +1287,28 @@ function updateCurrentVideo(){
 }
 
 
-function setCDThumbnail(videoId){
+/* =========================
+   MINI CD THUMBNAIL
+========================= */
+
+function setMiniCDThumbnail(videoId){
+
+  if(!videoId) return;
 
   const url =
     `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-  if(cdThumb.dataset.videoId === videoId){
-    return;
-  }
+  miniCD.style.backgroundImage =
+    `url("${url}")`;
 
-  cdThumb.dataset.videoId = videoId;
+  miniCD.style.backgroundSize =
+    "cover";
 
-  cdThumb.onload = ()=>{
-    cdThumb.style.display = "block";
-    cdText.style.display = "none";
-  };
+  miniCD.style.backgroundPosition =
+    "center";
 
-  cdThumb.onerror = ()=>{
-    cdThumb.style.display = "none";
-    cdText.style.display = "block";
-  };
-
-  cdThumb.src = url;
+  miniCD.style.backgroundRepeat =
+    "no-repeat";
 
 }
 
@@ -1443,22 +1437,20 @@ function renderPlaylists(){
               )
             ];
 
+
           /*
-           * IMPORTANT FIX
-           *
-           * Har baar nayi playlist select hone par
-           * purane playlist ke pending play attempts
-           * invalidate kar do.
+           * OLD PLAY REQUEST INVALID
            */
+
           playRequestId++;
 
           pendingAutoplay = false;
 
+
           /*
-           * Purana video/playlist turant stop.
-           * Isse purane playlist ka next song
-           * accidentally continue nahi karega.
+           * STOP OLD PLAYLIST
            */
+
           if(youtubeReady && youtube){
 
             try{
@@ -1467,15 +1459,13 @@ function renderPlaylists(){
 
           }
 
+
           updatePlaylistUI();
 
           closePlaylist();
 
           loadSongs();
 
-          /*
-           * Ab sirf selected playlist load hogi.
-           */
           playSelectedPlaylist();
 
         }
@@ -1527,10 +1517,6 @@ function playSelectedPlaylist(){
   if(!id) return;
 
 
-  /*
-   * This request belongs only to
-   * the currently selected playlist.
-   */
   const requestId =
     ++playRequestId;
 
@@ -1540,18 +1526,11 @@ function playSelectedPlaylist(){
 
   try{
 
-    /*
-     * Stop whatever was playing before.
-     */
     try{
       youtube.stopVideo();
     }catch(e){}
 
 
-    /*
-     * IMPORTANT:
-     * Load ONLY the playlist that was clicked.
-     */
     youtube.loadPlaylist({
       list:id,
       listType:"playlist",
@@ -1575,10 +1554,6 @@ function playSelectedPlaylist(){
 
   const waitForNewPlaylist = ()=>{
 
-    /*
-     * User clicked another playlist meanwhile.
-     * Ignore this old request completely.
-     */
     if(
       requestId !== playRequestId
     ){
@@ -1595,10 +1570,6 @@ function playSelectedPlaylist(){
         youtube.getPlaylist();
 
 
-      /*
-       * Wait until YouTube has actually
-       * replaced the old playlist.
-       */
       if(
         playlist &&
         playlist.length > 0
@@ -1615,9 +1586,6 @@ function playSelectedPlaylist(){
     }catch(e){}
 
 
-    /*
-     * Retry while YouTube is loading.
-     */
     if(attempts < 20){
 
       setTimeout(
@@ -1651,7 +1619,6 @@ playBtn.addEventListener(
   ()=>{
 
     if(!youtubeReady){
-
       return;
     }
 
