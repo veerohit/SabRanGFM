@@ -1043,6 +1043,7 @@ let currentSongs = [];
 
 let pendingAutoplay = false;
 let playRequestId = 0;
+let playingRequestId = -1;
 
 
 /* =========================
@@ -1229,6 +1230,8 @@ function onPlayerStateChange(event){
   ){
 
     pendingAutoplay = false;
+
+    playingRequestId = playRequestId;
 
     setPlaying(true);
 
@@ -1517,6 +1520,10 @@ function playSelectedPlaylist(){
       startSeconds:0
     });
 
+    // try immediately too, while still inside
+    // the click's gesture context
+    youtube.playVideo();
+
   }catch(error){
 
     console.error(error);
@@ -1534,29 +1541,20 @@ function playSelectedPlaylist(){
     // a newer playlist switch happened; give up on this one
     if(requestId !== playRequestId) return;
 
-    // playback already started (onStateChange caught it)
-    if(!pendingAutoplay) return;
+    // the real PLAYING event already confirmed
+    // THIS request is the one actually playing
+    if(playingRequestId === requestId){
+      pendingAutoplay = false;
+      return;
+    }
 
 
     try{
-
-      const state =
-        youtube.getPlayerState();
-
-      if(
-        state ===
-        YT.PlayerState.PLAYING
-      ){
-        pendingAutoplay = false;
-        return;
-      }
-
       youtube.playVideo();
-
     }catch(e){}
 
 
-    if(attempt < 15){
+    if(attempt < 20){
 
       setTimeout(
         ()=>attemptPlay(attempt+1),
@@ -1574,7 +1572,7 @@ function playSelectedPlaylist(){
 
   setTimeout(
     ()=>attemptPlay(0),
-    150
+    300
   );
 
 }
