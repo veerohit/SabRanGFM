@@ -1,177 +1,303 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width,initial-scale=1.0"
->
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>SabRanGFM Admin</title>
 
 <style>
-
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
-  background:#0b0811;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 50% 0%,#342044 0%,transparent 42%),
+    #090711;
   color:#fff;
   font-family:Arial,sans-serif;
   padding:20px;
 }
 
 .container{
+  width:100%;
   max-width:650px;
   margin:auto;
 }
 
-h1{
-  margin-bottom:5px;
+.logo{
+  font-size:27px;
+  font-weight:800;
 }
 
-h1 span{
+.logo span{
   color:#ff9848;
 }
 
 .subtitle{
-  color:#888;
-  margin-bottom:25px;
+  color:#898391;
+  margin-top:5px;
+  margin-bottom:22px;
 }
 
 .card{
-  background:#15111c;
+  background:rgba(21,17,28,.94);
   border:1px solid rgba(255,255,255,.08);
-  border-radius:18px;
+  border-radius:20px;
   padding:18px;
-  margin-bottom:18px;
+  margin-bottom:16px;
+  box-shadow:0 12px 35px rgba(0,0,0,.22);
+}
+
+h2,h3{
+  margin-top:0;
 }
 
 label{
   display:block;
-  margin:14px 0 7px;
+  color:#aaa3b1;
   font-size:13px;
-  color:#aaa;
+  margin:15px 0 7px;
 }
 
 input{
   width:100%;
-  padding:13px;
-  border-radius:10px;
+  padding:14px;
+  border-radius:12px;
   border:1px solid #302936;
   background:#0c0911;
   color:#fff;
+  font-size:14px;
   outline:none;
+}
+
+input:focus{
+  border-color:#ff9848;
 }
 
 button{
   border:0;
   cursor:pointer;
+  font-weight:600;
 }
 
 .primary{
   width:100%;
   padding:14px;
-  border-radius:11px;
+  margin-top:16px;
+  border-radius:12px;
   background:#ff9848;
   color:#160b03;
-  font-weight:700;
-  margin-top:16px;
+  font-size:14px;
 }
 
-.secondary{
-  padding:9px 13px;
-  border-radius:9px;
-  background:#292330;
-  color:white;
-}
-
-.danger{
-  background:#8e2630;
-}
-
-.login{
-  max-width:430px;
-  margin:60px auto;
+.primary:disabled{
+  opacity:.5;
 }
 
 .message{
-  margin-top:12px;
+  min-height:18px;
+  margin-top:11px;
   font-size:13px;
-  color:#ffb27c;
+  color:#ffb47c;
+}
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+
+.logout{
+  padding:10px 14px;
+  border-radius:10px;
+  background:#292430;
+  color:#fff;
 }
 
 .playlist{
   padding:15px;
-  border-radius:14px;
-  background:#0e0b13;
+  border-radius:15px;
+  background:#0d0a12;
+  border:1px solid rgba(255,255,255,.07);
   margin-top:10px;
-  border:1px solid rgba(255,255,255,.06);
+}
+
+.playlist-head{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.playlist-icon{
+  width:45px;
+  height:45px;
+  flex:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  background:linear-gradient(135deg,#ff9848,#7133b1);
+  font-size:21px;
+}
+
+.playlist-info{
+  min-width:0;
+  flex:1;
 }
 
 .playlist-name{
+  font-size:15px;
   font-weight:700;
-  font-size:16px;
+  word-break:break-word;
 }
 
 .playlist-id{
-  font-size:11px;
-  color:#777;
+  color:#77717e;
+  font-size:10px;
   margin-top:5px;
   word-break:break-all;
 }
 
+.status{
+  display:inline-block;
+  margin-top:10px;
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:10px;
+}
+
+.status.active{
+  color:#7dffad;
+  background:rgba(54,180,98,.13);
+}
+
+.status.inactive{
+  color:#ff8d8d;
+  background:rgba(220,60,60,.12);
+}
+
 .actions{
-  display:flex;
-  gap:8px;
-  margin-top:12px;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:7px;
+  margin-top:13px;
 }
 
-.actions button{
-  flex:1;
-  padding:10px;
+.action{
+  padding:10px 5px;
   border-radius:9px;
-  color:white;
-  background:#292330;
+  background:#292430;
+  color:#fff;
+  font-size:12px;
 }
 
-.actions .delete{
-  background:#7e252d;
-}
-
-.actions .toggle{
+.action.active-btn{
   background:#245d3d;
+}
+
+.action.delete{
+  background:#742832;
+}
+
+.empty{
+  padding:25px 5px;
+  text-align:center;
+  color:#777;
+  font-size:13px;
 }
 
 #admin-panel{
   display:none;
 }
 
-#logout{
-  float:right;
+#login-box{
+  max-width:430px;
+  margin:60px auto;
 }
 
-</style>
+.count{
+  color:#777;
+  font-size:12px;
+  font-weight:normal;
+}
 
+.edit-box{
+  display:none;
+  margin-top:13px;
+  padding-top:13px;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+
+.edit-box.show{
+  display:block;
+}
+
+.edit-actions{
+  display:flex;
+  gap:8px;
+}
+
+.edit-actions button{
+  flex:1;
+  padding:11px;
+  border-radius:9px;
+}
+
+.save-edit{
+  background:#ff9848;
+  color:#160b03;
+}
+
+.cancel-edit{
+  background:#292430;
+  color:#fff;
+}
+
+.refresh{
+  padding:9px 12px;
+  border-radius:9px;
+  background:#292430;
+  color:#fff;
+}
+
+.list-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:5px;
+}
+
+@media(max-width:420px){
+  body{padding:14px}
+
+  .actions{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .actions .delete{
+    grid-column:1/-1;
+  }
+}
+</style>
 </head>
 
 <body>
 
 <div class="container">
 
+<!-- ================= LOGIN ================= -->
 
-<!-- LOGIN -->
+<div id="login-box" class="card">
 
-<div id="login-box" class="card login">
-
-  <h1>Sab<span>RanG</span>FM</h1>
+  <div class="logo">
+    Sab<span>RanG</span>FM
+  </div>
 
   <div class="subtitle">
-    Admin Panel
+    🔐 Admin Panel
   </div>
 
   <label>Email</label>
@@ -179,6 +305,7 @@ button{
   <input
     id="email"
     type="email"
+    autocomplete="username"
     placeholder="Admin email"
   >
 
@@ -187,45 +314,43 @@ button{
   <input
     id="password"
     type="password"
+    autocomplete="current-password"
     placeholder="Password"
   >
 
-  <button
-    id="login-btn"
-    class="primary"
-  >
+  <button id="login-btn" class="primary">
     Login
   </button>
 
-  <div
-    id="login-message"
-    class="message"
-  ></div>
+  <div id="login-message" class="message"></div>
 
 </div>
 
 
-<!-- ADMIN -->
+<!-- ================= ADMIN ================= -->
 
 <div id="admin-panel">
 
-  <button
-    id="logout"
-    class="secondary"
-  >
-    Logout
-  </button>
+  <div class="topbar">
 
-  <h1>
-    Sab<span>RanG</span>FM
-  </h1>
+    <div>
+      <div class="logo">
+        Sab<span>RanG</span>FM
+      </div>
 
-  <div class="subtitle">
-    Playlist Admin Panel
+      <div class="subtitle">
+        Playlist Dashboard
+      </div>
+    </div>
+
+    <button id="logout" class="logout">
+      Logout
+    </button>
+
   </div>
 
 
-  <!-- ADD PLAYLIST -->
+  <!-- ADD -->
 
   <div class="card">
 
@@ -235,7 +360,7 @@ button{
 
     <input
       id="playlist-name"
-      placeholder="Example: Bhojpuri"
+      placeholder="Example: Bollywood"
     >
 
     <label>YouTube Playlist Link / ID</label>
@@ -245,26 +370,31 @@ button{
       placeholder="https://youtube.com/playlist?list=..."
     >
 
-    <button
-      id="save-btn"
-      class="primary"
-    >
+    <button id="save-btn" class="primary">
       Add Playlist
     </button>
 
-    <div
-      id="save-message"
-      class="message"
-    ></div>
+    <div id="save-message" class="message"></div>
 
   </div>
 
 
-  <!-- PLAYLISTS -->
+  <!-- LIST -->
 
   <div class="card">
 
-    <h3>🎵 Your Playlists</h3>
+    <div class="list-head">
+
+      <h3 style="margin:0">
+        🎵 Playlists
+        <span id="playlist-count" class="count"></span>
+      </h3>
+
+      <button id="refresh" class="refresh">
+        🔄
+      </button>
+
+    </div>
 
     <div id="playlist-list">
       Loading...
@@ -279,8 +409,11 @@ button{
 
 <script type="module">
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import {
+  initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 
 import {
   getAuth,
@@ -288,7 +421,8 @@ import {
   onAuthStateChanged,
   signOut
 }
-from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
 import {
   getFirestore,
@@ -299,28 +433,36 @@ import {
   deleteDoc,
   doc
 }
-from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 
-/* ================================
+/* =========================================
    FIREBASE
-================================ */
+========================================= */
 
 const firebaseConfig = {
 
-  apiKey:"AIzaSyCWVflP_e9DVjcfRqm1gznDdn5OblnOI2Q",
+  apiKey:
+    "AIzaSyAJ54NcvxLHptEv6TAAfjAgZokaQ_rx5XE",
 
-  authDomain:"veerohit.firebaseapp.com",
+  authDomain:
+    "veerohit.firebaseapp.com",
 
-  projectId:"veerohit",
+  projectId:
+    "veerohit",
 
-  storageBucket:"veerohit.firebasestorage.app",
+  storageBucket:
+    "veerohit.firebasestorage.app",
 
-  messagingSenderId:"350799965318",
+  messagingSenderId:
+    "350799965318",
 
-  appId:"1:350799965318:web:20d8c051d41b635aa2f507",
+  appId:
+    "1:350799965318:web:20d8c051d41b635aa2f507",
 
-  measurementId:"G-SL83DC74GP"
+  measurementId:
+    "G-SL83DC74GP"
 
 };
 
@@ -335,17 +477,17 @@ const db =
   getFirestore(app);
 
 
-/* ================================
+/* =========================================
    ADMIN UID
-================================ */
+========================================= */
 
 const ADMIN_UID =
   "L27D01BECSX2W3bENnaKh4wzYHx1";
 
 
-/* ================================
+/* =========================================
    ELEMENTS
-================================ */
+========================================= */
 
 const loginBox =
   document.getElementById("login-box");
@@ -356,11 +498,11 @@ const adminPanel =
 const loginBtn =
   document.getElementById("login-btn");
 
-const loginMessage =
-  document.getElementById("login-message");
-
 const logoutBtn =
   document.getElementById("logout");
+
+const loginMessage =
+  document.getElementById("login-message");
 
 const saveBtn =
   document.getElementById("save-btn");
@@ -371,379 +513,729 @@ const saveMessage =
 const playlistList =
   document.getElementById("playlist-list");
 
+const playlistCount =
+  document.getElementById("playlist-count");
 
-/* ================================
+const refreshBtn =
+  document.getElementById("refresh");
+
+
+/* =========================================
    LOGIN
-================================ */
+========================================= */
 
-loginBtn.onclick = async ()=>{
+loginBtn.onclick =
+  async function(){
 
-  const email =
-    document.getElementById("email").value.trim();
+    const email =
+      document
+        .getElementById("email")
+        .value
+        .trim();
 
-  const password =
-    document.getElementById("password").value;
+    const password =
+      document
+        .getElementById("password")
+        .value;
 
-  if(!email || !password){
+
+    if(
+      !email ||
+      !password
+    ){
+
+      loginMessage.textContent =
+        "Email aur password enter karo.";
+
+      return;
+    }
+
+
+    loginBtn.disabled =
+      true;
 
     loginMessage.textContent =
-      "Email aur password enter karo.";
-
-    return;
-  }
-
-  loginMessage.textContent =
-    "Login ho raha hai...";
-
-  try{
-
-    await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-
-  }catch(error){
-
-    console.error(error);
-
-    loginMessage.textContent =
-      "Login failed. Email/password check karo.";
-
-  }
-
-};
+      "Login ho raha hai...";
 
 
-/* ================================
+    try{
+
+      await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+    }
+
+    catch(error){
+
+      console.error(error);
+
+      loginMessage.textContent =
+        "Login failed. Email/password check karo.";
+
+      loginBtn.disabled =
+        false;
+
+    }
+
+  };
+
+
+/* =========================================
+   ENTER KEY LOGIN
+========================================= */
+
+document
+  .getElementById("password")
+  .addEventListener(
+    "keydown",
+    function(event){
+
+      if(
+        event.key === "Enter"
+      ){
+
+        loginBtn.click();
+
+      }
+
+    }
+  );
+
+
+/* =========================================
    AUTH STATE
-================================ */
+========================================= */
 
-onAuthStateChanged(auth,user=>{
+onAuthStateChanged(
+  auth,
+  function(user){
 
-  if(!user){
+    if(!user){
+
+      loginBox.style.display =
+        "block";
+
+      adminPanel.style.display =
+        "none";
+
+      loginBtn.disabled =
+        false;
+
+      return;
+
+    }
+
+
+    if(
+      user.uid !== ADMIN_UID
+    ){
+
+      signOut(auth);
+
+      loginMessage.textContent =
+        "Ye account admin nahi hai.";
+
+      return;
+
+    }
+
 
     loginBox.style.display =
-      "block";
-
-    adminPanel.style.display =
       "none";
 
-    return;
+    adminPanel.style.display =
+      "block";
+
+
+    loadPlaylists();
+
   }
+);
 
 
-  if(user.uid !== ADMIN_UID){
-
-    signOut(auth);
-
-    loginMessage.textContent =
-      "Ye account admin nahi hai.";
-
-    return;
-  }
-
-
-  loginBox.style.display =
-    "none";
-
-  adminPanel.style.display =
-    "block";
-
-  loadAllPlaylists();
-
-});
-
-
-/* ================================
+/* =========================================
    LOGOUT
-================================ */
+========================================= */
 
-logoutBtn.onclick = ()=>{
+logoutBtn.onclick =
+  async function(){
 
-  signOut(auth);
+    await signOut(auth);
 
-};
+  };
 
 
-/* ================================
-   ADD PLAYLIST
-================================ */
+/* =========================================
+   EXTRACT PLAYLIST ID
+========================================= */
 
-saveBtn.onclick = async ()=>{
+function extractPlaylistId(
+  value
+){
 
-  const name =
-    document.getElementById("playlist-name")
-      .value.trim();
+  value =
+    value.trim();
 
-  const url =
-    document.getElementById("playlist-url")
-      .value.trim();
 
-  if(!name){
-
-    saveMessage.textContent =
-      "Playlist name enter karo.";
-
-    return;
-  }
-
-  const youtubeId =
-    extractPlaylistId(url);
-
-  if(!youtubeId){
-
-    saveMessage.textContent =
-      "Valid YouTube playlist link/ID dalo.";
-
-    return;
+  if(!value){
+    return null;
   }
 
 
-  saveBtn.disabled = true;
-
-  saveMessage.textContent =
-    "Saving...";
-
-
-  try{
-
-    await addDoc(
-      collection(db,"playlists"),
-      {
-        name:name,
-        youtubeId:youtubeId,
-        active:true
-      }
-    );
-
-
-    document.getElementById("playlist-name")
-      .value = "";
-
-    document.getElementById("playlist-url")
-      .value = "";
-
-
-    saveMessage.textContent =
-      "Playlist successfully added ✅";
-
-
-    loadAllPlaylists();
-
-
-  }catch(error){
-
-    console.error(error);
-
-    saveMessage.textContent =
-      "Save failed.";
-
-  }
-
-
-  saveBtn.disabled = false;
-
-};
-
-
-/* ================================
-   GET PLAYLIST ID
-================================ */
-
-function extractPlaylistId(value){
-
-  value = value.trim();
-
-
-  // Direct playlist ID
+  /*
+    Direct playlist ID
+  */
 
   if(
     value.startsWith("PL") &&
-    !value.includes("/")
+    !value.includes("/") &&
+    !value.includes("?")
   ){
 
     return value;
+
   }
 
+
+  /*
+    YouTube URL
+  */
 
   try{
 
     const url =
       new URL(value);
 
+
     const id =
-      url.searchParams.get("list");
+      url.searchParams.get(
+        "list"
+      );
 
-    return id || null;
 
-  }catch(error){
+    if(id){
+      return id;
+    }
+
+
+  }
+
+  catch(error){
 
     return null;
 
   }
 
+
+  return null;
+
 }
 
 
-/* ================================
-   LOAD PLAYLISTS
-================================ */
+/* =========================================
+   ADD PLAYLIST
+========================================= */
 
-async function loadAllPlaylists(){
+saveBtn.onclick =
+  async function(){
+
+    const name =
+      document
+        .getElementById("playlist-name")
+        .value
+        .trim();
+
+
+    const url =
+      document
+        .getElementById("playlist-url")
+        .value
+        .trim();
+
+
+    if(!name){
+
+      saveMessage.textContent =
+        "Playlist name enter karo.";
+
+      return;
+
+    }
+
+
+    const youtubeId =
+      extractPlaylistId(
+        url
+      );
+
+
+    if(!youtubeId){
+
+      saveMessage.textContent =
+        "Valid YouTube playlist link/ID dalo.";
+
+      return;
+
+    }
+
+
+    saveBtn.disabled =
+      true;
+
+    saveMessage.textContent =
+      "Playlist save ho rahi hai...";
+
+
+    try{
+
+      await addDoc(
+        collection(
+          db,
+          "playlists"
+        ),
+        {
+
+          name:name,
+
+          youtubeId:youtubeId,
+
+          active:true
+
+        }
+      );
+
+
+      document
+        .getElementById("playlist-name")
+        .value = "";
+
+
+      document
+        .getElementById("playlist-url")
+        .value = "";
+
+
+      saveMessage.textContent =
+        "Playlist successfully added ✅";
+
+
+      await loadPlaylists();
+
+    }
+
+    catch(error){
+
+      console.error(error);
+
+      saveMessage.textContent =
+        "Save failed.";
+
+    }
+
+
+    saveBtn.disabled =
+      false;
+
+  };
+
+
+/* =========================================
+   LOAD PLAYLISTS
+========================================= */
+
+async function loadPlaylists(){
 
   playlistList.innerHTML =
-    "Loading...";
+    "<div class='empty'>Loading playlists...</div>";
 
 
   try{
 
     const snap =
       await getDocs(
-        collection(db,"playlists")
+        collection(
+          db,
+          "playlists"
+        )
       );
 
 
-    playlistList.innerHTML = "";
+    playlistList.innerHTML =
+      "";
+
+
+    playlistCount.textContent =
+      "(" + snap.size + ")";
 
 
     if(snap.empty){
 
       playlistList.innerHTML =
-        "<div class='message'>No playlists.</div>";
+        "<div class='empty'>Abhi koi playlist nahi hai.</div>";
 
       return;
+
     }
 
 
-    snap.forEach(snapshot=>{
+    snap.forEach(
+      snapshot => {
 
-      const data =
-        snapshot.data();
+        renderPlaylist(
+          snapshot.id,
+          snapshot.data()
+        );
 
-      renderPlaylist(
-        snapshot.id,
-        data
-      );
+      }
+    );
 
-    });
+  }
 
-
-  }catch(error){
+  catch(error){
 
     console.error(error);
 
     playlistList.innerHTML =
-      "<div class='message'>Could not load playlists.</div>";
+      "<div class='empty'>Playlists load nahi ho paayi.</div>";
 
   }
 
 }
 
 
-/* ================================
-   RENDER
-================================ */
+/* =========================================
+   RENDER PLAYLIST
+========================================= */
 
-function renderPlaylist(id,data){
+function renderPlaylist(
+  id,
+  data
+){
 
   const box =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   box.className =
     "playlist";
 
 
+  const head =
+    document.createElement(
+      "div"
+    );
+
+  head.className =
+    "playlist-head";
+
+
+  const icon =
+    document.createElement(
+      "div"
+    );
+
+  icon.className =
+    "playlist-icon";
+
+  icon.textContent =
+    "♫";
+
+
+  const info =
+    document.createElement(
+      "div"
+    );
+
+  info.className =
+    "playlist-info";
+
+
   const name =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   name.className =
     "playlist-name";
 
   name.textContent =
-    data.name || "Unnamed";
+    data.name ||
+    "Unnamed Playlist";
 
 
   const pid =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   pid.className =
     "playlist-id";
 
   pid.textContent =
-    data.youtubeId || "";
+    data.youtubeId ||
+    "";
 
+
+  const status =
+    document.createElement(
+      "div"
+    );
+
+  status.className =
+    data.active
+      ? "status active"
+      : "status inactive";
+
+  status.textContent =
+    data.active
+      ? "🟢 Active"
+      : "🔴 Inactive";
+
+
+  info.appendChild(name);
+  info.appendChild(pid);
+  info.appendChild(status);
+
+
+  head.appendChild(icon);
+  head.appendChild(info);
+
+
+  /* =====================================
+     ACTION BUTTONS
+  ===================================== */
 
   const actions =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   actions.className =
     "actions";
 
 
   const toggle =
-    document.createElement("button");
+    document.createElement(
+      "button"
+    );
 
   toggle.className =
-    "toggle";
+    "action active-btn";
 
   toggle.textContent =
     data.active
-      ? "🟢 Active"
-      : "🔴 Inactive";
+      ? "🔴 Disable"
+      : "🟢 Activate";
 
 
   toggle.onclick =
-    async ()=>{
+    async function(){
 
-      await updateDoc(
-        doc(db,"playlists",id),
-        {
-          active:!data.active
-        }
-      );
+      toggle.disabled =
+        true;
 
-      loadAllPlaylists();
+      try{
+
+        await updateDoc(
+          doc(
+            db,
+            "playlists",
+            id
+          ),
+          {
+            active:
+              !data.active
+          }
+        );
+
+
+        await loadPlaylists();
+
+      }
+
+      catch(error){
+
+        console.error(error);
+
+        alert(
+          "Status change nahi hua."
+        );
+
+        toggle.disabled =
+          false;
+
+      }
 
     };
 
 
   const edit =
-    document.createElement("button");
+    document.createElement(
+      "button"
+    );
+
+  edit.className =
+    "action";
 
   edit.textContent =
     "✏️ Edit";
 
 
+  const remove =
+    document.createElement(
+      "button"
+    );
+
+  remove.className =
+    "action delete";
+
+  remove.textContent =
+    "🗑️ Delete";
+
+
+  actions.appendChild(toggle);
+  actions.appendChild(edit);
+  actions.appendChild(remove);
+
+
+  /* =====================================
+     INLINE EDIT BOX
+  ===================================== */
+
+  const editBox =
+    document.createElement(
+      "div"
+    );
+
+  editBox.className =
+    "edit-box";
+
+
+  const editName =
+    document.createElement(
+      "input"
+    );
+
+  editName.value =
+    data.name || "";
+
+  editName.placeholder =
+    "Playlist name";
+
+
+  const editUrl =
+    document.createElement(
+      "input"
+    );
+
+  editUrl.style.marginTop =
+    "9px";
+
+  editUrl.value =
+    data.youtubeId || "";
+
+  editUrl.placeholder =
+    "YouTube playlist link / ID";
+
+
+  const editActions =
+    document.createElement(
+      "div"
+    );
+
+  editActions.className =
+    "edit-actions";
+
+
+  const saveEdit =
+    document.createElement(
+      "button"
+    );
+
+  saveEdit.className =
+    "save-edit";
+
+  saveEdit.textContent =
+    "Save";
+
+
+  const cancelEdit =
+    document.createElement(
+      "button"
+    );
+
+  cancelEdit.className =
+    "cancel-edit";
+
+  cancelEdit.textContent =
+    "Cancel";
+
+
+  editActions.appendChild(
+    saveEdit
+  );
+
+  editActions.appendChild(
+    cancelEdit
+  );
+
+
+  editBox.appendChild(
+    editName
+  );
+
+  editBox.appendChild(
+    editUrl
+  );
+
+  editBox.appendChild(
+    editActions
+  );
+
+
   edit.onclick =
-    async ()=>{
+    function(){
+
+      editBox.classList.add(
+        "show"
+      );
+
+      editName.focus();
+
+    };
+
+
+  cancelEdit.onclick =
+    function(){
+
+      editBox.classList.remove(
+        "show"
+      );
+
+    };
+
+
+  saveEdit.onclick =
+    async function(){
 
       const newName =
-        prompt(
-          "Playlist name:",
-          data.name || ""
-        );
-
-      if(newName === null) return;
-
-
-      const newUrl =
-        prompt(
-          "YouTube playlist link / ID:",
-          data.youtubeId || ""
-        );
-
-      if(newUrl === null) return;
+        editName.value.trim();
 
 
       const newId =
-        extractPlaylistId(newUrl);
+        extractPlaylistId(
+          editUrl.value
+        );
 
 
-      if(!newId){
+      if(!newName){
 
         alert(
-          "Valid playlist link/ID dalo."
+          "Playlist name enter karo."
         );
 
         return;
@@ -751,64 +1243,148 @@ function renderPlaylist(id,data){
       }
 
 
-      await updateDoc(
-        doc(db,"playlists",id),
-        {
-          name:newName.trim(),
-          youtubeId:newId
-        }
-      );
+      if(!newId){
 
-
-      loadAllPlaylists();
-
-    };
-
-
-  const del =
-    document.createElement("button");
-
-  del.className =
-    "delete";
-
-  del.textContent =
-    "🗑️ Delete";
-
-
-  del.onclick =
-    async ()=>{
-
-      const yes =
-        confirm(
-          `Delete "${data.name}" playlist?`
+        alert(
+          "Valid YouTube playlist link/ID dalo."
         );
 
-      if(!yes) return;
+        return;
+
+      }
 
 
-      await deleteDoc(
-        doc(db,"playlists",id)
-      );
+      saveEdit.disabled =
+        true;
+
+      saveEdit.textContent =
+        "Saving...";
 
 
-      loadAllPlaylists();
+      try{
+
+        await updateDoc(
+          doc(
+            db,
+            "playlists",
+            id
+          ),
+          {
+
+            name:newName,
+
+            youtubeId:newId
+
+          }
+        );
+
+
+        await loadPlaylists();
+
+      }
+
+      catch(error){
+
+        console.error(error);
+
+        alert(
+          "Playlist update nahi hui."
+        );
+
+        saveEdit.disabled =
+          false;
+
+        saveEdit.textContent =
+          "Save";
+
+      }
 
     };
 
 
-  actions.appendChild(toggle);
-  actions.appendChild(edit);
-  actions.appendChild(del);
+  /* =====================================
+     DELETE
+  ===================================== */
+
+  remove.onclick =
+    async function(){
+
+      const confirmed =
+        confirm(
+          "Kya tum '" +
+          (data.name || "this playlist") +
+          "' ko delete karna chahte ho?"
+        );
 
 
-  box.appendChild(name);
-  box.appendChild(pid);
+      if(!confirmed){
+        return;
+      }
+
+
+      remove.disabled =
+        true;
+
+      remove.textContent =
+        "Deleting...";
+
+
+      try{
+
+        await deleteDoc(
+          doc(
+            db,
+            "playlists",
+            id
+          )
+        );
+
+
+        await loadPlaylists();
+
+      }
+
+      catch(error){
+
+        console.error(error);
+
+        alert(
+          "Playlist delete nahi hui."
+        );
+
+        remove.disabled =
+          false;
+
+        remove.textContent =
+          "🗑️ Delete";
+
+      }
+
+    };
+
+
+  box.appendChild(head);
   box.appendChild(actions);
+  box.appendChild(editBox);
 
 
-  playlistList.appendChild(box);
+  playlistList.appendChild(
+    box
+  );
 
 }
+
+
+/* =========================================
+   REFRESH
+========================================= */
+
+refreshBtn.onclick =
+  function(){
+
+    loadPlaylists();
+
+  };
 
 </script>
 
