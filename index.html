@@ -1042,7 +1042,7 @@ let selectedPlaylist = null;
 let currentSongs = [];
 
 let pendingAutoplay = false;
-let autoplayTimeoutId = null;
+let playRequestId = 0;
 
 
 /* =========================
@@ -1225,34 +1225,10 @@ function onPlayerStateChange(event){
 
   if(
     event.data ===
-    YT.PlayerState.CUED &&
-    pendingAutoplay
-  ){
-
-    pendingAutoplay = false;
-
-    if(autoplayTimeoutId){
-      clearTimeout(autoplayTimeoutId);
-      autoplayTimeoutId = null;
-    }
-
-    try{
-      youtube.playVideo();
-    }catch(e){}
-
-  }
-
-  if(
-    event.data ===
     YT.PlayerState.PLAYING
   ){
 
     pendingAutoplay = false;
-
-    if(autoplayTimeoutId){
-      clearTimeout(autoplayTimeoutId);
-      autoplayTimeoutId = null;
-    }
 
     setPlaying(true);
 
@@ -1528,14 +1504,11 @@ function playSelectedPlaylist(){
   if(!id) return;
 
 
+  const requestId =
+    ++playRequestId;
+
+
   try{
-
-    pendingAutoplay = true;
-
-    if(autoplayTimeoutId){
-      clearTimeout(autoplayTimeoutId);
-      autoplayTimeoutId = null;
-    }
 
     youtube.loadPlaylist({
       list:id,
@@ -1544,28 +1517,65 @@ function playSelectedPlaylist(){
       startSeconds:0
     });
 
-    autoplayTimeoutId = setTimeout(
-      ()=>{
-
-        autoplayTimeoutId = null;
-
-        if(!pendingAutoplay) return;
-
-        pendingAutoplay = false;
-
-        try{
-          youtube.playVideo();
-        }catch(e){}
-
-      },
-      3000
-    );
-
   }catch(error){
 
     console.error(error);
 
+    return;
+
   }
+
+
+  pendingAutoplay = true;
+
+
+  const attemptPlay = attempt=>{
+
+    // a newer playlist switch happened; give up on this one
+    if(requestId !== playRequestId) return;
+
+    // playback already started (onStateChange caught it)
+    if(!pendingAutoplay) return;
+
+
+    try{
+
+      const state =
+        youtube.getPlayerState();
+
+      if(
+        state ===
+        YT.PlayerState.PLAYING
+      ){
+        pendingAutoplay = false;
+        return;
+      }
+
+      youtube.playVideo();
+
+    }catch(e){}
+
+
+    if(attempt < 15){
+
+      setTimeout(
+        ()=>attemptPlay(attempt+1),
+        300
+      );
+
+    }else{
+
+      pendingAutoplay = false;
+
+    }
+
+  };
+
+
+  setTimeout(
+    ()=>attemptPlay(0),
+    150
+  );
 
 }
 
