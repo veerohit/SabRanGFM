@@ -1038,6 +1038,8 @@ let selectedPlaylist = null;
 
 let currentSongs = [];
 
+let pendingAutoplay = false;
+
 
 /* =========================
    ELEMENTS
@@ -1219,8 +1221,24 @@ function onPlayerStateChange(event){
 
   if(
     event.data ===
+    YT.PlayerState.CUED &&
+    pendingAutoplay
+  ){
+
+    pendingAutoplay = false;
+
+    try{
+      youtube.playVideo();
+    }catch(e){}
+
+  }
+
+  if(
+    event.data ===
     YT.PlayerState.PLAYING
   ){
+
+    pendingAutoplay = false;
 
     setPlaying(true);
 
@@ -1498,6 +1516,8 @@ function playSelectedPlaylist(){
 
   try{
 
+    pendingAutoplay = true;
+
     youtube.loadPlaylist({
       list:id,
       listType:"playlist",
@@ -1505,7 +1525,20 @@ function playSelectedPlaylist(){
       startSeconds:0
     });
 
-    youtube.playVideo();
+    setTimeout(
+      ()=>{
+
+        if(!pendingAutoplay) return;
+
+        pendingAutoplay = false;
+
+        try{
+          youtube.playVideo();
+        }catch(e){}
+
+      },
+      1500
+    );
 
   }catch(error){
 
