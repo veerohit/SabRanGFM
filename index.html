@@ -327,6 +327,8 @@ body:before{
 
   background:#000;
   border:1px solid var(--line);
+
+  pointer-events:none;
 }
 
 #yt-player{
@@ -1123,7 +1125,8 @@ function(){
 
         playerVars:{
           autoplay:0,
-          controls:1,
+          controls:0,
+          disablekb:1,
           playsinline:1,
           rel:0,
           loop:1,
