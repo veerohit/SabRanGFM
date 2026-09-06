@@ -3,11 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-
 <title>SabRanGFM Admin</title>
 
 <style>
-
 :root{
   --paper:#ead9b7;
   --paper2:#f6ead0;
@@ -18,2143 +16,1074 @@
   --cream:#fff8e8;
   --line:rgba(57,37,24,.20);
   --shadow:rgba(57,37,24,.22);
+  --green:#3b713f;
+  --red:#81372f;
 }
 
-*{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
-
-html,body{
-  margin:0;
-  min-height:100%;
-}
+*{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html,body{ margin:0; min-height:100%; }
 
 body{
   min-height:100vh;
-  padding:18px 12px 35px;
-
+  padding:18px 12px 60px;
   color:var(--brown);
-
-  font-family:
-    Georgia,
-    "Times New Roman",
-    serif;
-
+  font-family:Georgia,"Times New Roman",serif;
   background:
-    radial-gradient(
-      circle at 20% 20%,
-      rgba(255,255,255,.30) 0 1px,
-      transparent 2px
-    ) 0 0/6px 6px,
-
-    radial-gradient(
-      circle at 70% 60%,
-      rgba(60,35,15,.08) 0 1px,
-      transparent 2px
-    ) 0 0/8px 8px,
-
-    linear-gradient(
-      135deg,
-      var(--paper2),
-      var(--paper)
-    );
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,.30) 0 1px, transparent 2px) 0 0/6px 6px,
+    radial-gradient(circle at 70% 60%, rgba(60,35,15,.08) 0 1px, transparent 2px) 0 0/8px 8px,
+    linear-gradient(135deg, var(--paper2), var(--paper));
 }
 
 body:before{
   content:"";
-
-  position:fixed;
-  inset:0;
-
+  position:fixed; inset:0;
   pointer-events:none;
-
   opacity:.16;
-
-  background-image:url(
-    "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.25'/%3E%3C/svg%3E"
-  );
-
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.25'/%3E%3C/svg%3E");
   mix-blend-mode:multiply;
 }
 
 body:after{
   content:"";
-
-  position:fixed;
-  inset:8px;
-
+  position:fixed; inset:8px;
   pointer-events:none;
-
-  border:
-    1px solid
-    rgba(57,37,24,.10);
-
+  border:1px solid rgba(57,37,24,.10);
   border-radius:8px;
 }
 
-.container{
-  position:relative;
-  z-index:1;
+.container{ position:relative; z-index:1; max-width:650px; margin:auto; }
 
-  max-width:650px;
+/* LOGO / TEXT */
+.logo{ font-size:30px; font-weight:900; letter-spacing:-1px; line-height:1; }
+.logo span{ color:var(--orange); }
+.subtitle{ color:rgba(57,37,24,.58); margin:6px 0 20px; font-size:10px; letter-spacing:3px; }
 
-  margin:auto;
-}
-
-
-/* =========================================
-   LOGO
-========================================= */
-
-.logo{
-  font-size:30px;
-  font-weight:900;
-  letter-spacing:-1px;
-  line-height:1;
-}
-
-.logo span{
-  color:var(--orange);
-}
-
-
-/* =========================================
-   SUBTITLE
-========================================= */
-
-.subtitle{
-  color:rgba(57,37,24,.58);
-
-  margin-top:6px;
-  margin-bottom:20px;
-
-  font-size:10px;
-
-  letter-spacing:3px;
-}
-
-
-/* =========================================
-   CARD
-========================================= */
-
+/* CARD */
 .card{
-
   position:relative;
-
   overflow:hidden;
-
   padding:20px;
-
   margin-bottom:16px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,248,232,.95),
-      rgba(225,202,160,.94)
-    );
-
-  border:
-    1px solid
-    rgba(57,37,24,.27);
-
+  background:linear-gradient(145deg, rgba(255,248,232,.95), rgba(225,202,160,.94));
+  border:1px solid rgba(57,37,24,.27);
   border-radius:18px;
-
-  box-shadow:
-    0 9px 25px
-    var(--shadow),
-
-    inset
-    0 1px 0
-    rgba(255,255,255,.65);
+  box-shadow:0 9px 25px var(--shadow), inset 0 1px 0 rgba(255,255,255,.65);
 }
-
 .card:before{
-
   content:"";
-
-  position:absolute;
-
-  inset:6px;
-
+  position:absolute; inset:6px;
   pointer-events:none;
-
-  border:
-    1px solid
-    rgba(57,37,24,.10);
-
+  border:1px solid rgba(57,37,24,.10);
   border-radius:13px;
 }
-
 .card:after{
-
   content:"✦";
-
-  position:absolute;
-
-  top:10px;
-  right:13px;
-
-  color:
-    rgba(168,79,34,.28);
-
+  position:absolute; top:10px; right:13px;
+  color:rgba(168,79,34,.28);
   font-size:14px;
 }
 
-
-/* =========================================
-   LOGIN
-========================================= */
-
-.login-head{
-
-  position:relative;
-  z-index:1;
-
-  text-align:center;
-
-  margin-bottom:18px;
-}
-
+/* LOGIN */
+.login-head{ position:relative; z-index:1; text-align:center; margin-bottom:18px; }
 .login-icon{
-
-  width:58px;
-  height:58px;
-
-  margin:
-    0 auto 12px;
-
-  display:flex;
-
-  align-items:center;
-  justify-content:center;
-
+  width:58px; height:58px; margin:0 auto 12px;
+  display:flex; align-items:center; justify-content:center;
   border-radius:50%;
-
-  background:
-    radial-gradient(
-      circle at 35% 30%,
-      var(--orange2),
-      var(--orange)
-    );
-
-  border:
-    4px solid
-    rgba(255,248,232,.65);
-
-  color:var(--cream);
-
-  font-size:22px;
-
-  box-shadow:
-    0 6px 14px
-    rgba(57,37,24,.25);
+  background:radial-gradient(circle at 35% 30%, var(--orange2), var(--orange));
+  border:4px solid rgba(255,248,232,.65);
+  color:var(--cream); font-size:22px;
+  box-shadow:0 6px 14px rgba(57,37,24,.25);
 }
+.login-title{ font-size:21px; font-weight:bold; }
+.login-title span{ color:var(--orange); }
+.login-caption{ margin-top:5px; font-size:9px; letter-spacing:3px; opacity:.58; }
 
-.login-title{
+/* DIVIDER */
+.divider{ position:relative; z-index:1; display:flex; align-items:center; gap:9px; margin:4px 0 15px; opacity:.5; }
+.divider:before,.divider:after{ content:""; height:1px; flex:1; background:var(--brown); }
+.divider-mark{ font-size:10px; }
 
-  font-size:21px;
-
-  font-weight:bold;
-}
-
-.login-title span{
-  color:var(--orange);
-}
-
-.login-caption{
-
-  margin-top:5px;
-
-  font-size:9px;
-
-  letter-spacing:3px;
-
-  opacity:.58;
-}
-
-
-/* =========================================
-   DIVIDER
-========================================= */
-
-.divider{
-
-  position:relative;
-  z-index:1;
-
-  display:flex;
-
-  align-items:center;
-
-  gap:9px;
-
-  margin:
-    4px 0 15px;
-
-  opacity:.5;
-}
-
-.divider:before,
-.divider:after{
-
-  content:"";
-
-  height:1px;
-
-  flex:1;
-
-  background:var(--brown);
-}
-
-.divider-mark{
-  font-size:10px;
-}
-
-
-/* =========================================
-   LABEL
-========================================= */
-
-label{
-
-  position:relative;
-  z-index:1;
-
-  display:block;
-
-  color:
-    rgba(57,37,24,.72);
-
-  font-size:12px;
-
-  font-weight:bold;
-
-  margin:
-    15px 0 7px;
-}
-
-
-/* =========================================
-   INPUT
-========================================= */
-
+/* FORM */
+label{ position:relative; z-index:1; display:block; color:rgba(57,37,24,.72); font-size:12px; font-weight:bold; margin:15px 0 7px; }
 input{
-
-  position:relative;
-  z-index:1;
-
-  width:100%;
-
-  padding:14px;
-
-  border:
-    1px solid
-    rgba(57,37,24,.25);
-
-  border-radius:11px;
-
-  background:
-    rgba(255,248,232,.75);
-
-  color:var(--brown);
-
-  font-family:
-    Georgia,
-    "Times New Roman",
-    serif;
-
-  font-size:14px;
-
-  outline:none;
-
-  box-shadow:
-    inset
-    0 2px 5px
-    rgba(57,37,24,.07);
+  position:relative; z-index:1; width:100%; padding:14px;
+  border:1px solid rgba(57,37,24,.25); border-radius:11px;
+  background:rgba(255,248,232,.75);
+  color:var(--brown); font-family:inherit; font-size:14px; outline:none;
+  box-shadow:inset 0 2px 5px rgba(57,37,24,.07);
 }
+input::placeholder{ color:rgba(57,37,24,.42); }
+input:focus{ border-color:var(--orange); box-shadow:0 0 0 2px rgba(168,79,34,.10); }
 
-input::placeholder{
-  color:
-    rgba(57,37,24,.42);
-}
-
-input:focus{
-
-  border-color:
-    var(--orange);
-
-  box-shadow:
-    0 0 0 2px
-    rgba(168,79,34,.10);
-}
-
-
-/* =========================================
-   BUTTON
-========================================= */
-
-button{
-
-  border:0;
-
-  cursor:pointer;
-
-  font-family:
-    Georgia,
-    "Times New Roman",
-    serif;
-}
-
-
-/* =========================================
-   PRIMARY
-========================================= */
+button{ border:0; cursor:pointer; font-family:inherit; }
 
 .primary{
-
-  position:relative;
-  z-index:1;
-
-  width:100%;
-
-  margin-top:17px;
-
-  padding:14px;
-
+  position:relative; z-index:1; width:100%; margin-top:17px; padding:14px;
   border-radius:11px;
-
-  background:
-    linear-gradient(
-      145deg,
-      var(--orange2),
-      var(--orange)
-    );
-
-  color:var(--cream);
-
-  font-size:13px;
-
-  font-weight:bold;
-
-  letter-spacing:.5px;
-
-  box-shadow:
-    0 5px 12px
-    rgba(57,37,24,.22);
+  background:linear-gradient(145deg, var(--orange2), var(--orange));
+  color:var(--cream); font-size:13px; font-weight:bold; letter-spacing:.5px;
+  box-shadow:0 5px 12px rgba(57,37,24,.22);
 }
+.primary:active{ transform:translateY(1px); }
+.primary:disabled{ opacity:.5; cursor:default; }
 
-.primary:active{
-  transform:translateY(1px);
-}
+.message{ position:relative; z-index:1; min-height:18px; margin-top:10px; color:var(--orange); font-size:12px; text-align:center; }
 
-.primary:disabled{
-  opacity:.5;
-}
-
-
-/* =========================================
-   MESSAGE
-========================================= */
-
-.message{
-
-  position:relative;
-  z-index:1;
-
-  min-height:18px;
-
-  margin-top:10px;
-
-  color:var(--orange);
-
-  font-size:12px;
-
-  text-align:center;
-}
-
-
-/* =========================================
-   TOPBAR
-========================================= */
-
-.topbar{
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:space-between;
-
-  gap:12px;
-
-  margin-bottom:18px;
-}
-
-.brand{
-
-  min-width:0;
-}
-
-.brand .logo{
-  font-size:25px;
-}
-
-.brand .subtitle{
-
-  margin-top:5px;
-
-  margin-bottom:0;
-
-  font-size:8px;
-
-  letter-spacing:2px;
-}
-
-
-/* =========================================
-   LOGOUT
-========================================= */
-
+/* TOPBAR */
+.topbar{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px; }
+.brand .logo{ font-size:25px; }
+.brand .subtitle{ margin:5px 0 0; font-size:8px; letter-spacing:2px; }
 .logout{
-
-  flex-shrink:0;
-
-  padding:10px 14px;
-
-  border:
-    1px solid
-    rgba(57,37,24,.25);
-
-  border-radius:20px;
-
-  background:
-    rgba(255,248,232,.65);
-
-  color:var(--brown);
-
-  font-size:11px;
-
-  font-weight:bold;
-
-  box-shadow:
-    0 3px 8px
-    rgba(57,37,24,.10);
+  flex-shrink:0; padding:10px 14px;
+  border:1px solid rgba(57,37,24,.25); border-radius:20px;
+  background:rgba(255,248,232,.65); color:var(--brown);
+  font-size:11px; font-weight:bold;
+  box-shadow:0 3px 8px rgba(57,37,24,.10);
 }
 
-
-/* =========================================
-   SECTION HEAD
-========================================= */
-
-.section-head{
-
-  position:relative;
-  z-index:1;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:space-between;
-
-  margin-bottom:14px;
+/* STATS STRIP */
+.stats{ position:relative; z-index:1; display:flex; gap:8px; }
+.stat{
+  flex:1;
+  text-align:center;
+  padding:12px 6px;
+  border-radius:13px;
+  background:rgba(255,248,232,.55);
+  border:1px solid rgba(57,37,24,.15);
 }
+.stat-num{ font-size:20px; font-weight:900; line-height:1; }
+.stat-label{ margin-top:5px; font-size:8px; letter-spacing:1.5px; opacity:.6; text-transform:uppercase; }
+.stat.active-stat .stat-num{ color:var(--green); }
+.stat.inactive-stat .stat-num{ color:var(--red); }
+.stat.total-stat .stat-num{ color:var(--orange); }
 
-.section-title{
+/* SECTION HEAD */
+.section-head{ position:relative; z-index:1; display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; gap:10px; }
+.section-title{ font-size:19px; font-weight:bold; white-space:nowrap; }
+.count{ padding:4px 9px; border-radius:20px; background:rgba(168,79,34,.12); color:var(--orange); font-size:10px; font-weight:bold; }
 
-  font-size:19px;
-
-  font-weight:bold;
-}
-
-.count{
-
-  padding:4px 9px;
-
-  border-radius:20px;
-
-  background:
-    rgba(168,79,34,.12);
-
-  color:var(--orange);
-
-  font-size:10px;
-
-  font-weight:bold;
-}
-
-
-/* =========================================
-   ADD HEADING
-========================================= */
-
-.add-heading{
-
-  position:relative;
-  z-index:1;
-
-  display:flex;
-
-  align-items:center;
-
-  gap:10px;
-
-  font-size:19px;
-
-  font-weight:bold;
-}
-
+.add-heading{ position:relative; z-index:1; display:flex; align-items:center; gap:10px; font-size:19px; font-weight:bold; }
 .add-icon{
-
-  width:37px;
-  height:37px;
-
-  display:flex;
-
-  align-items:center;
-  justify-content:center;
-
-  border-radius:10px;
-
-  background:var(--brown);
-
-  color:var(--cream);
-
-  font-size:20px;
-
-  box-shadow:
-    0 4px 9px
-    rgba(57,37,24,.20);
+  width:37px; height:37px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:10px; background:var(--brown); color:var(--cream);
+  font-size:20px; box-shadow:0 4px 9px rgba(57,37,24,.20);
 }
 
+/* SEARCH */
+.search-wrap{ position:relative; z-index:1; margin-bottom:12px; }
+.search-wrap input{ padding-left:38px; }
+.search-icon{ position:absolute; left:13px; top:50%; transform:translateY(-50%); z-index:2; opacity:.5; font-size:14px; }
 
-/* =========================================
-   PLAYLIST
-========================================= */
-
+/* PLAYLIST CARD */
 .playlist{
-
   position:relative;
-
   padding:15px;
-
   margin-top:11px;
-
   border-radius:14px;
-
-  background:
-    rgba(255,248,232,.60);
-
-  border:
-    1px solid
-    rgba(57,37,24,.18);
-
-  box-shadow:
-    inset
-    0 1px 0
-    rgba(255,255,255,.5),
-
-    0 3px 9px
-    rgba(57,37,24,.08);
+  background:rgba(255,248,232,.60);
+  border:1px solid rgba(57,37,24,.18);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5), 0 3px 9px rgba(57,37,24,.08);
 }
-
 .playlist:before{
-
-  content:"";
-
-  position:absolute;
-
-  left:0;
-
-  top:11px;
-  bottom:11px;
-
-  width:3px;
-
-  border-radius:
-    0 4px 4px 0;
-
-  background:
-    var(--orange);
+  content:""; position:absolute; left:0; top:11px; bottom:11px; width:3px;
+  border-radius:0 4px 4px 0; background:var(--orange);
 }
+.playlist.is-inactive:before{ background:rgba(57,37,24,.25); }
 
+.playlist-top{ display:flex; align-items:center; gap:10px; }
 
-/* =========================================
-   PLAYLIST TOP
-========================================= */
-
-.playlist-top{
-
-  display:flex;
-
-  align-items:center;
-
-  gap:10px;
+.reorder{ display:flex; flex-direction:column; gap:2px; flex:0 0 auto; }
+.reorder button{
+  width:22px; height:18px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:5px;
+  background:rgba(57,37,24,.08);
+  color:var(--brown);
+  font-size:10px;
+  border:1px solid rgba(57,37,24,.15);
 }
-
-
-/* =========================================
-   PLAYLIST NUMBER
-========================================= */
+.reorder button:disabled{ opacity:.25; }
+.reorder button:active:not(:disabled){ transform:translateY(1px); }
 
 .playlist-number{
-
-  flex:0 0 40px;
-
-  width:40px;
-  height:40px;
-
-  display:flex;
-
-  align-items:center;
-  justify-content:center;
-
-  border-radius:9px;
-
-  background:
-    var(--brown);
-
-  color:
-    var(--cream);
-
-  font-size:14px;
-
-  font-weight:bold;
+  flex:0 0 36px; width:36px; height:36px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:9px; background:var(--brown); color:var(--cream);
+  font-size:13px; font-weight:bold;
 }
 
+.playlist-name{ flex:1; min-width:0; font-size:15px; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
-/* =========================================
-   PLAYLIST NAME
-========================================= */
+.status{ display:inline-block; margin-top:10px; padding:5px 9px; border-radius:20px; font-family:Arial,sans-serif; font-size:9px; font-weight:bold; }
+.status.active{ background:rgba(50,130,65,.12); color:var(--green); }
+.status.inactive{ background:rgba(150,50,35,.12); color:var(--red); }
 
-.playlist-name{
-
-  flex:1;
-
-  min-width:0;
-
-  font-size:15px;
-
-  font-weight:bold;
-
-  white-space:nowrap;
-
-  overflow:hidden;
-
-  text-overflow:ellipsis;
+.playlist-id-row{
+  margin-top:8px; padding-top:8px;
+  border-top:1px solid rgba(57,37,24,.10);
+  display:flex; align-items:center; gap:8px;
 }
-
-
-/* =========================================
-   STATUS
-========================================= */
-
-.status{
-
-  display:inline-block;
-
-  margin-top:10px;
-
-  padding:5px 9px;
-
-  border-radius:20px;
-
-  font-family:Arial,sans-serif;
-
-  font-size:9px;
-
-  font-weight:bold;
-}
-
-.active{
-
-  background:
-    rgba(50,130,65,.12);
-
-  color:#3c713e;
-}
-
-.inactive{
-
-  background:
-    rgba(150,50,35,.12);
-
-  color:#8a392e;
-}
-
-
-/* =========================================
-   PLAYLIST ID
-========================================= */
-
 .playlist-id{
-
-  margin-top:8px;
-
-  padding-top:8px;
-
-  border-top:
-    1px solid
-    rgba(57,37,24,.10);
-
-  color:
-    rgba(57,37,24,.52);
-
-  font-family:monospace;
-
-  font-size:9px;
-
-  word-break:break-all;
+  flex:1; min-width:0;
+  color:rgba(57,37,24,.52);
+  font-family:monospace; font-size:9px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
-
-
-/* =========================================
-   ACTIONS
-========================================= */
-
-.actions{
-
-  display:grid;
-
-  grid-template-columns:
-    1fr 1fr 1fr;
-
-  gap:7px;
-
-  margin-top:13px;
-}
-
-.actions button{
-
-  min-height:39px;
-
-  padding:8px 4px;
-
-  border:
-    1px solid
-    rgba(57,37,24,.18);
-
-  border-radius:9px;
-
-  background:
-    rgba(57,37,24,.08);
-
+.icon-btn{
+  flex:0 0 auto;
+  width:26px; height:26px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:7px;
+  background:rgba(57,37,24,.08);
+  border:1px solid rgba(57,37,24,.15);
+  font-size:11px;
   color:var(--brown);
-
-  font-size:10px;
-
-  font-weight:bold;
-
-  box-shadow:
-    inset
-    0 1px 0
-    rgba(255,255,255,.35);
 }
+.icon-btn:active{ transform:translateY(1px); }
 
-.actions button:active{
-  transform:translateY(1px);
+.actions{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:7px; margin-top:13px; }
+.actions button{
+  min-height:39px; padding:8px 4px;
+  border:1px solid rgba(57,37,24,.18); border-radius:9px;
+  background:rgba(57,37,24,.08); color:var(--brown);
+  font-size:10px; font-weight:bold;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35);
 }
+.actions button:active{ transform:translateY(1px); }
+.actions .toggle{ background:rgba(45,105,60,.13); color:var(--green); border-color:rgba(45,105,60,.20); }
+.actions .toggle.is-off{ background:rgba(125,45,38,.12); color:var(--red); border-color:rgba(125,45,38,.20); }
+.actions .edit{ background:rgba(168,79,34,.11); color:var(--orange); border-color:rgba(168,79,34,.20); }
+.actions .delete{ background:rgba(125,45,38,.12); color:var(--red); border-color:rgba(125,45,38,.20); }
+.actions button:disabled{ opacity:.5; }
 
-
-/* GREEN */
-
-.actions .toggle{
-
-  background:
-    rgba(45,105,60,.13);
-
-  color:#3b713f;
-
-  border-color:
-    rgba(45,105,60,.20);
-}
-
-
-/* EDIT */
-
-.actions .edit{
-
-  background:
-    rgba(168,79,34,.11);
-
-  color:
-    var(--orange);
-
-  border-color:
-    rgba(168,79,34,.20);
-}
-
-
-/* DELETE */
-
-.actions .delete{
-
-  background:
-    rgba(125,45,38,.12);
-
-  color:#81372f;
-
-  border-color:
-    rgba(125,45,38,.20);
-}
-
-
-/* =========================================
-   EMPTY
-========================================= */
-
-.empty{
-
-  text-align:center;
-
-  color:
-    rgba(57,37,24,.52);
-
-  padding:
-    28px 5px;
-
-  font-size:12px;
-}
-
-
-/* =========================================
-   HIDDEN
-========================================= */
-
-#admin-panel{
+/* EDIT PANEL (inline) */
+.edit-panel{
   display:none;
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px dashed rgba(57,37,24,.20);
 }
+.edit-panel.open{ display:block; }
+.edit-panel label{ margin:10px 0 6px; font-size:10px; }
+.edit-panel input{ padding:11px; font-size:13px; }
+.edit-actions{ display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-top:12px; }
+.edit-actions button{ min-height:38px; border-radius:9px; font-size:11px; font-weight:bold; }
+.edit-save{ background:linear-gradient(145deg, var(--orange2), var(--orange)); color:var(--cream); }
+.edit-cancel{ background:rgba(57,37,24,.08); color:var(--brown); border:1px solid rgba(57,37,24,.18); }
 
+.empty{ text-align:center; color:rgba(57,37,24,.52); padding:28px 5px; font-size:12px; }
 
-/* =========================================
-   MOBILE
-========================================= */
+#admin-panel{ display:none; }
+
+/* CONFIRM MODAL */
+.modal-overlay{
+  display:none;
+  position:fixed; inset:0; z-index:100;
+  background:rgba(57,37,24,.45);
+  align-items:center; justify-content:center;
+  padding:20px;
+}
+.modal-overlay.open{ display:flex; }
+.modal-box{
+  width:100%; max-width:340px;
+  padding:22px;
+  border-radius:16px;
+  background:linear-gradient(145deg, rgba(255,248,232,.98), rgba(230,209,168,.98));
+  border:1px solid rgba(57,37,24,.28);
+  box-shadow:0 15px 40px rgba(0,0,0,.35);
+  text-align:center;
+}
+.modal-icon{ font-size:26px; margin-bottom:6px; }
+.modal-title{ font-size:16px; font-weight:bold; }
+.modal-text{ margin-top:8px; font-size:12px; opacity:.75; line-height:1.5; }
+.modal-actions{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:18px; }
+.modal-actions button{ padding:12px; border-radius:10px; font-size:12px; font-weight:bold; }
+.modal-cancel{ background:rgba(57,37,24,.08); color:var(--brown); border:1px solid rgba(57,37,24,.18); }
+.modal-confirm{ background:linear-gradient(145deg,#a5473a,#7d2d26); color:var(--cream); }
+
+/* TOAST */
+.toast{
+  position:fixed;
+  left:50%; bottom:22px;
+  transform:translate(-50%,20px);
+  z-index:200;
+  padding:12px 18px;
+  border-radius:30px;
+  background:var(--brown);
+  color:var(--cream);
+  font-size:12px; font-weight:bold;
+  box-shadow:0 8px 24px rgba(0,0,0,.35);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s ease, transform .25s ease;
+  max-width:90vw;
+  text-align:center;
+}
+.toast.show{ opacity:1; transform:translate(-50%,0); }
+.toast.error{ background:#7d2d26; }
+.toast.success{ background:var(--green); }
 
 @media(max-width:430px){
-
-  body{
-    padding:
-      13px 10px 28px;
-  }
-
-  .topbar{
-    align-items:flex-start;
-  }
-
-  .brand .logo{
-    font-size:23px;
-  }
-
-  .logout{
-    padding:9px 11px;
-  }
-
-  .card{
-    padding:17px;
-  }
-
-  .actions button{
-    font-size:9px;
-  }
-
+  body{ padding:13px 10px 55px; }
+  .topbar{ align-items:flex-start; }
+  .brand .logo{ font-size:23px; }
+  .logout{ padding:9px 11px; }
+  .card{ padding:17px; }
+  .actions button{ font-size:9px; }
+  .stat-num{ font-size:17px; }
 }
-
-
-/* =========================================
-   DESKTOP
-========================================= */
 
 @media(min-width:700px){
-
-  body{
-    padding-top:30px;
-  }
-
+  body{ padding-top:30px; }
 }
-
 </style>
 </head>
 
-
 <body>
-
 
 <div class="container">
 
-
-<!-- =========================================
-     LOGIN
-========================================= -->
-
-<div
-  id="login-box"
-  class="card"
->
-
+<!-- LOGIN -->
+<div id="login-box" class="card">
   <div class="login-head">
-
-    <div class="login-icon">
-      📻
-    </div>
-
-    <div class="login-title">
-      Sab<span>RanG</span> FM
-    </div>
-
-    <div class="login-caption">
-      ADMIN CONTROL ROOM
-    </div>
-
+    <div class="login-icon">📻</div>
+    <div class="login-title">Sab<span>RanG</span> FM</div>
+    <div class="login-caption">ADMIN CONTROL ROOM</div>
   </div>
 
+  <div class="divider"><span class="divider-mark">◆</span></div>
 
-  <div class="divider">
-    <span class="divider-mark">◆</span>
-  </div>
+  <label>Email</label>
+  <input id="email" type="email" placeholder="Admin email" autocomplete="username">
 
+  <label>Password</label>
+  <input id="password" type="password" placeholder="Password" autocomplete="current-password">
 
-  <label>
-    Email
-  </label>
+  <button id="login-btn" class="primary">🔐 LOGIN</button>
 
-  <input
-    id="email"
-    type="email"
-    placeholder="Admin email"
-    autocomplete="username"
-  >
-
-
-  <label>
-    Password
-  </label>
-
-  <input
-    id="password"
-    type="password"
-    placeholder="Password"
-    autocomplete="current-password"
-  >
-
-
-  <button
-    id="login-btn"
-    class="primary"
-  >
-    🔐 LOGIN
-  </button>
-
-
-  <div
-    id="login-message"
-    class="message"
-  ></div>
-
+  <div id="login-message" class="message"></div>
 </div>
 
 
-
-<!-- =========================================
-     ADMIN PANEL
-========================================= -->
-
+<!-- ADMIN PANEL -->
 <div id="admin-panel">
 
-
   <div class="topbar">
-
     <div class="brand">
-
-      <div class="logo">
-        Sab<span>RanG</span> FM
-      </div>
-
-      <div class="subtitle">
-        CLASSIC RADIO • PLAYLIST CONTROL
-      </div>
-
+      <div class="logo">Sab<span>RanG</span> FM</div>
+      <div class="subtitle">CLASSIC RADIO • PLAYLIST CONTROL</div>
     </div>
-
-
-    <button
-      id="logout"
-      class="logout"
-    >
-      Logout
-    </button>
-
+    <button id="logout" class="logout">Logout</button>
   </div>
 
-
-
-  <!-- =========================================
-       ADD PLAYLIST
-  ========================================= -->
-
+  <!-- STATS -->
   <div class="card">
+    <div class="stats">
+      <div class="stat total-stat">
+        <div class="stat-num" id="stat-total">0</div>
+        <div class="stat-label">Total</div>
+      </div>
+      <div class="stat active-stat">
+        <div class="stat-num" id="stat-active">0</div>
+        <div class="stat-label">Active</div>
+      </div>
+      <div class="stat inactive-stat">
+        <div class="stat-num" id="stat-inactive">0</div>
+        <div class="stat-label">Inactive</div>
+      </div>
+    </div>
+  </div>
 
+  <!-- ADD PLAYLIST -->
+  <div class="card">
     <div class="add-heading">
-
-      <div class="add-icon">
-        +
-      </div>
-
-      <div>
-        Add Playlist
-      </div>
-
+      <div class="add-icon">+</div>
+      <div>Add Playlist</div>
     </div>
 
-
-    <div
-      class="subtitle"
-      style="
-        position:relative;
-        z-index:1;
-        margin-top:7px;
-        margin-bottom:4px;
-        letter-spacing:1.5px;
-      "
-    >
+    <div class="subtitle" style="position:relative;z-index:1;margin:7px 0 4px;letter-spacing:1.5px;">
       ADD A NEW MUSIC STATION
     </div>
 
+    <label>Playlist Name</label>
+    <input id="playlist-name" type="text" placeholder="Bhojpuri" autocomplete="off">
 
-    <label>
-      Playlist Name
-    </label>
+    <label>YouTube Playlist Link</label>
+    <input id="playlist-url" type="text" placeholder="https://youtube.com/playlist?list=..." autocomplete="off">
 
-    <input
-      id="playlist-name"
-      type="text"
-      placeholder="Bhojpuri"
-      autocomplete="off"
-    >
+    <button id="add-btn" class="primary">➕ ADD PLAYLIST</button>
 
-
-    <label>
-      YouTube Playlist Link
-    </label>
-
-    <input
-      id="playlist-url"
-      type="text"
-      placeholder="https://youtube.com/playlist?list=..."
-      autocomplete="off"
-    >
-
-
-    <button
-      id="add-btn"
-      class="primary"
-    >
-      ➕ ADD PLAYLIST
-    </button>
-
-
-    <div
-      id="add-message"
-      class="message"
-    ></div>
-
+    <div id="add-message" class="message"></div>
   </div>
 
-
-
-  <!-- =========================================
-       PLAYLIST LIST
-  ========================================= -->
-
+  <!-- PLAYLIST LIST -->
   <div class="card">
-
     <div class="section-head">
-
-      <div class="section-title">
-        🎵 Playlists
-      </div>
-
-      <div
-        id="count"
-        class="count"
-      >
-        (0)
-      </div>
-
+      <div class="section-title">🎵 Playlists</div>
+      <div id="count" class="count">(0)</div>
     </div>
 
-
-    <div
-      id="playlist-list"
-    >
-
-      <div class="empty">
-        Playlists loading...
-      </div>
-
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input id="search-input" type="text" placeholder="Search playlists..." autocomplete="off">
     </div>
 
+    <div id="playlist-list">
+      <div class="empty">Playlists loading...</div>
+    </div>
   </div>
 
+</div>
 
 </div>
 
 
+<!-- CONFIRM MODAL -->
+<div class="modal-overlay" id="confirm-overlay">
+  <div class="modal-box">
+    <div class="modal-icon">🗑️</div>
+    <div class="modal-title" id="confirm-title">Delete playlist?</div>
+    <div class="modal-text" id="confirm-text"></div>
+    <div class="modal-actions">
+      <button class="modal-cancel" id="confirm-cancel">Cancel</button>
+      <button class="modal-confirm" id="confirm-ok">Delete</button>
+    </div>
+  </div>
 </div>
 
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
 
 <script type="module">
 
-
-/* =========================================
+/* =========================
    FIREBASE
-========================================= */
+========================= */
 
-import {
-  initializeApp
-}
-from
-"https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-
-
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut
-}
-from
-"https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-
-
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDocs,
-  updateDoc,
-  deleteDoc,
-  doc
-}
-from
-"https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
-
-
-
-/* =========================================
-   FIREBASE CONFIG
-========================================= */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 const firebaseConfig = {
-
-  apiKey:
-    "AIzaSyCWVflP_e9DVjcfRqm1gznDdn5OblnOI2Q",
-
-  authDomain:
-    "veerohit.firebaseapp.com",
-
-  projectId:
-    "veerohit",
-
-  storageBucket:
-    "veerohit.firebasestorage.app",
-
-  messagingSenderId:
-    "350799965318",
-
-  appId:
-    "1:350799965318:web:20d8c051d41b635aa2f507",
-
-  measurementId:
-    "G-SL83DC74GP"
-
+  apiKey:"AIzaSyCWVflP_e9DVjcfRqm1gznDdn5OblnOI2Q",
+  authDomain:"veerohit.firebaseapp.com",
+  projectId:"veerohit",
+  storageBucket:"veerohit.firebasestorage.app",
+  messagingSenderId:"350799965318",
+  appId:"1:350799965318:web:20d8c051d41b635aa2f507",
+  measurementId:"G-SL83DC74GP"
 };
 
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
+const ADMIN_UID = "L27D01BECSX2W3bENnaKh4wzYHx1";
 
-/* =========================================
-   INITIALIZE
-========================================= */
-
-const app =
-  initializeApp(
-    firebaseConfig
-  );
-
-
-const auth =
-  getAuth(app);
-
-
-const db =
-  getFirestore(app);
-
-
-
-/* =========================================
-   ADMIN UID
-========================================= */
-
-const ADMIN_UID =
-  "L27D01BECSX2W3bENnaKh4wzYHx1";
-
-
-
-/* =========================================
+/* =========================
    ELEMENTS
-========================================= */
+========================= */
 
-const loginBox =
-  document.getElementById(
-    "login-box"
-  );
+const loginBox = document.getElementById("login-box");
+const adminPanel = document.getElementById("admin-panel");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const loginBtn = document.getElementById("login-btn");
+const loginMessage = document.getElementById("login-message");
+const logoutBtn = document.getElementById("logout");
 
-const adminPanel =
-  document.getElementById(
-    "admin-panel"
-  );
+const nameInput = document.getElementById("playlist-name");
+const urlInput = document.getElementById("playlist-url");
+const addBtn = document.getElementById("add-btn");
+const addMessage = document.getElementById("add-message");
 
-const emailInput =
-  document.getElementById(
-    "email"
-  );
+const playlistList = document.getElementById("playlist-list");
+const count = document.getElementById("count");
+const searchInput = document.getElementById("search-input");
 
-const passwordInput =
-  document.getElementById(
-    "password"
-  );
+const statTotal = document.getElementById("stat-total");
+const statActive = document.getElementById("stat-active");
+const statInactive = document.getElementById("stat-inactive");
 
-const loginBtn =
-  document.getElementById(
-    "login-btn"
-  );
+const confirmOverlay = document.getElementById("confirm-overlay");
+const confirmTitle = document.getElementById("confirm-title");
+const confirmText = document.getElementById("confirm-text");
+const confirmCancel = document.getElementById("confirm-cancel");
+const confirmOk = document.getElementById("confirm-ok");
 
-const loginMessage =
-  document.getElementById(
-    "login-message"
-  );
+const toast = document.getElementById("toast");
 
-const logoutBtn =
-  document.getElementById(
-    "logout"
-  );
+/* =========================
+   TOAST
+========================= */
 
-const nameInput =
-  document.getElementById(
-    "playlist-name"
-  );
+let toastTimer = null;
 
-const urlInput =
-  document.getElementById(
-    "playlist-url"
-  );
+function showToast(message, type){
 
-const addBtn =
-  document.getElementById(
-    "add-btn"
-  );
+  clearTimeout(toastTimer);
 
-const addMessage =
-  document.getElementById(
-    "add-message"
-  );
+  toast.textContent = message;
+  toast.className = "toast show" + (type ? " " + type : "");
 
-const playlistList =
-  document.getElementById(
-    "playlist-list"
-  );
+  toastTimer = setTimeout(()=>{
+    toast.classList.remove("show");
+  }, 2600);
 
-const count =
-  document.getElementById(
-    "count"
-  );
+}
 
+/* =========================
+   CONFIRM MODAL
+========================= */
 
+function askConfirm(title, text){
 
-/* =========================================
+  confirmTitle.textContent = title;
+  confirmText.textContent = text;
+  confirmOverlay.classList.add("open");
+
+  return new Promise(resolve=>{
+
+    function cleanup(result){
+      confirmOverlay.classList.remove("open");
+      confirmOk.removeEventListener("click", onOk);
+      confirmCancel.removeEventListener("click", onCancel);
+      resolve(result);
+    }
+
+    function onOk(){ cleanup(true); }
+    function onCancel(){ cleanup(false); }
+
+    confirmOk.addEventListener("click", onOk);
+    confirmCancel.addEventListener("click", onCancel);
+
+  });
+
+}
+
+confirmOverlay.addEventListener("click", event=>{
+  if(event.target === confirmOverlay){
+    confirmOverlay.classList.remove("open");
+  }
+});
+
+/* =========================
    LOGIN
-========================================= */
+========================= */
 
-loginBtn.onclick =
-async function(){
+loginBtn.onclick = async function(){
 
-  const email =
-    emailInput.value.trim();
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
 
-  const password =
-    passwordInput.value;
-
-
-  if(
-    !email ||
-    !password
-  ){
-
-    loginMessage.textContent =
-      "Email aur password enter karo.";
-
+  if(!email || !password){
+    loginMessage.textContent = "Email aur password enter karo.";
     return;
-
   }
 
-
-  loginBtn.disabled =
-    true;
-
-  loginMessage.textContent =
-    "Login ho raha hai...";
-
+  loginBtn.disabled = true;
+  loginMessage.textContent = "Login ho raha hai...";
 
   try{
-
-    await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-
-  }
-
-  catch(error){
-
+    await signInWithEmailAndPassword(auth, email, password);
+  }catch(error){
     console.error(error);
-
-    loginMessage.textContent =
-      "Login failed. Email ya password check karo.";
-
-    loginBtn.disabled =
-      false;
-
+    loginMessage.textContent = "Login failed. Email ya password check karo.";
+    loginBtn.disabled = false;
   }
 
 };
 
+passwordInput.addEventListener("keydown", event=>{
+  if(event.key === "Enter") loginBtn.click();
+});
 
-
-/* =========================================
-   ENTER KEY
-========================================= */
-
-passwordInput.addEventListener(
-  "keydown",
-  event=>{
-
-    if(
-      event.key === "Enter"
-    ){
-
-      loginBtn.click();
-
-    }
-
-  }
-);
-
-
-
-/* =========================================
+/* =========================
    AUTH STATE
-========================================= */
+========================= */
 
-onAuthStateChanged(
-  auth,
-  function(user){
+onAuthStateChanged(auth, function(user){
 
-    if(!user){
-
-      loginBox.style.display =
-        "block";
-
-      adminPanel.style.display =
-        "none";
-
-      loginBtn.disabled =
-        false;
-
-      return;
-
-    }
-
-
-    if(
-      user.uid !== ADMIN_UID
-    ){
-
-      signOut(auth);
-
-      loginMessage.textContent =
-        "Ye account admin nahi hai.";
-
-      return;
-
-    }
-
-
-    loginBox.style.display =
-      "none";
-
-    adminPanel.style.display =
-      "block";
-
-
-    loadPlaylists();
-
+  if(!user){
+    loginBox.style.display = "block";
+    adminPanel.style.display = "none";
+    loginBtn.disabled = false;
+    return;
   }
-);
 
+  if(user.uid !== ADMIN_UID){
+    signOut(auth);
+    loginMessage.textContent = "Ye account admin nahi hai.";
+    return;
+  }
 
+  loginBox.style.display = "none";
+  adminPanel.style.display = "block";
 
-/* =========================================
-   LOGOUT
-========================================= */
+  loadPlaylists();
 
-logoutBtn.onclick =
-async function(){
+});
 
+logoutBtn.onclick = async function(){
   await signOut(auth);
-
 };
 
-
-
-/* =========================================
+/* =========================
    GET PLAYLIST ID
-========================================= */
+========================= */
 
 function getPlaylistId(value){
 
-  value =
-    value.trim();
+  value = value.trim();
+  if(!value) return null;
 
-
-  if(!value){
-    return null;
-  }
-
-
-  /* DIRECT ID */
-
-  if(
-    value.startsWith("PL") &&
-    !value.includes("/")
-  ){
-
+  if(value.startsWith("PL") && !value.includes("/")){
     return value;
-
   }
-
-
-  /* URL */
 
   try{
-
-    const url =
-      new URL(value);
-
-
-    const id =
-      url.searchParams.get(
-        "list"
-      );
-
-
+    const url = new URL(value);
+    const id = url.searchParams.get("list");
     return id || null;
-
-  }
-
-  catch(error){
-
+  }catch(error){
     return null;
-
   }
 
 }
 
+/* =========================
+   STATE
+========================= */
 
+let playlists = [];   // [{id, ...data}], kept sorted by order
+let searchTerm = "";
 
-/* =========================================
+/* =========================
    ADD PLAYLIST
-========================================= */
+========================= */
 
-addBtn.onclick =
-async function(){
+addBtn.onclick = async function(){
 
-  const name =
-    nameInput.value.trim();
-
-  const url =
-    urlInput.value.trim();
-
+  const name = nameInput.value.trim();
+  const url = urlInput.value.trim();
 
   if(!name){
-
-    addMessage.textContent =
-      "Playlist name enter karo.";
-
+    addMessage.textContent = "Playlist name enter karo.";
     nameInput.focus();
-
     return;
-
   }
 
-
-  const youtubeId =
-    getPlaylistId(url);
-
+  const youtubeId = getPlaylistId(url);
 
   if(!youtubeId){
-
-    addMessage.textContent =
-      "Valid YouTube playlist link dalo.";
-
+    addMessage.textContent = "Valid YouTube playlist link dalo.";
     urlInput.focus();
-
     return;
-
   }
 
+  const duplicate = playlists.some(p=>p.youtubeId === youtubeId);
 
-  addBtn.disabled =
-    true;
+  if(duplicate){
+    addMessage.textContent = "Ye playlist pehle se maujood hai.";
+    return;
+  }
 
-  addMessage.textContent =
-    "Playlist save ho rahi hai...";
+  addBtn.disabled = true;
+  addMessage.textContent = "Playlist save ho rahi hai...";
 
+  const maxOrder = playlists.reduce(
+    (max,p)=> Math.max(max, Number.isFinite(p.order) ? p.order : 0),
+    0
+  );
 
   try{
 
-    await addDoc(
-      collection(
-        db,
-        "playlists"
-      ),
-      {
+    await addDoc(collection(db,"playlists"), {
+      name:name,
+      youtubeId:youtubeId,
+      active:true,
+      order:maxOrder + 1
+    });
 
-        name:name,
+    nameInput.value = "";
+    urlInput.value = "";
 
-        youtubeId:youtubeId,
-
-        active:true
-
-      }
-    );
-
-
-    nameInput.value =
-      "";
-
-    urlInput.value =
-      "";
-
-
-    addMessage.textContent =
-      "Playlist added successfully ✅";
-
+    addMessage.textContent = "";
+    showToast("Playlist add ho gayi ✅", "success");
 
     await loadPlaylists();
 
-  }
-
-  catch(error){
+  }catch(error){
 
     console.error(error);
-
-    addMessage.textContent =
-      "Playlist save nahi hui.";
+    addMessage.textContent = "Playlist save nahi hui.";
+    showToast("Playlist save nahi hui", "error");
 
   }
 
-
-  addBtn.disabled =
-    false;
+  addBtn.disabled = false;
 
 };
 
-
-
-/* =========================================
+/* =========================
    LOAD PLAYLISTS
-========================================= */
+========================= */
 
 async function loadPlaylists(){
 
-  playlistList.innerHTML =
-    "<div class='empty'>Playlists loading...</div>";
-
+  playlistList.innerHTML = "<div class='empty'>Playlists loading...</div>";
 
   try{
 
-    const snapshot =
-      await getDocs(
-        collection(
-          db,
-          "playlists"
-        )
-      );
+    const snapshot = await getDocs(collection(db,"playlists"));
 
+    playlists = snapshot.docs.map((docItem, index)=>{
+      const data = docItem.data();
+      return {
+        id: docItem.id,
+        name: data.name || "Unnamed Playlist",
+        youtubeId: data.youtubeId || "",
+        active: !!data.active,
+        order: Number.isFinite(data.order) ? data.order : index
+      };
+    });
 
-    playlistList.innerHTML =
-      "";
+    playlists.sort((a,b)=> a.order - b.order);
 
+    updateStats();
+    renderPlaylists();
 
-    count.textContent =
-      "(" +
-      snapshot.size +
-      ")";
-
-
-    if(
-      snapshot.empty
-    ){
-
-      playlistList.innerHTML =
-        "<div class='empty'>No playlists found.</div>";
-
-      return;
-
-    }
-
-
-    let index = 0;
-
-
-    snapshot.forEach(
-      item=>{
-
-        createPlaylistCard(
-          item.id,
-          item.data(),
-          index
-        );
-
-        index++;
-
-      }
-    );
-
-  }
-
-  catch(error){
+  }catch(error){
 
     console.error(error);
-
-    playlistList.innerHTML =
-      "<div class='empty'>Playlists load nahi ho paayi.</div>";
+    playlistList.innerHTML = "<div class='empty'>Playlists load nahi ho paayi.</div>";
 
   }
 
 }
 
+function updateStats(){
 
+  const total = playlists.length;
+  const activeCount = playlists.filter(p=>p.active).length;
 
-/* =========================================
+  statTotal.textContent = total;
+  statActive.textContent = activeCount;
+  statInactive.textContent = total - activeCount;
+  count.textContent = "(" + total + ")";
+
+}
+
+/* =========================
+   RENDER PLAYLISTS
+========================= */
+
+function renderPlaylists(){
+
+  playlistList.innerHTML = "";
+
+  const term = searchTerm.trim().toLowerCase();
+
+  const visible = term
+    ? playlists.filter(p=> p.name.toLowerCase().includes(term))
+    : playlists;
+
+  if(!playlists.length){
+    playlistList.innerHTML = "<div class='empty'>No playlists found. Upar se ek add karo.</div>";
+    return;
+  }
+
+  if(!visible.length){
+    playlistList.innerHTML = "<div class='empty'>Koi playlist match nahi hui.</div>";
+    return;
+  }
+
+  visible.forEach((item, visibleIndex)=>{
+    const realIndex = playlists.findIndex(p=>p.id === item.id);
+    playlistList.appendChild(
+      createPlaylistCard(item, realIndex, visibleIndex, visible.length)
+    );
+  });
+
+}
+
+searchInput.addEventListener("input", ()=>{
+  searchTerm = searchInput.value;
+  renderPlaylists();
+});
+
+/* =========================
+   REORDER
+========================= */
+
+async function persistOrder(){
+
+  // reassign sequential order values matching current array position
+  const updates = playlists.map((p, index)=>{
+    p.order = index;
+    return updateDoc(doc(db,"playlists",p.id), { order:index });
+  });
+
+  try{
+    await Promise.all(updates);
+  }catch(error){
+    console.error(error);
+    showToast("Order save nahi hua", "error");
+  }
+
+}
+
+async function moveItem(realIndex, direction){
+
+  const targetIndex = realIndex + direction;
+
+  if(targetIndex < 0 || targetIndex >= playlists.length) return;
+
+  const temp = playlists[realIndex];
+  playlists[realIndex] = playlists[targetIndex];
+  playlists[targetIndex] = temp;
+
+  renderPlaylists();
+
+  await persistOrder();
+
+}
+
+/* =========================
    CREATE PLAYLIST CARD
-========================================= */
+========================= */
 
-function createPlaylistCard(
-  id,
-  data,
-  index
-){
+function createPlaylistCard(item, realIndex, visibleIndex, visibleCount){
 
-  const card =
-    document.createElement(
-      "div"
-    );
+  const { id, name, youtubeId, active } = item;
 
-  card.className =
-    "playlist";
+  const card = document.createElement("div");
+  card.className = "playlist" + (active ? "" : " is-inactive");
 
+  /* TOP ROW */
 
-  /* TOP */
+  const top = document.createElement("div");
+  top.className = "playlist-top";
 
-  const top =
-    document.createElement(
-      "div"
-    );
+  const reorder = document.createElement("div");
+  reorder.className = "reorder";
 
-  top.className =
-    "playlist-top";
+  const upBtn = document.createElement("button");
+  upBtn.textContent = "▲";
+  upBtn.disabled = realIndex === 0;
+  upBtn.onclick = ()=> moveItem(realIndex, -1);
 
+  const downBtn = document.createElement("button");
+  downBtn.textContent = "▼";
+  downBtn.disabled = realIndex === playlists.length - 1;
+  downBtn.onclick = ()=> moveItem(realIndex, 1);
 
-  /* NUMBER */
+  reorder.appendChild(upBtn);
+  reorder.appendChild(downBtn);
 
-  const number =
-    document.createElement(
-      "div"
-    );
+  const number = document.createElement("div");
+  number.className = "playlist-number";
+  number.textContent = String(realIndex + 1).padStart(2,"0");
 
-  number.className =
-    "playlist-number";
+  const nameEl = document.createElement("div");
+  nameEl.className = "playlist-name";
+  nameEl.textContent = name;
 
-  number.textContent =
-    String(index + 1)
-      .padStart(2,"0");
-
-
-  /* NAME */
-
-  const name =
-    document.createElement(
-      "div"
-    );
-
-  name.className =
-    "playlist-name";
-
-  name.textContent =
-    data.name ||
-    "Unnamed Playlist";
-
-
-  top.appendChild(
-    number
-  );
-
-  top.appendChild(
-    name
-  );
-
+  top.appendChild(reorder);
+  top.appendChild(number);
+  top.appendChild(nameEl);
 
   /* STATUS */
 
-  const status =
-    document.createElement(
-      "div"
-    );
+  const status = document.createElement("div");
+  status.className = "status " + (active ? "active" : "inactive");
+  status.textContent = active ? "🟢 ACTIVE" : "🔴 INACTIVE";
 
-  status.className =
-    "status " +
-    (
-      data.active
-        ? "active"
-        : "inactive"
-    );
+  /* ID ROW */
 
-  status.textContent =
-    data.active
-      ? "🟢 ACTIVE"
-      : "🔴 INACTIVE";
+  const idRow = document.createElement("div");
+  idRow.className = "playlist-id-row";
 
+  const idText = document.createElement("div");
+  idText.className = "playlist-id";
+  idText.textContent = youtubeId;
 
-  /* YOUTUBE ID */
+  const copyBtn = document.createElement("button");
+  copyBtn.className = "icon-btn";
+  copyBtn.title = "Copy ID";
+  copyBtn.textContent = "📋";
+  copyBtn.onclick = async ()=>{
+    try{
+      await navigator.clipboard.writeText(youtubeId);
+      showToast("ID copy ho gayi", "success");
+    }catch(error){
+      showToast("Copy nahi hui", "error");
+    }
+  };
 
-  const youtubeId =
-    document.createElement(
-      "div"
-    );
+  const openBtn = document.createElement("a");
+  openBtn.className = "icon-btn";
+  openBtn.title = "Open in YouTube";
+  openBtn.textContent = "↗";
+  openBtn.href = "https://www.youtube.com/playlist?list=" + encodeURIComponent(youtubeId);
+  openBtn.target = "_blank";
+  openBtn.rel = "noopener noreferrer";
+  openBtn.style.textDecoration = "none";
 
-  youtubeId.className =
-    "playlist-id";
-
-  youtubeId.textContent =
-    data.youtubeId ||
-    "";
-
+  idRow.appendChild(idText);
+  idRow.appendChild(copyBtn);
+  idRow.appendChild(openBtn);
 
   /* ACTIONS */
 
-  const actions =
-    document.createElement(
-      "div"
-    );
+  const actions = document.createElement("div");
+  actions.className = "actions";
 
-  actions.className =
-    "actions";
+  const toggle = document.createElement("button");
+  toggle.className = "toggle" + (active ? "" : " is-off");
+  toggle.textContent = active ? "🔴 Disable" : "🟢 Activate";
 
+  toggle.onclick = async function(){
 
-  /* =====================================
-     TOGGLE
-  ===================================== */
-
-  const toggle =
-    document.createElement(
-      "button"
-    );
-
-  toggle.className =
-    "toggle";
-
-  toggle.textContent =
-    data.active
-      ? "🔴 Disable"
-      : "🟢 Activate";
-
-
-  toggle.onclick =
-  async function(){
-
-    toggle.disabled =
-      true;
-
+    toggle.disabled = true;
 
     try{
-
-      await updateDoc(
-        doc(
-          db,
-          "playlists",
-          id
-        ),
-        {
-          active:
-            !data.active
-        }
+      await updateDoc(doc(db,"playlists",id), { active: !active });
+      showToast(
+        active ? "Playlist disable ho gayi" : "Playlist activate ho gayi",
+        "success"
       );
-
-
       await loadPlaylists();
-
-    }
-
-    catch(error){
-
+    }catch(error){
       console.error(error);
-
-      alert(
-        "Status change nahi hua."
-      );
-
-      toggle.disabled =
-        false;
-
+      showToast("Status change nahi hua", "error");
+      toggle.disabled = false;
     }
 
   };
 
+  const editBtn = document.createElement("button");
+  editBtn.className = "edit";
+  editBtn.textContent = "✏️ Edit";
+  editBtn.onclick = ()=> editPanel.classList.toggle("open");
 
-  /* =====================================
-     EDIT
-  ===================================== */
+  const removeBtn = document.createElement("button");
+  removeBtn.className = "delete";
+  removeBtn.textContent = "🗑️ Delete";
 
-  const edit =
-    document.createElement(
-      "button"
+  removeBtn.onclick = async function(){
+
+    const confirmed = await askConfirm(
+      "Delete playlist?",
+      "'" + name + "' hamesha ke liye delete ho jayegi. Ye undo nahi ho sakta."
     );
 
-  edit.className =
-    "edit";
+    if(!confirmed) return;
 
-  edit.textContent =
-    "✏️ Edit";
+    removeBtn.disabled = true;
 
-
-  edit.onclick =
-  async function(){
-
-    const newName =
-      prompt(
-        "Playlist name:",
-        data.name || ""
-      );
-
-
-    if(
-      newName === null
-    ){
-
-      return;
-
+    try{
+      await deleteDoc(doc(db,"playlists",id));
+      showToast("Playlist delete ho gayi", "success");
+      await loadPlaylists();
+    }catch(error){
+      console.error(error);
+      showToast("Playlist delete nahi hui", "error");
+      removeBtn.disabled = false;
     }
 
+  };
 
-    const cleanName =
-      newName.trim();
+  actions.appendChild(toggle);
+  actions.appendChild(editBtn);
+  actions.appendChild(removeBtn);
 
+  /* INLINE EDIT PANEL */
 
-    if(!cleanName){
+  const editPanel = document.createElement("div");
+  editPanel.className = "edit-panel";
 
-      alert(
-        "Playlist name empty nahi ho sakta."
-      );
+  const editNameLabel = document.createElement("label");
+  editNameLabel.textContent = "Playlist Name";
 
+  const editNameInput = document.createElement("input");
+  editNameInput.type = "text";
+  editNameInput.value = name;
+
+  const editUrlLabel = document.createElement("label");
+  editUrlLabel.textContent = "YouTube Playlist Link / ID";
+
+  const editUrlInput = document.createElement("input");
+  editUrlInput.type = "text";
+  editUrlInput.value = youtubeId;
+
+  const editActions = document.createElement("div");
+  editActions.className = "edit-actions";
+
+  const saveBtn = document.createElement("button");
+  saveBtn.className = "edit-save";
+  saveBtn.textContent = "Save";
+
+  const cancelBtn = document.createElement("button");
+  cancelBtn.className = "edit-cancel";
+  cancelBtn.textContent = "Cancel";
+  cancelBtn.type = "button";
+  cancelBtn.onclick = ()=>{
+    editNameInput.value = name;
+    editUrlInput.value = youtubeId;
+    editPanel.classList.remove("open");
+  };
+
+  saveBtn.onclick = async function(){
+
+    const newName = editNameInput.value.trim();
+
+    if(!newName){
+      showToast("Playlist name empty nahi ho sakta", "error");
       return;
-
     }
 
-
-    const newUrl =
-      prompt(
-        "YouTube playlist link / ID:",
-        data.youtubeId || ""
-      );
-
-
-    if(
-      newUrl === null
-    ){
-
-      return;
-
-    }
-
-
-    const newId =
-      getPlaylistId(
-        newUrl
-      );
-
+    const newId = getPlaylistId(editUrlInput.value);
 
     if(!newId){
-
-      alert(
-        "Valid YouTube playlist link dalo."
-      );
-
+      showToast("Valid YouTube playlist link dalo", "error");
       return;
-
     }
 
+    saveBtn.disabled = true;
 
     try{
-
-      await updateDoc(
-        doc(
-          db,
-          "playlists",
-          id
-        ),
-        {
-
-          name:
-            cleanName,
-
-          youtubeId:
-            newId
-
-        }
-      );
-
-
+      await updateDoc(doc(db,"playlists",id), { name:newName, youtubeId:newId });
+      showToast("Playlist update ho gayi", "success");
       await loadPlaylists();
-
-    }
-
-    catch(error){
-
+    }catch(error){
       console.error(error);
-
-      alert(
-        "Playlist update nahi hui."
-      );
-
+      showToast("Playlist update nahi hui", "error");
+      saveBtn.disabled = false;
     }
 
   };
 
+  editActions.appendChild(saveBtn);
+  editActions.appendChild(cancelBtn);
 
-  /* =====================================
-     DELETE
-  ===================================== */
+  editPanel.appendChild(editNameLabel);
+  editPanel.appendChild(editNameInput);
+  editPanel.appendChild(editUrlLabel);
+  editPanel.appendChild(editUrlInput);
+  editPanel.appendChild(editActions);
 
-  const remove =
-    document.createElement(
-      "button"
-    );
+  /* ASSEMBLE */
 
-  remove.className =
-    "delete";
+  card.appendChild(top);
+  card.appendChild(status);
+  card.appendChild(idRow);
+  card.appendChild(actions);
+  card.appendChild(editPanel);
 
-  remove.textContent =
-    "🗑️ Delete";
-
-
-  remove.onclick =
-  async function(){
-
-    const playlistName =
-      data.name ||
-      "playlist";
-
-
-    const yes =
-      confirm(
-        "Kya '" +
-        playlistName +
-        "' delete karni hai?"
-      );
-
-
-    if(!yes){
-
-      return;
-
-    }
-
-
-    remove.disabled =
-      true;
-
-
-    try{
-
-      await deleteDoc(
-        doc(
-          db,
-          "playlists",
-          id
-        )
-      );
-
-
-      await loadPlaylists();
-
-    }
-
-    catch(error){
-
-      console.error(error);
-
-      alert(
-        "Playlist delete nahi hui."
-      );
-
-      remove.disabled =
-        false;
-
-    }
-
-  };
-
-
-  /* APPEND */
-
-  actions.appendChild(
-    toggle
-  );
-
-  actions.appendChild(
-    edit
-  );
-
-  actions.appendChild(
-    remove
-  );
-
-
-  card.appendChild(
-    top
-  );
-
-  card.appendChild(
-    status
-  );
-
-  card.appendChild(
-    youtubeId
-  );
-
-  card.appendChild(
-    actions
-  );
-
-
-  playlistList.appendChild(
-    card
-  );
+  return card;
 
 }
 
