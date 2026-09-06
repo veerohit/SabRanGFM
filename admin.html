@@ -6,207 +6,104 @@
 <title>SabRanGFM Admin</title>
 
 <style>
-*{
-  box-sizing:border-box;
+:root{
+  --paper:#ead8b3;
+  --paper-light:#f7ecd4;
+  --ink:#392518;
+  --rust:#a84f22;
+  --rust-dark:#713117;
+  --cream:#fff8e8;
+  --line:rgba(57,37,24,.24);
+  --shadow:rgba(57,37,24,.24);
 }
-
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
 body{
-  margin:0;
-  min-height:100vh;
-  padding:18px;
+  min-height:100vh;padding:18px 12px 32px;color:var(--ink);
+  font-family:Georgia,"Times New Roman",serif;
   background:
-    radial-gradient(circle at 50% 0%,#39214d,transparent 45%),
-    #090711;
-  color:#fff;
-  font-family:Arial,sans-serif;
+    radial-gradient(circle at 18% 15%,rgba(255,255,255,.34) 0 1px,transparent 2px) 0 0/6px 6px,
+    radial-gradient(circle at 73% 62%,rgba(60,35,15,.08) 0 1px,transparent 2px) 0 0/8px 8px,
+    linear-gradient(135deg,var(--paper-light),var(--paper));
 }
-
-.container{
-  max-width:650px;
-  margin:auto;
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.25'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
 }
-
-.logo{
-  font-size:27px;
-  font-weight:800;
+body:after{
+  content:"";position:fixed;inset:9px;pointer-events:none;
+  border:1px solid rgba(57,37,24,.10);border-radius:8px;
 }
-
-.logo span{
-  color:#ff9848;
-}
-
-.subtitle{
-  color:#88818f;
-  margin-top:5px;
-  margin-bottom:22px;
-}
-
+.container{position:relative;z-index:1;max-width:650px;margin:auto}
+.logo{font-size:29px;line-height:1;font-weight:900;letter-spacing:-1px;text-shadow:0 1px 0 rgba(255,255,255,.55)}
+.logo span{color:var(--rust)}
+.subtitle{color:rgba(57,37,24,.58);margin-top:6px;margin-bottom:22px;font-size:10px;letter-spacing:2px}
 .card{
-  background:#15111d;
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:18px;
-  padding:18px;
-  margin-bottom:16px;
+  position:relative;overflow:hidden;padding:19px;margin-bottom:16px;
+  background:linear-gradient(145deg,rgba(255,248,232,.94),rgba(225,202,159,.94));
+  border:1px solid rgba(57,37,24,.27);border-radius:18px;
+  box-shadow:0 9px 25px var(--shadow),inset 0 1px 0 rgba(255,255,255,.6);
 }
-
-h2,h3{
-  margin-top:0;
-}
-
-label{
-  display:block;
-  color:#aaa3b1;
-  font-size:13px;
-  margin:14px 0 7px;
-}
-
+.card:before{content:"";position:absolute;inset:6px;pointer-events:none;border:1px solid rgba(57,37,24,.10);border-radius:13px}
+.card:after{content:"✦";position:absolute;top:9px;right:13px;color:rgba(168,79,34,.25);font-size:13px}
+h2,h3{position:relative;z-index:1;margin-top:0}
+label{position:relative;z-index:1;display:block;color:rgba(57,37,24,.72);font-size:12px;font-weight:bold;margin:15px 0 7px}
 input{
-  width:100%;
-  padding:14px;
-  border-radius:11px;
-  border:1px solid #302936;
-  background:#0b0810;
-  color:#fff;
-  font-size:14px;
-  outline:none;
+  position:relative;z-index:1;width:100%;padding:14px;border-radius:11px;
+  border:1px solid rgba(57,37,24,.25);background:rgba(255,248,232,.72);
+  color:var(--ink);font-family:Georgia,"Times New Roman",serif;font-size:14px;outline:none;
+  box-shadow:inset 0 2px 5px rgba(57,37,24,.07);
 }
-
-input:focus{
-  border-color:#ff9848;
-}
-
-button{
-  border:0;
-  cursor:pointer;
-}
-
+input::placeholder{color:rgba(57,37,24,.42)}
+input:focus{border-color:var(--rust);box-shadow:0 0 0 2px rgba(168,79,34,.10),inset 0 2px 5px rgba(57,37,24,.07)}
+button{border:0;cursor:pointer;font-family:Georgia,"Times New Roman",serif}
 .primary{
-  width:100%;
-  margin-top:16px;
-  padding:14px;
-  border-radius:11px;
-  background:#ff9848;
-  color:#170b03;
-  font-weight:700;
-  font-size:14px;
+  position:relative;z-index:1;width:100%;margin-top:16px;padding:14px;border-radius:11px;
+  background:linear-gradient(145deg,#c8753e,var(--rust));color:var(--cream);
+  font-weight:700;font-size:13px;letter-spacing:.5px;
+  box-shadow:0 5px 12px rgba(57,37,24,.22),inset 0 1px 0 rgba(255,255,255,.20);
 }
-
-.primary:disabled{
-  opacity:.5;
-}
-
-.message{
-  min-height:18px;
-  margin-top:10px;
-  color:#ffb47c;
-  font-size:13px;
-}
-
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
-}
-
+.primary:active{transform:translateY(1px)}
+.primary:disabled{opacity:.5}
+.message{position:relative;z-index:1;min-height:18px;margin-top:10px;color:var(--rust);font-size:12px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}
 .logout{
-  padding:10px 14px;
-  border-radius:10px;
-  background:#292430;
-  color:#fff;
+  flex-shrink:0;padding:10px 14px;border:1px solid rgba(57,37,24,.25);border-radius:20px;
+  background:rgba(255,248,232,.65);color:var(--ink);font-weight:bold;font-size:11px;
+  box-shadow:0 3px 8px rgba(57,37,24,.10);
 }
-
+.logout:active{background:rgba(57,37,24,.10)}
 .playlist{
-  padding:15px;
-  margin-top:10px;
-  border-radius:14px;
-  background:#0d0a12;
-  border:1px solid rgba(255,255,255,.07);
+  position:relative;padding:15px;margin-top:10px;border-radius:14px;
+  background:rgba(255,248,232,.55);border:1px solid rgba(57,37,24,.18);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 3px 9px rgba(57,37,24,.07);
 }
-
-.playlist-name{
-  font-size:16px;
-  font-weight:700;
-}
-
-.playlist-id{
-  margin-top:6px;
-  color:#77717e;
-  font-size:10px;
-  word-break:break-all;
-}
-
-.status{
-  display:inline-block;
-  margin-top:9px;
-  padding:5px 9px;
-  border-radius:20px;
-  font-size:10px;
-}
-
-.active{
-  background:rgba(50,180,90,.14);
-  color:#75f5a2;
-}
-
-.inactive{
-  background:rgba(220,60,60,.14);
-  color:#ff8888;
-}
-
-.actions{
-  display:flex;
-  gap:7px;
-  margin-top:13px;
-}
-
+.playlist:before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:0 4px 4px 0;background:var(--rust)}
+.playlist-name{position:relative;z-index:1;font-size:16px;font-weight:700}
+.playlist-id{margin-top:7px;padding-top:7px;border-top:1px solid rgba(57,37,24,.10);color:rgba(57,37,24,.52);font-family:monospace;font-size:10px;word-break:break-all}
+.status{display:inline-block;margin-top:9px;padding:5px 9px;border-radius:20px;font-family:Arial,sans-serif;font-size:9px;font-weight:bold}
+.active{background:rgba(50,130,65,.12);color:#3c713e}
+.inactive{background:rgba(150,50,35,.12);color:#8a392e}
+.actions{display:flex;gap:7px;margin-top:13px}
 .actions button{
-  flex:1;
-  padding:10px 5px;
-  border-radius:9px;
-  background:#292430;
-  color:#fff;
-  font-size:12px;
+  flex:1;min-height:38px;padding:9px 5px;border:1px solid rgba(57,37,24,.18);
+  border-radius:9px;background:rgba(57,37,24,.08);color:var(--ink);font-size:11px;font-weight:bold
 }
-
-.actions .delete{
-  background:#762832;
-}
-
-.actions .toggle{
-  background:#245d3d;
-}
-
-.empty{
-  text-align:center;
-  color:#777;
-  padding:25px 5px;
-  font-size:13px;
-}
-
-#admin-panel{
-  display:none;
-}
-
-.count{
-  color:#777;
-  font-size:12px;
-  font-weight:normal;
-}
-
+.actions button:active{transform:translateY(1px)}
+.actions .delete{background:rgba(125,45,38,.12);color:#81372f;border-color:rgba(125,45,38,.20)}
+.actions .toggle{background:rgba(45,105,60,.12);color:#3b713f;border-color:rgba(45,105,60,.18)}
+.empty{text-align:center;color:rgba(57,37,24,.52);padding:28px 5px;font-size:12px}
+#admin-panel{display:none}
+.count{color:var(--rust);font-size:11px;font-weight:bold;margin-left:5px}
 @media(max-width:400px){
-  body{
-    padding:13px;
-  }
-
-  .actions{
-    flex-wrap:wrap;
-  }
-
-  .actions button{
-    min-width:30%;
-  }
+  body{padding:13px 10px 25px}
+  .actions{flex-wrap:wrap}
+  .actions button{min-width:30%}
+  .logo{font-size:26px}
+  .card{padding:17px}
 }
+@media(min-width:700px){body{padding-top:30px}}
 </style>
 </head>
 
@@ -269,7 +166,7 @@ button{
       </div>
 
       <div class="subtitle">
-        Playlist Dashboard
+        ✦ CLASSIC RADIO • PLAYLIST DASHBOARD ✦
       </div>
     </div>
 
