@@ -384,16 +384,12 @@ body:before{
   backdrop-filter:blur(12px);
 }
 
-/* EVERYTHING INSIDE THE BAR */
-
 .player-top{
   height:48px;
 
   display:flex;
   align-items:center;
 }
-
-/* SMALL CD */
 
 .mini-cd{
   width:42px;
@@ -448,8 +444,6 @@ body:before{
   overflow:hidden;
   text-overflow:ellipsis;
 }
-
-/* CONTROLS ARE INSIDE BAR */
 
 .controls{
   display:flex;
@@ -845,8 +839,6 @@ body:before{
     </div>
 
 
-    <!-- INSIDE THE PLAYER BAR -->
-
     <div class="controls">
 
       <button
@@ -1014,6 +1006,7 @@ const firebaseConfig = {
   appId:"1:350799965318:web:20d8c051d41b635aa2f507",
   measurementId:"G-SL83DC74GP"
 };
+
 
 const youtubeApiKey =
   "AIzaSyB3NW_TEzQgFd63poAo1-4oebEsqNVB01A";
@@ -1450,12 +1443,39 @@ function renderPlaylists(){
               )
             ];
 
+          /*
+           * IMPORTANT FIX
+           *
+           * Har baar nayi playlist select hone par
+           * purane playlist ke pending play attempts
+           * invalidate kar do.
+           */
+          playRequestId++;
+
+          pendingAutoplay = false;
+
+          /*
+           * Purana video/playlist turant stop.
+           * Isse purane playlist ka next song
+           * accidentally continue nahi karega.
+           */
+          if(youtubeReady && youtube){
+
+            try{
+              youtube.stopVideo();
+            }catch(e){}
+
+          }
+
           updatePlaylistUI();
 
           closePlaylist();
 
           loadSongs();
 
+          /*
+           * Ab sirf selected playlist load hogi.
+           */
           playSelectedPlaylist();
 
         }
@@ -1486,7 +1506,7 @@ function updatePlaylistUI(){
 
 
 /* =========================
-   PLAY PLAYLIST
+   PLAY SELECTED PLAYLIST
 ========================= */
 
 function playSelectedPlaylist(){
@@ -1507,12 +1527,31 @@ function playSelectedPlaylist(){
   if(!id) return;
 
 
+  /*
+   * This request belongs only to
+   * the currently selected playlist.
+   */
   const requestId =
     ++playRequestId;
 
 
+  pendingAutoplay = true;
+
+
   try{
 
+    /*
+     * Stop whatever was playing before.
+     */
+    try{
+      youtube.stopVideo();
+    }catch(e){}
+
+
+    /*
+     * IMPORTANT:
+     * Load ONLY the playlist that was clicked.
+     */
     youtube.loadPlaylist({
       list:id,
       listType:"playlist",
@@ -1520,44 +1559,69 @@ function playSelectedPlaylist(){
       startSeconds:0
     });
 
-    // try immediately too, while still inside
-    // the click's gesture context
-    youtube.playVideo();
-
   }catch(error){
 
     console.error(error);
+
+    pendingAutoplay = false;
 
     return;
 
   }
 
 
-  pendingAutoplay = true;
+  let attempts = 0;
 
 
-  const attemptPlay = attempt=>{
+  const waitForNewPlaylist = ()=>{
 
-    // a newer playlist switch happened; give up on this one
-    if(requestId !== playRequestId) return;
-
-    // the real PLAYING event already confirmed
-    // THIS request is the one actually playing
-    if(playingRequestId === requestId){
-      pendingAutoplay = false;
+    /*
+     * User clicked another playlist meanwhile.
+     * Ignore this old request completely.
+     */
+    if(
+      requestId !== playRequestId
+    ){
       return;
     }
 
 
+    attempts++;
+
+
     try{
-      youtube.playVideo();
+
+      const playlist =
+        youtube.getPlaylist();
+
+
+      /*
+       * Wait until YouTube has actually
+       * replaced the old playlist.
+       */
+      if(
+        playlist &&
+        playlist.length > 0
+      ){
+
+        youtube.playVideo();
+
+        pendingAutoplay = false;
+
+        return;
+
+      }
+
     }catch(e){}
 
 
-    if(attempt < 20){
+    /*
+     * Retry while YouTube is loading.
+     */
+    if(attempts < 20){
 
       setTimeout(
-        ()=>attemptPlay(attempt+1),
+        waitForNewPlaylist,
         300
       );
 
@@ -1571,7 +1635,7 @@ function playSelectedPlaylist(){
 
 
   setTimeout(
-    ()=>attemptPlay(0),
+    waitForNewPlaylist,
     300
   );
 
@@ -1848,6 +1912,7 @@ document
   .addEventListener(
     "click",
     ()=>{
+
       songsSheet.classList.remove(
         "open"
       );
@@ -1855,6 +1920,7 @@ document
       playlistSheet.classList.add(
         "open"
       );
+
     }
   );
 
