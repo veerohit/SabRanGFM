@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1.0"
+>
+
+<title>SabRanGFM Admin</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:#0b0811;
+  color:#fff;
+  font-family:Arial,sans-serif;
+  padding:20px;
+}
+
+.container{
+  max-width:650px;
+  margin:auto;
+}
+
+h1{
+  margin-bottom:5px;
+}
+
+h1 span{
+  color:#ff9848;
+}
+
+.subtitle{
+  color:#888;
+  margin-bottom:25px;
+}
+
+.card{
+  background:#15111c;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:18px;
+}
+
+label{
+  display:block;
+  margin:14px 0 7px;
+  font-size:13px;
+  color:#aaa;
+}
+
+input{
+  width:100%;
+  padding:13px;
+  border-radius:10px;
+  border:1px solid #302936;
+  background:#0c0911;
+  color:#fff;
+  outline:none;
+}
+
+button{
+  border:0;
+  cursor:pointer;
+}
+
+.primary{
+  width:100%;
+  padding:14px;
+  border-radius:11px;
+  background:#ff9848;
+  color:#160b03;
+  font-weight:700;
+  margin-top:16px;
+}
+
+.secondary{
+  padding:9px 13px;
+  border-radius:9px;
+  background:#292330;
+  color:white;
+}
+
+.danger{
+  background:#8e2630;
+}
+
+.login{
+  max-width:430px;
+  margin:60px auto;
+}
+
+.message{
+  margin-top:12px;
+  font-size:13px;
+  color:#ffb27c;
+}
+
+.playlist{
+  padding:15px;
+  border-radius:14px;
+  background:#0e0b13;
+  margin-top:10px;
+  border:1px solid rgba(255,255,255,.06);
+}
+
+.playlist-name{
+  font-weight:700;
+  font-size:16px;
+}
+
+.playlist-id{
+  font-size:11px;
+  color:#777;
+  margin-top:5px;
+  word-break:break-all;
+}
+
+.actions{
+  display:flex;
+  gap:8px;
+  margin-top:12px;
+}
+
+.actions button{
+  flex:1;
+  padding:10px;
+  border-radius:9px;
+  color:white;
+  background:#292330;
+}
+
+.actions .delete{
+  background:#7e252d;
+}
+
+.actions .toggle{
+  background:#245d3d;
+}
+
+#admin-panel{
+  display:none;
+}
+
+#logout{
+  float:right;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+
+<!-- LOGIN -->
+
+<div id="login-box" class="card login">
+
+  <h1>Sab<span>RanG</span>FM</h1>
+
+  <div class="subtitle">
+    Admin Panel
+  </div>
+
+  <label>Email</label>
+
+  <input
+    id="email"
+    type="email"
+    placeholder="Admin email"
+  >
+
+  <label>Password</label>
+
+  <input
+    id="password"
+    type="password"
+    placeholder="Password"
+  >
+
+  <button
+    id="login-btn"
+    class="primary"
+  >
+    Login
+  </button>
+
+  <div
+    id="login-message"
+    class="message"
+  ></div>
+
+</div>
+
+
+<!-- ADMIN -->
+
+<div id="admin-panel">
+
+  <button
+    id="logout"
+    class="secondary"
+  >
+    Logout
+  </button>
+
+  <h1>
+    Sab<span>RanG</span>FM
+  </h1>
+
+  <div class="subtitle">
+    Playlist Admin Panel
+  </div>
+
+
+  <!-- ADD PLAYLIST -->
+
+  <div class="card">
+
+    <h3>➕ Add Playlist</h3>
+
+    <label>Playlist Name</label>
+
+    <input
+      id="playlist-name"
+      placeholder="Example: Bhojpuri"
+    >
+
+    <label>YouTube Playlist Link / ID</label>
+
+    <input
+      id="playlist-url"
+      placeholder="https://youtube.com/playlist?list=..."
+    >
+
+    <button
+      id="save-btn"
+      class="primary"
+    >
+      Add Playlist
+    </button>
+
+    <div
+      id="save-message"
+      class="message"
+    ></div>
+
+  </div>
+
+
+  <!-- PLAYLISTS -->
+
+  <div class="card">
+
+    <h3>🎵 Your Playlists</h3>
+
+    <div id="playlist-list">
+      Loading...
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut
+}
+from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  updateDoc,
+  deleteDoc,
+  doc
+}
+from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+
+/* ================================
+   FIREBASE
+================================ */
+
+const firebaseConfig = {
+
+  apiKey:"AIzaSyCWVflP_e9DVjcfRqm1gznDdn5OblnOI2Q",
+
+  authDomain:"veerohit.firebaseapp.com",
+
+  projectId:"veerohit",
+
+  storageBucket:"veerohit.firebasestorage.app",
+
+  messagingSenderId:"350799965318",
+
+  appId:"1:350799965318:web:20d8c051d41b635aa2f507",
+
+  measurementId:"G-SL83DC74GP"
+
+};
+
+
+const app =
+  initializeApp(firebaseConfig);
+
+const auth =
+  getAuth(app);
+
+const db =
+  getFirestore(app);
+
+
+/* ================================
+   ADMIN UID
+================================ */
+
+const ADMIN_UID =
+  "L27D01BECSX2W3bENnaKh4wzYHx1";
+
+
+/* ================================
+   ELEMENTS
+================================ */
+
+const loginBox =
+  document.getElementById("login-box");
+
+const adminPanel =
+  document.getElementById("admin-panel");
+
+const loginBtn =
+  document.getElementById("login-btn");
+
+const loginMessage =
+  document.getElementById("login-message");
+
+const logoutBtn =
+  document.getElementById("logout");
+
+const saveBtn =
+  document.getElementById("save-btn");
+
+const saveMessage =
+  document.getElementById("save-message");
+
+const playlistList =
+  document.getElementById("playlist-list");
+
+
+/* ================================
+   LOGIN
+================================ */
+
+loginBtn.onclick = async ()=>{
+
+  const email =
+    document.getElementById("email").value.trim();
+
+  const password =
+    document.getElementById("password").value;
+
+  if(!email || !password){
+
+    loginMessage.textContent =
+      "Email aur password enter karo.";
+
+    return;
+  }
+
+  loginMessage.textContent =
+    "Login ho raha hai...";
+
+  try{
+
+    await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    loginMessage.textContent =
+      "Login failed. Email/password check karo.";
+
+  }
+
+};
+
+
+/* ================================
+   AUTH STATE
+================================ */
+
+onAuthStateChanged(auth,user=>{
+
+  if(!user){
+
+    loginBox.style.display =
+      "block";
+
+    adminPanel.style.display =
+      "none";
+
+    return;
+  }
+
+
+  if(user.uid !== ADMIN_UID){
+
+    signOut(auth);
+
+    loginMessage.textContent =
+      "Ye account admin nahi hai.";
+
+    return;
+  }
+
+
+  loginBox.style.display =
+    "none";
+
+  adminPanel.style.display =
+    "block";
+
+  loadAllPlaylists();
+
+});
+
+
+/* ================================
+   LOGOUT
+================================ */
+
+logoutBtn.onclick = ()=>{
+
+  signOut(auth);
+
+};
+
+
+/* ================================
+   ADD PLAYLIST
+================================ */
+
+saveBtn.onclick = async ()=>{
+
+  const name =
+    document.getElementById("playlist-name")
+      .value.trim();
+
+  const url =
+    document.getElementById("playlist-url")
+      .value.trim();
+
+  if(!name){
+
+    saveMessage.textContent =
+      "Playlist name enter karo.";
+
+    return;
+  }
+
+  const youtubeId =
+    extractPlaylistId(url);
+
+  if(!youtubeId){
+
+    saveMessage.textContent =
+      "Valid YouTube playlist link/ID dalo.";
+
+    return;
+  }
+
+
+  saveBtn.disabled = true;
+
+  saveMessage.textContent =
+    "Saving...";
+
+
+  try{
+
+    await addDoc(
+      collection(db,"playlists"),
+      {
+        name:name,
+        youtubeId:youtubeId,
+        active:true
+      }
+    );
+
+
+    document.getElementById("playlist-name")
+      .value = "";
+
+    document.getElementById("playlist-url")
+      .value = "";
+
+
+    saveMessage.textContent =
+      "Playlist successfully added ✅";
+
+
+    loadAllPlaylists();
+
+
+  }catch(error){
+
+    console.error(error);
+
+    saveMessage.textContent =
+      "Save failed.";
+
+  }
+
+
+  saveBtn.disabled = false;
+
+};
+
+
+/* ================================
+   GET PLAYLIST ID
+================================ */
+
+function extractPlaylistId(value){
+
+  value = value.trim();
+
+
+  // Direct playlist ID
+
+  if(
+    value.startsWith("PL") &&
+    !value.includes("/")
+  ){
+
+    return value;
+  }
+
+
+  try{
+
+    const url =
+      new URL(value);
+
+    const id =
+      url.searchParams.get("list");
+
+    return id || null;
+
+  }catch(error){
+
+    return null;
+
+  }
+
+}
+
+
+/* ================================
+   LOAD PLAYLISTS
+================================ */
+
+async function loadAllPlaylists(){
+
+  playlistList.innerHTML =
+    "Loading...";
+
+
+  try{
+
+    const snap =
+      await getDocs(
+        collection(db,"playlists")
+      );
+
+
+    playlistList.innerHTML = "";
+
+
+    if(snap.empty){
+
+      playlistList.innerHTML =
+        "<div class='message'>No playlists.</div>";
+
+      return;
+    }
+
+
+    snap.forEach(snapshot=>{
+
+      const data =
+        snapshot.data();
+
+      renderPlaylist(
+        snapshot.id,
+        data
+      );
+
+    });
+
+
+  }catch(error){
+
+    console.error(error);
+
+    playlistList.innerHTML =
+      "<div class='message'>Could not load playlists.</div>";
+
+  }
+
+}
+
+
+/* ================================
+   RENDER
+================================ */
+
+function renderPlaylist(id,data){
+
+  const box =
+    document.createElement("div");
+
+  box.className =
+    "playlist";
+
+
+  const name =
+    document.createElement("div");
+
+  name.className =
+    "playlist-name";
+
+  name.textContent =
+    data.name || "Unnamed";
+
+
+  const pid =
+    document.createElement("div");
+
+  pid.className =
+    "playlist-id";
+
+  pid.textContent =
+    data.youtubeId || "";
+
+
+  const actions =
+    document.createElement("div");
+
+  actions.className =
+    "actions";
+
+
+  const toggle =
+    document.createElement("button");
+
+  toggle.className =
+    "toggle";
+
+  toggle.textContent =
+    data.active
+      ? "🟢 Active"
+      : "🔴 Inactive";
+
+
+  toggle.onclick =
+    async ()=>{
+
+      await updateDoc(
+        doc(db,"playlists",id),
+        {
+          active:!data.active
+        }
+      );
+
+      loadAllPlaylists();
+
+    };
+
+
+  const edit =
+    document.createElement("button");
+
+  edit.textContent =
+    "✏️ Edit";
+
+
+  edit.onclick =
+    async ()=>{
+
+      const newName =
+        prompt(
+          "Playlist name:",
+          data.name || ""
+        );
+
+      if(newName === null) return;
+
+
+      const newUrl =
+        prompt(
+          "YouTube playlist link / ID:",
+          data.youtubeId || ""
+        );
+
+      if(newUrl === null) return;
+
+
+      const newId =
+        extractPlaylistId(newUrl);
+
+
+      if(!newId){
+
+        alert(
+          "Valid playlist link/ID dalo."
+        );
+
+        return;
+
+      }
+
+
+      await updateDoc(
+        doc(db,"playlists",id),
+        {
+          name:newName.trim(),
+          youtubeId:newId
+        }
+      );
+
+
+      loadAllPlaylists();
+
+    };
+
+
+  const del =
+    document.createElement("button");
+
+  del.className =
+    "delete";
+
+  del.textContent =
+    "🗑️ Delete";
+
+
+  del.onclick =
+    async ()=>{
+
+      const yes =
+        confirm(
+          `Delete "${data.name}" playlist?`
+        );
+
+      if(!yes) return;
+
+
+      await deleteDoc(
+        doc(db,"playlists",id)
+      );
+
+
+      loadAllPlaylists();
+
+    };
+
+
+  actions.appendChild(toggle);
+  actions.appendChild(edit);
+  actions.appendChild(del);
+
+
+  box.appendChild(name);
+  box.appendChild(pid);
+  box.appendChild(actions);
+
+
+  playlistList.appendChild(box);
+
+}
+
+</script>
+
+</body>
+</html>
