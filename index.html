@@ -1015,6 +1015,9 @@ const firebaseConfig = {
   measurementId:"G-SL83DC74GP"
 };
 
+const youtubeApiKey =
+  "AIzaSyB3NW_TEzQgFd63poAo1-4oebEsqNVB01A";
+
 
 const app =
   initializeApp(firebaseConfig);
@@ -1039,6 +1042,7 @@ let selectedPlaylist = null;
 let currentSongs = [];
 
 let pendingAutoplay = false;
+let autoplayTimeoutId = null;
 
 
 /* =========================
@@ -1227,6 +1231,11 @@ function onPlayerStateChange(event){
 
     pendingAutoplay = false;
 
+    if(autoplayTimeoutId){
+      clearTimeout(autoplayTimeoutId);
+      autoplayTimeoutId = null;
+    }
+
     try{
       youtube.playVideo();
     }catch(e){}
@@ -1239,6 +1248,11 @@ function onPlayerStateChange(event){
   ){
 
     pendingAutoplay = false;
+
+    if(autoplayTimeoutId){
+      clearTimeout(autoplayTimeoutId);
+      autoplayTimeoutId = null;
+    }
 
     setPlaying(true);
 
@@ -1518,6 +1532,11 @@ function playSelectedPlaylist(){
 
     pendingAutoplay = true;
 
+    if(autoplayTimeoutId){
+      clearTimeout(autoplayTimeoutId);
+      autoplayTimeoutId = null;
+    }
+
     youtube.loadPlaylist({
       list:id,
       listType:"playlist",
@@ -1525,8 +1544,10 @@ function playSelectedPlaylist(){
       startSeconds:0
     });
 
-    setTimeout(
+    autoplayTimeoutId = setTimeout(
       ()=>{
+
+        autoplayTimeoutId = null;
 
         if(!pendingAutoplay) return;
 
@@ -1537,7 +1558,7 @@ function playSelectedPlaylist(){
         }catch(e){}
 
       },
-      1500
+      3000
     );
 
   }catch(error){
@@ -1941,7 +1962,7 @@ async function loadSongs(){
 
       url.searchParams.set(
         "key",
-        firebaseConfig.apiKey
+        youtubeApiKey
       );
 
 
