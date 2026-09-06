@@ -1,13 +1,28 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
 <title>SabRanGFM</title>
 
 <style>
-*{box-sizing:border-box}
-html,body{
+
+/* =========================================
+   RESET
+========================================= */
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
   margin:0;
   width:100%;
   height:100%;
@@ -17,30 +32,62 @@ html,body{
   color:white;
 }
 
+
+/* =========================================
+   BACKGROUND
+========================================= */
+
 body{
   background:
-    radial-gradient(circle at 50% 20%,rgba(116,67,170,.35),transparent 35%),
-    linear-gradient(180deg,#110a20,#090714 65%,#05040a);
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(116,67,170,.35),
+      transparent 35%
+    ),
+    linear-gradient(
+      180deg,
+      #110a20,
+      #090714 65%,
+      #05040a
+    );
 }
 
 .bg{
   position:absolute;
   inset:0;
+
   background:
-    radial-gradient(circle at 50% 65%,rgba(255,145,45,.15),transparent 20%),
-    linear-gradient(180deg,transparent 55%,rgba(255,130,40,.08));
+    radial-gradient(
+      circle at 50% 65%,
+      rgba(255,145,45,.15),
+      transparent 20%
+    ),
+    linear-gradient(
+      180deg,
+      transparent 55%,
+      rgba(255,130,40,.08)
+    );
 }
+
+
+/* =========================================
+   TOP BAR
+========================================= */
 
 .top{
   position:absolute;
   top:0;
   left:0;
   right:0;
+
   height:70px;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
+
   padding:0 20px;
+
   z-index:5;
 }
 
@@ -56,27 +103,48 @@ body{
 
 #queue-btn{
   border:1px solid rgba(255,255,255,.15);
+
   background:rgba(255,255,255,.07);
+
   color:#fff;
+
   border-radius:50px;
+
   padding:10px 16px;
+
   cursor:pointer;
 }
 
+
+/* =========================================
+   HERO
+========================================= */
+
 .hero{
   position:absolute;
+
   inset:70px 0 110px;
+
   display:flex;
   align-items:center;
   justify-content:center;
+
   text-align:center;
+
   padding:20px;
 }
 
 .hero h1{
   margin:0;
-  font-size:clamp(42px,13vw,90px);
+
+  font-size:clamp(
+    42px,
+    13vw,
+    90px
+  );
+
   line-height:1;
+
   letter-spacing:-3px;
 }
 
@@ -87,329 +155,680 @@ body{
 
 .hero p{
   margin-top:18px;
+
   color:#bdb5ca;
+
   font-size:14px;
 }
 
 #live-dot{
   display:inline-block;
+
   width:8px;
   height:8px;
+
   border-radius:50%;
+
   background:#777;
+
   margin-right:6px;
 }
 
+
+/* =========================================
+   PLAYER
+========================================= */
+
 .player{
   position:absolute;
+
   bottom:0;
   left:0;
   right:0;
+
   min-height:100px;
+
   padding:15px 18px;
+
   background:rgba(12,9,20,.94);
+
   backdrop-filter:blur(18px);
-  border-top:1px solid rgba(255,255,255,.1);
+
+  border-top:
+    1px solid
+    rgba(255,255,255,.1);
+
   z-index:10;
 }
 
 .player-top{
   display:flex;
+
   align-items:center;
+
   gap:12px;
 }
+
+
+/* =========================================
+   ART
+========================================= */
 
 .art{
   width:54px;
   height:54px;
+
   flex:none;
+
   border-radius:12px;
+
   overflow:hidden;
-  background:linear-gradient(135deg,#ff9945,#6e2bb5);
+
+  background:
+    linear-gradient(
+      135deg,
+      #ff9945,
+      #6e2bb5
+    );
+
   display:flex;
+
   align-items:center;
   justify-content:center;
+
   font-size:24px;
 }
 
 .art img{
   width:100%;
   height:100%;
+
   object-fit:cover;
+
   display:none;
 }
 
+
+/* =========================================
+   INFO
+========================================= */
+
 .info{
   flex:1;
+
   min-width:0;
 }
 
 #track-title{
   font-size:14px;
+
   font-weight:700;
+
   white-space:nowrap;
+
   overflow:hidden;
+
   text-overflow:ellipsis;
 }
 
 #track-sub{
   margin-top:4px;
+
   color:#98909f;
+
   font-size:12px;
 }
 
+
+/* =========================================
+   CONTROLS
+========================================= */
+
 .controls{
   display:flex;
+
   align-items:center;
+
   gap:7px;
 }
 
 .control{
   width:40px;
   height:40px;
+
   border:0;
+
   border-radius:50%;
-  background:rgba(255,255,255,.08);
+
+  background:
+    rgba(255,255,255,.08);
+
   color:#fff;
+
   cursor:pointer;
+
   font-size:18px;
 }
 
 .play{
   width:46px;
   height:46px;
+
   background:#ff9848;
+
   color:#180b02;
 }
 
+
+/* =========================================
+   PROGRESS
+========================================= */
+
 .progress{
   margin-top:9px;
+
   display:flex;
+
   align-items:center;
+
   gap:8px;
 }
 
 .progress span{
   font-size:9px;
+
   color:#77717e;
+
   min-width:27px;
 }
 
 #progress-track{
   height:4px;
+
   flex:1;
+
   border-radius:10px;
+
   background:#302b36;
+
   cursor:pointer;
+
   position:relative;
 }
 
 #progress-fill{
   position:absolute;
+
   left:0;
   top:0;
+
   height:100%;
+
   width:0%;
+
   border-radius:10px;
+
   background:#ff9848;
 }
 
-/* Sheet */
+
+/* =========================================
+   SHEET OVERLAY
+========================================= */
+
 #sheet-overlay{
   position:fixed;
+
   inset:0;
-  background:rgba(0,0,0,.55);
+
+  background:
+    rgba(0,0,0,.55);
+
   z-index:20;
+
   display:none;
 }
 
+
+/* =========================================
+   PLAYLIST SHEET
+========================================= */
+
 #sheet{
   position:fixed;
+
   left:0;
   right:0;
   bottom:0;
+
   max-height:75vh;
+
   background:#120e19;
-  border-radius:24px 24px 0 0;
+
+  border-radius:
+    24px 24px 0 0;
+
   z-index:21;
-  transform:translateY(100%);
-  transition:.25s ease;
+
+  transform:
+    translateY(100%);
+
+  transition:
+    .25s ease;
+
   padding:18px;
 }
 
 #sheet.open{
-  transform:translateY(0);
+  transform:
+    translateY(0);
 }
 
 .sheet-head{
   display:flex;
+
   align-items:center;
+
   justify-content:space-between;
+
   margin-bottom:15px;
 }
 
 .sheet-head h3{
   margin:0;
+
   font-size:17px;
 }
 
 #sheet-close{
   border:0;
-  background:rgba(255,255,255,.08);
+
+  background:
+    rgba(255,255,255,.08);
+
   color:white;
+
   width:35px;
   height:35px;
+
   border-radius:50%;
+
+  cursor:pointer;
 }
 
 #sheet-list{
   overflow:auto;
+
   max-height:58vh;
 }
 
+
+/* =========================================
+   PLAYLIST ITEM
+========================================= */
+
 .playlist-item{
   display:flex;
+
   align-items:center;
+
   gap:13px;
+
   width:100%;
+
   padding:14px 12px;
+
   margin-bottom:8px;
-  border:1px solid rgba(255,255,255,.06);
-  background:rgba(255,255,255,.045);
+
+  border:
+    1px solid
+    rgba(255,255,255,.06);
+
+  background:
+    rgba(255,255,255,.045);
+
   color:#fff;
+
   border-radius:14px;
+
   text-align:left;
+
   cursor:pointer;
+}
+
+.playlist-item:active{
+  transform:scale(.98);
 }
 
 .playlist-icon{
   width:44px;
   height:44px;
+
   border-radius:12px;
+
   display:flex;
+
   align-items:center;
   justify-content:center;
-  background:linear-gradient(135deg,#ff9848,#7434b5);
+
+  background:
+    linear-gradient(
+      135deg,
+      #ff9848,
+      #7434b5
+    );
+
   font-size:20px;
 }
 
 .playlist-name{
   font-size:14px;
+
   font-weight:700;
 }
 
 .playlist-id{
   margin-top:4px;
+
   color:#77717e;
+
   font-size:10px;
 }
 
+
+/* =========================================
+   EMPTY
+========================================= */
+
 .empty{
   text-align:center;
+
   padding:30px 10px;
+
   color:#888;
 }
 
+
+/* =========================================
+   YOUTUBE PLAYER
+========================================= */
+
 #yt-player{
   position:fixed;
+
   width:1px;
   height:1px;
-  left:-10px;
-  bottom:-10px;
+
+  left:-20px;
+  bottom:-20px;
+
   opacity:0;
+
   pointer-events:none;
 }
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <div class="bg"></div>
 
-<div class="top">
-  <div class="logo">Sab<span>RanG</span>FM</div>
 
-  <button id="queue-btn">☰ Playlist</button>
+<!-- =======================================
+     TOP
+======================================= -->
+
+<div class="top">
+
+  <div class="logo">
+    Sab<span>RanG</span>FM
+  </div>
+
+  <button id="queue-btn">
+    ☰ Playlist
+  </button>
+
 </div>
+
+
+<!-- =======================================
+     HERO
+======================================= -->
 
 <div class="hero">
+
   <div>
-    <h1>Sab<span>RanG FM</span></h1>
+
+    <h1>
+      Sab<span>RanG FM</span>
+    </h1>
 
     <p>
+
       <span id="live-dot"></span>
-      <span id="live-text">Playlists loading...</span>
+
+      <span id="live-text">
+        Playlists loading...
+      </span>
+
     </p>
+
   </div>
+
 </div>
+
+
+<!-- =======================================
+     PLAYER BAR
+======================================= -->
 
 <div class="player">
 
   <div class="player-top">
 
-    <div class="art" id="art-wrap">
-      <img id="art-img" alt="">
-      <div id="art-fallback">♫</div>
-    </div>
 
-    <div class="info">
-      <div id="track-title">
-        <span id="track-title-text">SabRanG FM</span>
+    <div class="art">
+
+      <img
+        id="art-img"
+        alt=""
+      >
+
+      <div id="art-fallback">
+        ♫
       </div>
 
-      <div id="track-sub">Playlist select karo</div>
     </div>
+
+
+    <div class="info">
+
+      <div id="track-title">
+
+        <span id="track-title-text">
+          SabRanG FM
+        </span>
+
+      </div>
+
+      <div id="track-sub">
+        Playlist select karo
+      </div>
+
+    </div>
+
 
     <div class="controls">
 
-      <button class="control" id="prev-btn">‹</button>
 
-      <button class="control play" id="play-btn">
-        <span id="icon-play">▶</span>
-        <span id="icon-pause" style="display:none">Ⅱ</span>
+      <button
+        class="control"
+        id="prev-btn"
+        aria-label="Previous"
+      >
+        ‹
       </button>
 
-      <button class="control" id="next-btn">›</button>
+
+      <button
+        class="control play"
+        id="play-btn"
+        aria-label="Play"
+      >
+
+        <span id="icon-play">
+          ▶
+        </span>
+
+        <span
+          id="icon-pause"
+          style="display:none"
+        >
+          Ⅱ
+        </span>
+
+      </button>
+
+
+      <button
+        class="control"
+        id="next-btn"
+        aria-label="Next"
+      >
+        ›
+      </button>
+
 
     </div>
 
   </div>
 
+
   <div class="progress">
-    <span id="time-current">0:00</span>
+
+    <span id="time-current">
+      0:00
+    </span>
 
     <div id="progress-track">
+
       <div id="progress-fill"></div>
+
     </div>
 
-    <span id="time-total">0:00</span>
+    <span id="time-total">
+      0:00
+    </span>
+
   </div>
 
 </div>
 
+
+<!-- =======================================
+     PLAYLIST OVERLAY
+======================================= -->
+
 <div id="sheet-overlay"></div>
+
+
+<!-- =======================================
+     PLAYLIST SHEET
+======================================= -->
 
 <div id="sheet">
 
   <div class="sheet-head">
-    <h3>🎵 Playlists</h3>
-    <button id="sheet-close">✕</button>
+
+    <h3>
+      🎵 Playlists
+    </h3>
+
+    <button id="sheet-close">
+      ✕
+    </button>
+
   </div>
 
+
   <div id="sheet-list">
-    <div class="empty">Playlists loading...</div>
+
+    <div class="empty">
+      Playlists loading...
+    </div>
+
   </div>
 
 </div>
 
+
+<!-- =======================================
+     HIDDEN YOUTUBE PLAYER
+======================================= -->
+
 <div id="yt-player"></div>
 
-<script src="https://www.youtube.com/iframe_api"></script>
+
+<!-- =======================================
+     JAVASCRIPT
+======================================= -->
 
 <script type="module">
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+
+/* =========================================
+   YOUTUBE API LOADER
+========================================= */
+
+let ytApiReadyResolve;
+
+const ytApiReady =
+  new Promise(resolve => {
+
+    ytApiReadyResolve = resolve;
+
+  });
+
+
+window.onYouTubeIframeAPIReady =
+  function(){
+
+    console.log(
+      "YouTube IFrame API loaded"
+    );
+
+    ytApiReadyResolve();
+
+  };
+
+
+const ytScript =
+  document.createElement("script");
+
+ytScript.src =
+  "https://www.youtube.com/iframe_api";
+
+ytScript.async = true;
+
+document.head.appendChild(
+  ytScript
+);
+
+
+/* =========================================
+   FIREBASE
+========================================= */
+
+import {
+  initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+
 
 import {
   getFirestore,
@@ -418,568 +837,1203 @@ import {
   where,
   getDocs
 }
-from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 
-/* ================================
-   FIREBASE
-================================ */
+/* =========================================
+   FIREBASE CONFIG
+========================================= */
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCWVflP_e9DVjcfRqm1gznDdn5OblnOI2Q",
-  authDomain: "veerohit.firebaseapp.com",
-  projectId: "veerohit",
-  storageBucket: "veerohit.firebasestorage.app",
-  messagingSenderId: "350799965318",
-  appId: "1:350799965318:web:20d8c051d41b635aa2f507",
-  measurementId: "G-SL83DC74GP"
+
+  apiKey:
+    "AIzaSyAJ54NcvxLHptEv6TAAfjAgZokaQ_rx5XE",
+
+  authDomain:
+    "veerohit.firebaseapp.com",
+
+  projectId:
+    "veerohit",
+
+  storageBucket:
+    "veerohit.firebasestorage.app",
+
+  messagingSenderId:
+    "350799965318",
+
+  appId:
+    "1:350799965318:web:20d8c051d41b635aa2f507",
+
+  measurementId:
+    "G-SL83DC74GP"
+
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+
+const app =
+  initializeApp(
+    firebaseConfig
+  );
 
 
-/* ================================
+const db =
+  getFirestore(app);
+
+
+/* =========================================
    VARIABLES
-================================ */
+========================================= */
 
 let playlists = [];
+
 let selectedPlaylist = null;
+
 let ytPlayer = null;
+
 let ytReady = false;
+
 let isPlaying = false;
 
+let playerReadyPromiseResolve;
 
-/* ================================
+const playerReadyPromise =
+  new Promise(resolve => {
+
+    playerReadyPromiseResolve =
+      resolve;
+
+  });
+
+
+/* =========================================
    ELEMENTS
-================================ */
+========================================= */
 
-const sheet = document.getElementById("sheet");
-const overlay = document.getElementById("sheet-overlay");
-const sheetList = document.getElementById("sheet-list");
+const sheet =
+  document.getElementById(
+    "sheet"
+  );
 
-const queueBtn = document.getElementById("queue-btn");
-const closeBtn = document.getElementById("sheet-close");
+const overlay =
+  document.getElementById(
+    "sheet-overlay"
+  );
 
-const playBtn = document.getElementById("play-btn");
-const prevBtn = document.getElementById("prev-btn");
-const nextBtn = document.getElementById("next-btn");
+const sheetList =
+  document.getElementById(
+    "sheet-list"
+  );
 
-const iconPlay = document.getElementById("icon-play");
-const iconPause = document.getElementById("icon-pause");
+const queueBtn =
+  document.getElementById(
+    "queue-btn"
+  );
 
-const titleText = document.getElementById("track-title-text");
-const subText = document.getElementById("track-sub");
+const closeBtn =
+  document.getElementById(
+    "sheet-close"
+  );
 
-const liveDot = document.getElementById("live-dot");
-const liveText = document.getElementById("live-text");
+const playBtn =
+  document.getElementById(
+    "play-btn"
+  );
 
-const artImg = document.getElementById("art-img");
-const artFallback = document.getElementById("art-fallback");
+const prevBtn =
+  document.getElementById(
+    "prev-btn"
+  );
 
-const progressTrack = document.getElementById("progress-track");
-const progressFill = document.getElementById("progress-fill");
+const nextBtn =
+  document.getElementById(
+    "next-btn"
+  );
 
-const timeCurrent = document.getElementById("time-current");
-const timeTotal = document.getElementById("time-total");
+const iconPlay =
+  document.getElementById(
+    "icon-play"
+  );
+
+const iconPause =
+  document.getElementById(
+    "icon-pause"
+  );
+
+const titleText =
+  document.getElementById(
+    "track-title-text"
+  );
+
+const subText =
+  document.getElementById(
+    "track-sub"
+  );
+
+const liveDot =
+  document.getElementById(
+    "live-dot"
+  );
+
+const liveText =
+  document.getElementById(
+    "live-text"
+  );
+
+const artImg =
+  document.getElementById(
+    "art-img"
+  );
+
+const artFallback =
+  document.getElementById(
+    "art-fallback"
+  );
+
+const progressTrack =
+  document.getElementById(
+    "progress-track"
+  );
+
+const progressFill =
+  document.getElementById(
+    "progress-fill"
+  );
+
+const timeCurrent =
+  document.getElementById(
+    "time-current"
+  );
+
+const timeTotal =
+  document.getElementById(
+    "time-total"
+  );
 
 
-/* ================================
-   SHEET
-================================ */
+/* =========================================
+   SHEET OPEN
+========================================= */
 
 function openSheet(){
-  overlay.style.display = "block";
 
-  setTimeout(()=>{
-    sheet.classList.add("open");
-  },10);
+  overlay.style.display =
+    "block";
+
+  setTimeout(
+    () => {
+
+      sheet.classList.add(
+        "open"
+      );
+
+    },
+    10
+  );
+
 }
+
+
+/* =========================================
+   SHEET CLOSE
+========================================= */
 
 function closeSheet(){
-  sheet.classList.remove("open");
 
-  setTimeout(()=>{
-    overlay.style.display = "none";
-  },250);
+  sheet.classList.remove(
+    "open"
+  );
+
+  setTimeout(
+    () => {
+
+      overlay.style.display =
+        "none";
+
+    },
+    250
+  );
+
 }
 
-queueBtn.onclick = openSheet;
-closeBtn.onclick = closeSheet;
-overlay.onclick = closeSheet;
+
+queueBtn.onclick =
+  openSheet;
+
+closeBtn.onclick =
+  closeSheet;
+
+overlay.onclick =
+  closeSheet;
 
 
-/* ================================
-   FIREBASE PLAYLISTS
-================================ */
+/* =========================================
+   LOAD FIREBASE PLAYLISTS
+========================================= */
 
 async function loadPlaylists(){
 
   try{
 
-    const q = query(
-      collection(db,"playlists"),
-      where("active","==",true)
-    );
+    const q =
+      query(
+        collection(
+          db,
+          "playlists"
+        ),
 
-    const snap = await getDocs(q);
+        where(
+          "active",
+          "==",
+          true
+        )
+      );
+
+
+    const snap =
+      await getDocs(q);
+
 
     playlists = [];
 
-    snap.forEach(doc=>{
-      playlists.push({
-        id:doc.id,
-        ...doc.data()
-      });
-    });
+
+    snap.forEach(
+      doc => {
+
+        playlists.push({
+
+          id:doc.id,
+
+          ...doc.data()
+
+        });
+
+      }
+    );
+
 
     renderPlaylists();
 
-    if(playlists.length){
 
-      liveDot.style.background = "#55e879";
+    if(
+      playlists.length > 0
+    ){
+
+      liveDot.style.background =
+        "#55e879";
+
       liveText.textContent =
-        playlists.length + " playlist available";
+        playlists.length +
+        " playlist available";
 
-    }else{
+    }
+
+    else{
+
+      liveDot.style.background =
+        "#777";
 
       liveText.textContent =
         "No playlist available";
 
     }
 
-  }catch(error){
 
-    console.error(error);
+  }
 
-    liveDot.style.background = "#ff4949";
+  catch(error){
+
+    console.error(
+      "Firebase error:",
+      error
+    );
+
+
+    liveDot.style.background =
+      "#ff4949";
 
     liveText.textContent =
       "Playlist load error";
 
+
     sheetList.innerHTML = `
+
       <div class="empty">
+
         Playlist load nahi ho paayi.
+
       </div>
+
     `;
+
   }
+
 }
 
 
-/* ================================
+/* =========================================
    RENDER PLAYLISTS
-================================ */
+========================================= */
 
 function renderPlaylists(){
 
-  sheetList.innerHTML = "";
+  sheetList.innerHTML =
+    "";
 
-  if(!playlists.length){
+
+  if(
+    !playlists.length
+  ){
 
     sheetList.innerHTML = `
+
       <div class="empty">
+
         Abhi koi active playlist nahi hai.
+
       </div>
+
     `;
 
     return;
+
   }
 
-  playlists.forEach((playlist,index)=>{
 
-    const item = document.createElement("button");
+  playlists.forEach(
+    playlist => {
 
-    item.className = "playlist-item";
 
-    item.innerHTML = `
-      <div class="playlist-icon">♫</div>
+      const item =
+        document.createElement(
+          "button"
+        );
 
-      <div>
-        <div class="playlist-name">
-          ${escapeHtml(playlist.name || "Unnamed Playlist")}
-        </div>
 
-        <div class="playlist-id">
-          YouTube Playlist
-        </div>
-      </div>
-    `;
+      item.className =
+        "playlist-item";
 
-    item.onclick = ()=>{
 
-      selectPlaylist(playlist);
+      const icon =
+        document.createElement(
+          "div"
+        );
 
-      closeSheet();
+      icon.className =
+        "playlist-icon";
 
-    };
+      icon.textContent =
+        "♫";
 
-    sheetList.appendChild(item);
 
-  });
+      const info =
+        document.createElement(
+          "div"
+        );
+
+
+      const name =
+        document.createElement(
+          "div"
+        );
+
+      name.className =
+        "playlist-name";
+
+      name.textContent =
+        playlist.name ||
+        "Unnamed Playlist";
+
+
+      const id =
+        document.createElement(
+          "div"
+        );
+
+      id.className =
+        "playlist-id";
+
+      id.textContent =
+        "YouTube Playlist";
+
+
+      info.appendChild(
+        name
+      );
+
+      info.appendChild(
+        id
+      );
+
+
+      item.appendChild(
+        icon
+      );
+
+      item.appendChild(
+        info
+      );
+
+
+      item.onclick =
+        function(){
+
+          selectPlaylist(
+            playlist
+          );
+
+          closeSheet();
+
+        };
+
+
+      sheetList.appendChild(
+        item
+      );
+
+    }
+  );
+
 }
 
 
-/* ================================
+/* =========================================
    SELECT PLAYLIST
-================================ */
+========================================= */
 
-function selectPlaylist(playlist){
+function selectPlaylist(
+  playlist
+){
 
-  selectedPlaylist = playlist;
+  selectedPlaylist =
+    playlist;
+
 
   titleText.textContent =
-    playlist.name || "YouTube Playlist";
-
-  subText.textContent =
+    playlist.name ||
     "YouTube Playlist";
 
-  if(!ytReady){
 
-    alert("Player abhi load ho raha hai. 1 second baad try karo.");
+  subText.textContent =
+    "Loading playlist...";
 
-    return;
-  }
 
-  try{
+  artImg.style.display =
+    "none";
 
-    ytPlayer.loadPlaylist({
-      list: playlist.youtubeId,
-      listType: "playlist",
-      index: 0,
-      startSeconds: 0
-    });
+  artFallback.style.display =
+    "block";
 
-    setTimeout(()=>{
-      ytPlayer.playVideo();
-    },300);
 
-  }catch(error){
+  /*
+     Player API ready hone ka wait.
+  */
 
-    console.error(error);
+  playerReadyPromise.then(
+    () => {
 
-  }
+      if(
+        !ytPlayer
+      ){
+
+        subText.textContent =
+          "YouTube player ready nahi hua.";
+
+        return;
+
+      }
+
+
+      try{
+
+        /*
+          Official YouTube API
+          playlist load.
+        */
+
+        ytPlayer.loadPlaylist({
+
+          list:
+            playlist.youtubeId,
+
+          listType:
+            "playlist",
+
+          index:
+            0,
+
+          startSeconds:
+            0
+
+        });
+
+
+        /*
+          Mobile autoplay
+          block ho sakta hai.
+          Isliye player ko
+          ready hone diya ja raha hai.
+        */
+
+        subText.textContent =
+          playlist.name +
+          " • Ready to play";
+
+
+      }
+
+      catch(error){
+
+        console.error(
+          "Playlist error:",
+          error
+        );
+
+
+        subText.textContent =
+          "Playlist load nahi hui.";
+
+      }
+
+    }
+  );
+
 }
 
 
-/* ================================
-   YOUTUBE API READY
-================================ */
+/* =========================================
+   CREATE YOUTUBE PLAYER
+========================================= */
 
-window.onYouTubeIframeAPIReady = function(){
+ytApiReady.then(
+  () => {
 
-  ytPlayer = new YT.Player("yt-player",{
 
-    width:"1",
-    height:"1",
+    ytPlayer =
+      new YT.Player(
+        "yt-player",
+        {
 
-    playerVars:{
-      autoplay:0,
-      controls:0,
-      playsinline:1,
-      rel:0,
-      modestbranding:1
-    },
+          width:"1",
 
-    events:{
-      onReady:onPlayerReady,
-      onStateChange:onPlayerStateChange,
-      onError:onPlayerError
-    }
+          height:"1",
 
-  });
 
-};
+          playerVars:{
 
+            autoplay:0,
+
+            controls:0,
+
+            playsinline:1,
+
+            rel:0,
+
+            modestbranding:1
+
+          },
+
+
+          events:{
+
+            onReady:
+              onPlayerReady,
+
+            onStateChange:
+              onPlayerStateChange,
+
+            onError:
+              onPlayerError,
+
+            onAutoplayBlocked:
+              onAutoplayBlocked
+
+          }
+
+        }
+      );
+
+
+  }
+);
+
+
+/* =========================================
+   PLAYER READY
+========================================= */
 
 function onPlayerReady(){
 
-  ytReady = true;
+  console.log(
+    "YouTube player ready"
+  );
 
-  console.log("YouTube player ready");
+
+  ytReady =
+    true;
+
+
+  playerReadyPromiseResolve();
+
 
 }
 
 
-/* ================================
+/* =========================================
    PLAYER STATE
-================================ */
+========================================= */
 
-function onPlayerStateChange(event){
+function onPlayerStateChange(
+  event
+){
 
-  if(event.data === YT.PlayerState.PLAYING){
+  if(
+    event.data ===
+    YT.PlayerState.PLAYING
+  ){
 
-    isPlaying = true;
+    isPlaying =
+      true;
+
 
     updatePlayButton();
+
 
     updateTrackInfo();
 
   }
 
-  else if(event.data === YT.PlayerState.PAUSED){
 
-    isPlaying = false;
+  else if(
+    event.data ===
+    YT.PlayerState.PAUSED
+  ){
+
+    isPlaying =
+      false;
+
 
     updatePlayButton();
 
   }
 
-  else if(event.data === YT.PlayerState.ENDED){
 
-    isPlaying = false;
+  else if(
+    event.data ===
+    YT.PlayerState.ENDED
+  ){
+
+    isPlaying =
+      false;
+
 
     updatePlayButton();
 
-    nextTrack();
+
+    /*
+      Playlist ka next video.
+    */
+
+    try{
+
+      ytPlayer.nextVideo();
+
+    }
+
+    catch(error){
+
+      console.error(error);
+
+    }
+
+  }
+
+
+  else if(
+    event.data ===
+    YT.PlayerState.CUED
+  ){
+
+    updateTrackInfo();
 
   }
 
 }
 
 
-/* ================================
-   PLAYER ERROR
-================================ */
+/* =========================================
+   AUTOPLAY BLOCKED
+========================================= */
 
-function onPlayerError(event){
+function onAutoplayBlocked(){
 
-  console.log("YouTube error:",event.data);
+  console.log(
+    "YouTube autoplay blocked"
+  );
+
 
   subText.textContent =
-    "Ye video play nahi ho sakta";
+    "▶ Play dabao";
+
 
 }
 
 
-/* ================================
+/* =========================================
+   YOUTUBE ERROR
+========================================= */
+
+function onPlayerError(
+  event
+){
+
+  console.error(
+    "YouTube player error:",
+    event.data
+  );
+
+
+  subText.textContent =
+    "Ye YouTube video play nahi ho sakta.";
+
+}
+
+
+/* =========================================
    PLAY / PAUSE
-================================ */
+========================================= */
 
-playBtn.onclick = function(){
-
-  if(!ytReady){
-
-    alert("Player loading...");
-
-    return;
-  }
-
-  if(!selectedPlaylist){
-
-    openSheet();
-
-    return;
-  }
-
-  if(isPlaying){
-
-    ytPlayer.pauseVideo();
-
-  }else{
-
-    ytPlayer.playVideo();
-
-  }
-
-};
+playBtn.onclick =
+  function(){
 
 
-/* ================================
-   NEXT / PREVIOUS
-================================ */
+    if(
+      !ytReady ||
+      !ytPlayer
+    ){
 
-nextBtn.onclick = function(){
+      subText.textContent =
+        "Player loading...";
 
-  if(!ytReady || !selectedPlaylist) return;
+      return;
 
-  ytPlayer.nextVideo();
-
-};
-
-
-prevBtn.onclick = function(){
-
-  if(!ytReady || !selectedPlaylist) return;
-
-  ytPlayer.previousVideo();
-
-};
+    }
 
 
-/* ================================
-   PLAY BUTTON UI
-================================ */
+    if(
+      !selectedPlaylist
+    ){
 
-function updatePlayButton(){
+      openSheet();
 
-  if(isPlaying){
+      return;
 
-    iconPlay.style.display = "none";
-    iconPause.style.display = "inline";
-
-  }else{
-
-    iconPlay.style.display = "inline";
-    iconPause.style.display = "none";
-
-  }
-}
+    }
 
 
-/* ================================
-   TRACK INFORMATION
-================================ */
+    try{
 
-function updateTrackInfo(){
+      if(
+        isPlaying
+      ){
 
-  try{
-
-    const data = ytPlayer.getVideoData();
-
-    if(data){
-
-      if(data.title){
-
-        titleText.textContent = data.title;
+        ytPlayer.pauseVideo();
 
       }
 
-      subText.textContent =
-        selectedPlaylist
-          ? selectedPlaylist.name
-          : "YouTube";
+      else{
 
-      if(data.video_id){
-
-        artImg.src =
-          "https://i.ytimg.com/vi/" +
-          data.video_id +
-          "/hqdefault.jpg";
-
-        artImg.onload = ()=>{
-
-          artImg.style.display = "block";
-          artFallback.style.display = "none";
-
-        };
+        ytPlayer.playVideo();
 
       }
 
     }
 
-  }catch(error){
+    catch(error){
 
-    console.log(error);
+      console.error(
+        error
+      );
+
+    }
+
+  };
+
+
+/* =========================================
+   NEXT
+========================================= */
+
+nextBtn.onclick =
+  function(){
+
+    if(
+      !ytReady ||
+      !ytPlayer
+    ){
+
+      return;
+
+    }
+
+
+    try{
+
+      ytPlayer.nextVideo();
+
+    }
+
+    catch(error){
+
+      console.error(
+        error
+      );
+
+    }
+
+  };
+
+
+/* =========================================
+   PREVIOUS
+========================================= */
+
+prevBtn.onclick =
+  function(){
+
+    if(
+      !ytReady ||
+      !ytPlayer
+    ){
+
+      return;
+
+    }
+
+
+    try{
+
+      ytPlayer.previousVideo();
+
+    }
+
+    catch(error){
+
+      console.error(
+        error
+      );
+
+    }
+
+  };
+
+
+/* =========================================
+   PLAY BUTTON UI
+========================================= */
+
+function updatePlayButton(){
+
+  if(
+    isPlaying
+  ){
+
+    iconPlay.style.display =
+      "none";
+
+    iconPause.style.display =
+      "inline";
+
+  }
+
+  else{
+
+    iconPlay.style.display =
+      "inline";
+
+    iconPause.style.display =
+      "none";
 
   }
 
 }
 
 
-/* ================================
-   PROGRESS
-================================ */
+/* =========================================
+   TRACK INFO
+========================================= */
 
-setInterval(()=>{
+function updateTrackInfo(){
 
-  if(!ytReady || !isPlaying) return;
+  if(
+    !ytPlayer
+  ){
+
+    return;
+
+  }
+
 
   try{
 
-    const current =
-      ytPlayer.getCurrentTime();
-
-    const duration =
-      ytPlayer.getDuration();
-
-    if(!duration) return;
-
-    const percent =
-      (current / duration) * 100;
-
-    progressFill.style.width =
-      percent + "%";
-
-    timeCurrent.textContent =
-      formatTime(current);
-
-    timeTotal.textContent =
-      formatTime(duration);
-
-  }catch(error){}
-
-},500);
+    const data =
+      ytPlayer.getVideoData();
 
 
-/* ================================
-   SEEK
-================================ */
+    if(
+      data &&
+      data.title
+    ){
 
-progressTrack.addEventListener("click",function(e){
+      titleText.textContent =
+        data.title;
 
-  if(!ytReady) return;
+    }
 
-  const rect =
-    progressTrack.getBoundingClientRect();
 
-  const percent =
-    (e.clientX - rect.left) / rect.width;
+    if(
+      selectedPlaylist
+    ){
 
-  const duration =
-    ytPlayer.getDuration();
+      subText.textContent =
+        selectedPlaylist.name;
 
-  if(duration){
+    }
 
-    ytPlayer.seekTo(
-      duration * percent,
-      true
+
+    if(
+      data &&
+      data.video_id
+    ){
+
+      const thumbnail =
+        "https://i.ytimg.com/vi/" +
+        data.video_id +
+        "/hqdefault.jpg";
+
+
+      artImg.onload =
+        function(){
+
+          artImg.style.display =
+            "block";
+
+          artFallback.style.display =
+            "none";
+
+        };
+
+
+      artImg.src =
+        thumbnail;
+
+    }
+
+  }
+
+  catch(error){
+
+    console.error(
+      "Track info error:",
+      error
     );
 
   }
 
-});
+}
 
 
-/* ================================
+/* =========================================
+   PROGRESS UPDATE
+========================================= */
+
+setInterval(
+  function(){
+
+
+    if(
+      !ytReady ||
+      !ytPlayer ||
+      !isPlaying
+    ){
+
+      return;
+
+    }
+
+
+    try{
+
+      const current =
+        ytPlayer.getCurrentTime();
+
+
+      const duration =
+        ytPlayer.getDuration();
+
+
+      if(
+        !duration ||
+        duration <= 0
+      ){
+
+        return;
+
+      }
+
+
+      const percent =
+        (
+          current /
+          duration
+        ) * 100;
+
+
+      progressFill.style.width =
+        percent + "%";
+
+
+      timeCurrent.textContent =
+        formatTime(
+          current
+        );
+
+
+      timeTotal.textContent =
+        formatTime(
+          duration
+        );
+
+
+    }
+
+    catch(error){
+
+      /* ignore */
+
+    }
+
+
+  },
+  500
+);
+
+
+/* =========================================
+   SEEK
+========================================= */
+
+progressTrack.addEventListener(
+  "click",
+  function(event){
+
+    if(
+      !ytReady ||
+      !ytPlayer
+    ){
+
+      return;
+
+    }
+
+
+    try{
+
+      const rect =
+        progressTrack
+          .getBoundingClientRect();
+
+
+      const percent =
+        (
+          event.clientX -
+          rect.left
+        ) /
+        rect.width;
+
+
+      const duration =
+        ytPlayer.getDuration();
+
+
+      if(
+        duration > 0
+      ){
+
+        ytPlayer.seekTo(
+
+          duration *
+          Math.max(
+            0,
+            Math.min(
+              1,
+              percent
+            )
+          ),
+
+          true
+
+        );
+
+      }
+
+    }
+
+    catch(error){
+
+      console.error(
+        error
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================================
    TIME FORMAT
-================================ */
+========================================= */
 
-function formatTime(seconds){
+function formatTime(
+  seconds
+){
 
-  seconds = Math.floor(seconds || 0);
+  seconds =
+    Math.floor(
+      seconds || 0
+    );
 
-  const min =
-    Math.floor(seconds / 60);
 
-  const sec =
+  const minutes =
+    Math.floor(
+      seconds / 60
+    );
+
+
+  const secs =
     seconds % 60;
 
-  return min + ":" +
-    String(sec).padStart(2,"0");
-}
 
-
-/* ================================
-   HTML ESCAPE
-================================ */
-
-function escapeHtml(value){
-
-  return String(value)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+  return (
+    minutes +
+    ":" +
+    String(secs)
+      .padStart(
+        2,
+        "0"
+      )
+  );
 
 }
 
 
-/* ================================
-   START
-================================ */
+/* =========================================
+   START FIREBASE
+========================================= */
 
 loadPlaylists();
+
 
 </script>
 
