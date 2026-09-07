@@ -402,23 +402,36 @@ body:before{
 }
 
 
-
 /* ==================================================
-   MUSIC VISUALIZER — PREMIUM BEAT FLOW
+   MUSIC VISUALIZER
 ================================================== */
 
 .visualizer{
   position:absolute;
+
   left:-1%;
   top:-8%;
+
   width:70%;
   aspect-ratio:1;
+
   z-index:4;
+
   pointer-events:none;
+
   opacity:0;
+
   transform:scale(.92);
-  transition:opacity .45s ease,transform .45s ease;
-  filter:drop-shadow(0 0 8px rgba(168,79,34,.22));
+
+  transition:
+    opacity .45s ease,
+    transform .45s ease;
+
+  filter:
+    drop-shadow(
+      0 0 8px
+      rgba(168,79,34,.22)
+    );
 }
 
 .visualizer.playing{
@@ -428,63 +441,128 @@ body:before{
 
 .visualizer-ring{
   position:absolute;
+
   inset:9%;
+
   border:1px solid rgba(168,79,34,.18);
+
   border-radius:50%;
+
   box-shadow:
     0 0 0 8px rgba(168,79,34,.025),
     0 0 22px rgba(168,79,34,.10);
-  transition:transform .08s linear,opacity .08s linear;
+
+  transition:
+    transform .08s linear,
+    opacity .08s linear;
 }
 
 .visualizer-ring.r2{
   inset:16%;
+
   border-style:dashed;
-  border-color:rgba(168,79,34,.22);
+
+  border-color:
+    rgba(168,79,34,.22);
 }
 
 .visualizer-ring.r3{
   inset:24%;
-  border-color:rgba(255,248,232,.20);
+
+  border-color:
+    rgba(255,248,232,.20);
 }
 
 .visualizer-core{
   position:absolute;
+
   left:50%;
   top:50%;
+
   width:15%;
+
   aspect-ratio:1;
-  transform:translate(-50%,-50%) scale(.8);
+
+  transform:
+    translate(-50%,-50%)
+    scale(.8);
+
   border-radius:50%;
-  background:radial-gradient(circle,#fff8e8 0 8%,#a84f22 10% 28%,rgba(168,79,34,.25) 30% 60%,transparent 64%);
-  box-shadow:0 0 18px rgba(168,79,34,.35);
-  transition:transform .08s linear,filter .08s linear;
+
+  background:
+    radial-gradient(
+      circle,
+      #fff8e8 0 8%,
+      #a84f22 10% 28%,
+      rgba(168,79,34,.25) 30% 60%,
+      transparent 64%
+    );
+
+  box-shadow:
+    0 0 18px rgba(168,79,34,.35);
+
+  transition:
+    transform .08s linear,
+    filter .08s linear;
 }
 
 .visualizer-bar{
   position:absolute;
+
   left:50%;
   top:50%;
+
   width:3px;
   height:37%;
-  transform-origin:50% 100%;
-  transform:translate(-50%,-100%) rotate(var(--angle)) scaleY(.12);
+
+  transform-origin:
+    50% 100%;
+
+  transform:
+    translate(-50%,-100%)
+    rotate(var(--angle))
+    scaleY(.12);
+
   border-radius:99px;
-  background:linear-gradient(to top,rgba(168,79,34,.12),rgba(168,79,34,.82),rgba(255,248,232,.95));
-  box-shadow:0 0 6px rgba(168,79,34,.30);
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(168,79,34,.12),
+      rgba(168,79,34,.82),
+      rgba(255,248,232,.95)
+    );
+
+  box-shadow:
+    0 0 6px rgba(168,79,34,.30);
+
   opacity:.78;
-  transition:transform .08s linear,opacity .08s linear;
+
+  transition:
+    transform .08s linear,
+    opacity .08s linear;
 }
 
-.visualizer-bar:nth-child(3n){width:4px;}
-.visualizer-bar:nth-child(5n){height:43%;}
-.visualizer-bar:nth-child(4n){opacity:.55;}
+.visualizer-bar:nth-child(3n){
+  width:4px;
+}
+
+.visualizer-bar:nth-child(5n){
+  height:43%;
+}
+
+.visualizer-bar:nth-child(4n){
+  opacity:.55;
+}
 
 @media(max-height:650px){
+
   .visualizer{
     top:-11%;
   }
+
 }
+
 
 /* =========================
    TONE ARM
@@ -647,6 +725,7 @@ body:before{
 }
 
 @keyframes pulse{
+
   0%,100%{
     opacity:.35;
     transform:scale(.8);
@@ -656,8 +735,26 @@ body:before{
     opacity:1;
     transform:scale(1.15);
   }
+
 }
 
+
+.soundcloud-box{
+  width:1px;
+  height:1px;
+  position:absolute;
+  left:-10px;
+  top:-10px;
+  overflow:hidden;
+  opacity:0;
+  pointer-events:none;
+}
+
+.soundcloud-box iframe{
+  width:1px;
+  height:1px;
+  border:0;
+}
 
 /* =========================
    HIDDEN YOUTUBE
@@ -693,8 +790,8 @@ body:before{
 .player{
   position:fixed;
 
-  left:68px;
-  right:68px;
+  left:10px;
+  right:10px;
   bottom:10px;
 
   height:108px;
@@ -718,81 +815,6 @@ body:before{
     0 8px 30px rgba(57,37,24,.22);
 
   backdrop-filter:blur(12px);
-}
-
-.player-float-btn{
-  position:fixed;
-  bottom:128px;
-  width:50px;
-  height:50px;
-  z-index:31;
-
-  border:1px solid rgba(57,37,24,.25);
-  border-radius:50%;
-
-  background:
-    linear-gradient(145deg,
-      rgba(255,248,232,.98),
-      rgba(226,205,166,.96)
-    );
-
-  color:var(--brown);
-  font-size:22px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  box-shadow:
-    0 5px 16px rgba(57,37,24,.22),
-    inset 0 1px 0 rgba(255,255,255,.5);
-
-  backdrop-filter:blur(10px);
-}
-
-.player-float-btn.left{
-  left:12px;
-}
-
-.player-float-btn.right{
-  right:12px;
-}
-
-.player-float-btn:active{
-  transform:scale(.92);
-  background:rgba(226,205,166,.98);
-}
-
-.player-float-btn.active{
-  color:var(--orange);
-  border-color:rgba(184,99,35,.35);
-}
-
-#recent-open{
-  font-size:28px;
-}
-
-@media(max-width:420px){
-  #recent-open{
-    font-size:26px;
-  }
-}
-
-@media(max-width:420px){
-  .player-float-btn{
-    width:46px;
-    height:46px;
-    bottom:128px;
-    font-size:21px;
-  }
-
-  .player-float-btn.left{
-    left:8px;
-  }
-
-  .player-float-btn.right{
-    right:8px;
-  }
 }
 
 .player-top{
@@ -911,6 +933,14 @@ body:before{
     0 3px 7px rgba(57,37,24,.25);
 }
 
+.favorite-open{
+  font-size:20px;
+}
+
+.favorite-open.active{
+  color:var(--orange);
+}
+
 
 /* =========================
    SONGS BUTTON
@@ -1009,7 +1039,9 @@ body:before{
 
   width:220px;
 
-  transform:translateX(-50%) translateY(10px);
+  transform:
+    translateX(-50%)
+    translateY(10px);
 
   z-index:80;
 
@@ -1043,7 +1075,9 @@ body:before{
 
   opacity:1;
 
-  transform:translateX(-50%) translateY(0);
+  transform:
+    translateX(-50%)
+    translateY(0);
 }
 
 .sleep-title{
@@ -1094,14 +1128,11 @@ body:before{
   transition:.15s;
 }
 
-
-/* =========================
-   SELECTED TIMER
-========================= */
-
 .sleep-option.active{
   background:var(--brown);
+
   color:var(--cream);
+
   border-color:var(--brown);
 
   box-shadow:
@@ -1122,7 +1153,9 @@ body:before{
 
 .sleep-option.off.active{
   background:var(--brown);
+
   color:var(--cream);
+
   border-color:var(--brown);
 }
 
@@ -1233,10 +1266,33 @@ body:before{
   color:var(--brown);
 
   text-align:left;
+
+  position:relative;
 }
 
 .playlist-item.active{
-  background:rgba(168,79,34,.12);
+  background:rgba(168,79,34,.13);
+
+  box-shadow:
+    inset 4px 0 0 var(--orange);
+}
+
+.playlist-item.active .pl-name{
+  color:var(--orange);
+}
+
+.playlist-item.active:after{
+  content:"NOW PLAYING";
+
+  font-size:8px;
+
+  font-weight:bold;
+
+  letter-spacing:.8px;
+
+  color:var(--orange);
+
+  margin-right:3px;
 }
 
 .pl-icon{
@@ -1254,6 +1310,10 @@ body:before{
   color:var(--cream);
 }
 
+.playlist-item.active .pl-icon{
+  background:var(--orange);
+}
+
 .pl-name{
   flex:1;
 
@@ -1261,27 +1321,6 @@ body:before{
   font-weight:bold;
 }
 
-
-/* ACTIVE PLAYLIST */
-
-.playlist-item.active{
-  background:rgba(168,79,34,.16);
-  box-shadow:inset 4px 0 0 var(--orange);
-}
-
-.playlist-item.active .pl-icon{
-  background:var(--orange);
-  box-shadow:0 3px 8px rgba(168,79,34,.28);
-}
-
-.playlist-item.active:after{
-  content:"NOW PLAYING";
-  font-size:7px;
-  letter-spacing:1px;
-  font-weight:bold;
-  color:var(--orange);
-  margin-left:auto;
-}
 
 /* SONGS */
 
@@ -1303,16 +1342,126 @@ body:before{
   color:var(--brown);
 
   text-align:left;
+
+  position:relative;
 }
 
-.song-number{
+.song-item.active-song{
+  background:rgba(168,79,34,.13);
+
+  box-shadow:
+    inset 4px 0 0 var(--orange);
+}
+
+.song-item.active-song .song-number{
+  color:var(--orange);
+
+  opacity:1;
+
+  font-weight:bold;
+}
+
+.song-item.active-song .song-name{
+  color:var(--orange);
+}
+
+.song-playing{
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:2px;
+
+  margin-left:5px;
+
+  vertical-align:middle;
+}
+
+.song-playing i{
+  display:block;
+
+  width:2px;
+  height:8px;
+
+  border-radius:2px;
+
+  background:var(--orange);
+
+  animation:
+    songBars .7s
+    ease-in-out
+    infinite alternate;
+}
+
+.song-playing i:nth-child(2){
+  animation-delay:.15s;
+  height:11px;
+}
+
+.song-playing i:nth-child(3){
+  animation-delay:.3s;
+  height:6px;
+}
+
+@keyframes songBars{
+
+  from{
+    transform:scaleY(.45);
+  }
+
+  to{
+    transform:scaleY(1);
+  }
+
+}
+
+.favorite-btn{
+  width:32px;
+  height:32px;
+
+  flex:0 0 32px;
+
+  border:0;
+
+  border-radius:50%;
+
+  background:transparent;
+
+  color:var(--brown);
+
+  font-size:20px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.favorite-btn.active{
+  color:var(--orange);
+}
+
+.favorite-btn:active{
+  background:rgba(57,37,24,.1);
+
+  transform:scale(.9);
+}
+
+.song-play-icon{
   width:22px;
 
-  font-size:10px;
-
-  opacity:.5;
-
   text-align:center;
+
+  font-size:12px;
+
+  opacity:.65;
+}
+
+.song-item.active-song .song-play-icon{
+  color:var(--orange);
+
+  opacity:1;
+
+  font-weight:bold;
 }
 
 .thumb{
@@ -1328,6 +1477,7 @@ body:before{
 
 .song-info{
   flex:1;
+
   min-width:0;
 }
 
@@ -1351,82 +1501,8 @@ body:before{
   text-overflow:ellipsis;
 }
 
-.song-item{
-  position:relative;
-}
-
-.song-item.active-song{
-  background:rgba(168,79,34,.13);
-  box-shadow:inset 4px 0 0 var(--orange);
-}
-
-.song-item.active-song .song-number{
-  color:var(--orange);
-  opacity:1;
-  font-weight:bold;
-}
-
-.song-item.active-song .song-name{
-  color:var(--orange);
-}
-
-.song-playing{
-  display:inline-flex;
-  align-items:center;
-  gap:2px;
-  margin-left:5px;
-  vertical-align:middle;
-}
-
-.song-playing i{
-  display:block;
-  width:2px;
-  height:8px;
-  border-radius:2px;
-  background:var(--orange);
-  animation:songBars .7s ease-in-out infinite alternate;
-}
-
-.song-playing i:nth-child(2){animation-delay:.15s;height:11px}
-.song-playing i:nth-child(3){animation-delay:.3s;height:6px}
-
-@keyframes songBars{
-  from{transform:scaleY(.45)}
-  to{transform:scaleY(1)}
-}
-
-.favorite-btn{
-  width:32px;
-  height:32px;
-  flex:0 0 32px;
-  border:0;
-  border-radius:50%;
-  background:transparent;
-  color:var(--brown);
-  font-size:20px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.favorite-btn.active{
-  color:var(--orange);
-}
-
-.favorite-btn:active{
-  background:rgba(57,37,24,.1);
-  transform:scale(.9);
-}
-
+.empty,
 .fav-empty{
-  padding:34px 12px;
-  text-align:center;
-  font-size:12px;
-  opacity:.65;
-}
-
-
-.empty{
   padding:30px 10px;
 
   text-align:center;
@@ -1467,6 +1543,7 @@ body:before{
   .sleep-menu{
     bottom:128px;
   }
+
 }
 
 
@@ -1493,6 +1570,7 @@ body:before{
   .turntable{
     width:92vw;
     height:48vw;
+
     margin-top:-2px;
   }
 
@@ -1503,6 +1581,7 @@ body:before{
   .sleep-menu{
     bottom:122px;
   }
+
 }
 
 </style>
@@ -1569,13 +1648,53 @@ body:before{
     <div class="table-body"></div>
 
 
+    <div class="platter">
 
-    <div class="visualizer" id="visualizer" aria-hidden="true">
+      <div
+        class="record"
+        id="main-cd">
 
-      <div class="visualizer-ring r1"></div>
-      <div class="visualizer-ring r2"></div>
-      <div class="visualizer-ring r3"></div>
-      <div class="visualizer-core" id="visualizer-core"></div>
+        <div class="record-label">
+
+          <span>
+            SAB<br>
+            RANG<br>
+            FM
+          </span>
+
+        </div>
+
+
+        <div class="spindle"></div>
+
+      </div>
+
+    </div>
+
+
+    <!-- MUSIC VISUALIZER -->
+
+    <div
+      class="visualizer"
+      id="visualizer"
+      aria-hidden="true">
+
+      <div
+        class="visualizer-ring r1">
+      </div>
+
+      <div
+        class="visualizer-ring r2">
+      </div>
+
+      <div
+        class="visualizer-ring r3">
+      </div>
+
+      <div
+        class="visualizer-core"
+        id="visualizer-core">
+      </div>
 
       <span class="visualizer-bar" style="--angle:0deg"></span>
       <span class="visualizer-bar" style="--angle:10deg"></span>
@@ -1613,29 +1732,6 @@ body:before{
       <span class="visualizer-bar" style="--angle:330deg"></span>
       <span class="visualizer-bar" style="--angle:340deg"></span>
       <span class="visualizer-bar" style="--angle:350deg"></span>
-
-    </div>
-
-    <div class="platter">
-
-      <div
-        class="record"
-        id="main-cd">
-
-        <div class="record-label">
-
-          <span>
-            SAB<br>
-            RANG<br>
-            FM
-          </span>
-
-        </div>
-
-
-        <div class="spindle"></div>
-
-      </div>
 
     </div>
 
@@ -1678,30 +1774,22 @@ body:before{
 
   </div>
 
+  <!-- Hidden SoundCloud Widget -->
+  <div class="soundcloud-box">
+    <iframe
+      id="soundcloud-player"
+      allow="autoplay"
+      scrolling="no"
+      frameborder="no"
+      src="about:blank">
+    </iframe>
+  </div>
+
 
 </section>
 
 </main>
 
-
-
-<!-- =========================
-     PLAYER FLOAT BUTTONS
-========================= -->
-
-<button
-  class="player-float-btn left"
-  id="favorites-open"
-  title="Favourite Songs">
-  ♡
-</button>
-
-<button
-  class="player-float-btn right"
-  id="recent-open"
-  title="Recently Played">
-  ◷
-</button>
 
 
 <!-- =========================
@@ -1764,6 +1852,15 @@ body:before{
 
       </button>
 
+
+      <button
+        class="control favorite-open"
+        id="favorites-open"
+        title="Favourite Songs">
+
+        ♡
+
+      </button>
 
 
       <button
@@ -1918,46 +2015,6 @@ body:before{
 
 
 <!-- =========================
-     RECENTLY PLAYED SHEET
-========================= -->
-
-<section
-  class="sheet"
-  id="recent-sheet">
-
-  <div class="handle"></div>
-
-  <div class="sheet-head">
-
-    <div class="sheet-title">
-      ◷ Recently Played
-    </div>
-
-    <button
-      class="close"
-      id="recent-close">
-
-      ✕
-
-    </button>
-
-  </div>
-
-  <div
-    class="list"
-    id="recent-list">
-
-    <div class="fav-empty">
-      Abhi koi recently played song nahi hai.
-    </div>
-
-  </div>
-
-</section>
-
-
-
-<!-- =========================
      FAVOURITES SHEET
 ========================= -->
 
@@ -1976,7 +2033,9 @@ body:before{
     <button
       class="close"
       id="favorites-close">
+
       ✕
+
     </button>
 
   </div>
@@ -1984,12 +2043,15 @@ body:before{
   <div
     class="list"
     id="favorites-list">
+
     <div class="fav-empty">
       Abhi koi favourite song nahi hai.
     </div>
+
   </div>
 
 </section>
+
 
 
 <!-- =========================
@@ -2139,7 +2201,9 @@ const youtubeApiKey =
 
 
 const app =
-  initializeApp(firebaseConfig);
+  initializeApp(
+    firebaseConfig
+  );
 
 
 const auth =
@@ -2159,6 +2223,11 @@ let youtube = null;
 
 let youtubeReady = false;
 
+let soundcloudWidget = null;
+let soundcloudReady = false;
+let soundcloudIndex = 0;
+let soundcloudSongs = [];
+
 let playlists = [];
 
 let selectedPlaylist = null;
@@ -2170,6 +2239,42 @@ let pendingAutoplay = false;
 let playRequestId = 0;
 
 let playingRequestId = -1;
+
+let activeVideoId = "";
+
+
+/* =========================================
+   FAVOURITES
+========================================= */
+
+let favoriteSongs = [];
+
+try{
+
+  favoriteSongs =
+    JSON.parse(
+      localStorage.getItem(
+        "sabrang_favourites"
+      ) || "[]"
+    );
+
+  if(
+    !Array.isArray(
+      favoriteSongs
+    )
+  ){
+
+    favoriteSongs = [];
+
+  }
+
+}
+catch(e){
+
+  favoriteSongs = [];
+
+}
+
 
 
 /* =========================================
@@ -2187,99 +2292,162 @@ let sleepEndTime = 0;
 ========================================= */
 
 const mainCD =
-  document.getElementById("main-cd");
+  document.getElementById(
+    "main-cd"
+  );
 
 const miniCD =
-  document.getElementById("mini-cd");
+  document.getElementById(
+    "mini-cd"
+  );
 
 const tonearm =
-  document.getElementById("tonearm");
+  document.getElementById(
+    "tonearm"
+  );
+
 
 const visualizer =
-  document.getElementById("visualizer");
+  document.getElementById(
+    "visualizer"
+  );
 
 const visualizerCore =
-  document.getElementById("visualizer-core");
+  document.getElementById(
+    "visualizer-core"
+  );
 
 const visualizerBars =
-  document.querySelectorAll(".visualizer-bar");
+  document.querySelectorAll(
+    ".visualizer-bar"
+  );
 
 const visualizerRings =
-  document.querySelectorAll(".visualizer-ring");
+  document.querySelectorAll(
+    ".visualizer-ring"
+  );
 
 let visualizerFrame = null;
+
 let visualizerBeatSeed = 0;
 
+
 const playBtn =
-  document.getElementById("play");
+  document.getElementById(
+    "play"
+  );
 
 const prevBtn =
-  document.getElementById("prev");
+  document.getElementById(
+    "prev"
+  );
 
 const nextBtn =
-  document.getElementById("next");
+  document.getElementById(
+    "next"
+  );
+
 
 const songTitle =
-  document.getElementById("song-title");
+  document.getElementById(
+    "song-title"
+  );
 
 const artist =
-  document.getElementById("artist");
+  document.getElementById(
+    "artist"
+  );
+
 
 const currentTime =
-  document.getElementById("current-time");
+  document.getElementById(
+    "current-time"
+  );
 
 const duration =
-  document.getElementById("duration");
+  document.getElementById(
+    "duration"
+  );
+
 
 const progress =
-  document.getElementById("progress");
+  document.getElementById(
+    "progress"
+  );
 
 const progressFill =
-  document.getElementById("progress-fill");
+  document.getElementById(
+    "progress-fill"
+  );
+
 
 const air =
-  document.getElementById("air");
+  document.getElementById(
+    "air"
+  );
 
 const airText =
-  document.getElementById("air-text");
+  document.getElementById(
+    "air-text"
+  );
+
 
 const playlistSheet =
-  document.getElementById("playlist-sheet");
+  document.getElementById(
+    "playlist-sheet"
+  );
 
 const songsSheet =
-  document.getElementById("songs-sheet");
+  document.getElementById(
+    "songs-sheet"
+  );
 
 const favoritesSheet =
-  document.getElementById("favorites-sheet");
+  document.getElementById(
+    "favorites-sheet"
+  );
 
 const favoritesList =
-  document.getElementById("favorites-list");
+  document.getElementById(
+    "favorites-list"
+  );
 
 const favoritesOpen =
-  document.getElementById("favorites-open");
+  document.getElementById(
+    "favorites-open"
+  );
 
 const favoritesClose =
-  document.getElementById("favorites-close");
+  document.getElementById(
+    "favorites-close"
+  );
 
-let activeVideoId = "";
-let favoriteSongs = JSON.parse(
-  localStorage.getItem("sabrang_favourites") || "[]"
-);
 
 const playlistList =
-  document.getElementById("playlist-list");
+  document.getElementById(
+    "playlist-list"
+  );
 
 const songsList =
-  document.getElementById("songs-list");
+  document.getElementById(
+    "songs-list"
+  );
+
 
 const sleepOpen =
-  document.getElementById("sleep-open");
+  document.getElementById(
+    "sleep-open"
+  );
 
 const sleepMenu =
-  document.getElementById("sleep-menu");
+  document.getElementById(
+    "sleep-menu"
+  );
 
 const sleepStatus =
-  document.getElementById("sleep-status");
+  document.getElementById(
+    "sleep-status"
+  );
 
 const sleepOptions =
   document.querySelectorAll(
@@ -2292,7 +2460,9 @@ const sleepOptions =
    PLAYING STATE
 ========================================= */
 
-function setPlaying(playing){
+function setPlaying(
+  playing
+){
 
   mainCD.classList.toggle(
     "playing",
@@ -2311,16 +2481,22 @@ function setPlaying(playing){
     playing
   );
 
+
   visualizer.classList.toggle(
     "playing",
     playing
   );
 
+
   if(playing){
+
     startPremiumVisualizer();
+
   }
   else{
+
     stopPremiumVisualizer();
+
   }
 
 
@@ -2341,101 +2517,267 @@ function setPlaying(playing){
       ? "❚❚"
       : "▶";
 
+
+  highlightActiveSong();
+
+  highlightActiveFavourite();
+
+  if("mediaSession" in navigator){
+    navigator.mediaSession.playbackState =
+      playing ? "playing" : "paused";
+  }
+
 }
 
 
 
 /* =========================================
-   PREMIUM VISUALIZER ENGINE
+   PREMIUM VISUALIZER
 ========================================= */
 
 function startPremiumVisualizer(){
 
   if(visualizerFrame){
+
     return;
+
   }
 
-  visualizerBeatSeed = Math.random() * 1000;
 
-  const draw = (now)=>{
+  visualizerBeatSeed =
+    Math.random() * 1000;
 
-    if(!visualizer.classList.contains("playing")){
-      visualizerFrame = null;
-      return;
-    }
 
-    let songTime = 0;
+  const draw =
+    (now)=>{
 
-    if(youtubeReady && youtube){
-      try{
-        songTime = youtube.getCurrentTime() || 0;
+      if(
+        !visualizer.classList.contains(
+          "playing"
+        )
+      ){
+
+        visualizerFrame = null;
+
+        return;
+
       }
-      catch(e){}
-    }
 
-    /*
-       YouTube's IFrame API exposes playback state/time, not the
-       decoded audio waveform/FFT data. So this is a polished
-       playback-synchronised beat motion, not a true audio FFT.
-    */
-    const t = songTime * 2.05 + now / 1000 * .18 + visualizerBeatSeed;
-    const beat = Math.pow(Math.max(0, Math.sin(t * Math.PI)), 8);
-    const wave = (i)=>{
-      const phase = t + i * .72;
-      return .10 +
-        Math.pow(Math.max(0,Math.sin(phase)),3) * .55 +
-        Math.pow(Math.max(0,Math.sin(phase * .53 + 1.7)),2) * .20 +
-        beat * (.20 + (i % 5) * .025);
+
+      let songTime = 0;
+
+
+      if(
+        youtubeReady &&
+        youtube
+      ){
+
+        try{
+
+          songTime =
+            youtube.getCurrentTime() ||
+            0;
+
+        }
+        catch(e){}
+
+      }
+
+
+      /*
+        YouTube IFrame API actual audio
+        FFT/waveform data provide nahi karta.
+
+        Isliye visualizer playback-time
+        synchronized beat-style motion use karta hai.
+      */
+
+      const t =
+        songTime * 2.05 +
+        now / 1000 * .18 +
+        visualizerBeatSeed;
+
+
+      const beat =
+        Math.pow(
+          Math.max(
+            0,
+            Math.sin(
+              t * Math.PI
+            )
+          ),
+          8
+        );
+
+
+      const wave =
+        (i)=>{
+
+          const phase =
+            t + i * .72;
+
+
+          return .10 +
+
+            Math.pow(
+              Math.max(
+                0,
+                Math.sin(
+                  phase
+                )
+              ),
+              3
+            ) * .55 +
+
+            Math.pow(
+              Math.max(
+                0,
+                Math.sin(
+                  phase * .53 +
+                  1.7
+                )
+              ),
+              2
+            ) * .20 +
+
+            beat *
+            (
+              .20 +
+              (i % 5) * .025
+            );
+
+        };
+
+
+      visualizerBars.forEach(
+        (bar,i)=>{
+
+          const level =
+            Math.min(
+              1,
+              wave(i)
+            );
+
+
+          const scale =
+            .10 +
+            level * .98;
+
+
+          bar.style.transform =
+            `translate(-50%,-100%) rotate(${i*10}deg) scaleY(${scale})`;
+
+
+          bar.style.opacity =
+            String(
+              .38 +
+              level * .62
+            );
+
+        }
+      );
+
+
+      const pulse =
+        .82 +
+        beat * .34;
+
+
+      visualizerCore.style.transform =
+        `translate(-50%,-50%) scale(${pulse})`;
+
+
+      visualizerCore.style.filter =
+        `brightness(${1 + beat*.65})`;
+
+
+      visualizerRings.forEach(
+        (ring,i)=>{
+
+          const ringPulse =
+            1 +
+            beat *
+            (
+              .018 +
+              i * .012
+            );
+
+
+          ring.style.transform =
+            `scale(${ringPulse})`;
+
+
+          ring.style.opacity =
+            String(
+              .48 +
+              beat * .35
+            );
+
+        }
+      );
+
+
+      visualizerFrame =
+        requestAnimationFrame(
+          draw
+        );
+
     };
 
-    visualizerBars.forEach((bar,i)=>{
-      const level = Math.min(1, wave(i));
-      const scale = .10 + level * .98;
-      bar.style.transform =
-        `translate(-50%,-100%) rotate(${i*10}deg) scaleY(${scale})`;
-      bar.style.opacity =
-        String(.38 + level * .62);
-    });
 
-    const pulse = .82 + beat * .34;
-    visualizerCore.style.transform =
-      `translate(-50%,-50%) scale(${pulse})`;
-    visualizerCore.style.filter =
-      `brightness(${1 + beat*.65})`;
+  visualizerFrame =
+    requestAnimationFrame(
+      draw
+    );
 
-    visualizerRings.forEach((ring,i)=>{
-      const ringPulse = 1 + beat * (.018 + i*.012);
-      ring.style.transform = `scale(${ringPulse})`;
-      ring.style.opacity = String(.48 + beat*.35);
-    });
-
-    visualizerFrame = requestAnimationFrame(draw);
-  };
-
-  visualizerFrame = requestAnimationFrame(draw);
 }
+
+
 
 function stopPremiumVisualizer(){
 
   if(visualizerFrame){
-    cancelAnimationFrame(visualizerFrame);
+
+    cancelAnimationFrame(
+      visualizerFrame
+    );
+
     visualizerFrame = null;
+
   }
 
-  visualizerBars.forEach((bar,i)=>{
-    bar.style.transform =
-      `translate(-50%,-100%) rotate(${i*10}deg) scaleY(.10)`;
-    bar.style.opacity = ".38";
-  });
+
+  visualizerBars.forEach(
+    (bar,i)=>{
+
+      bar.style.transform =
+        `translate(-50%,-100%) rotate(${i*10}deg) scaleY(.10)`;
+
+      bar.style.opacity =
+        ".38";
+
+    }
+  );
+
 
   visualizerCore.style.transform =
     "translate(-50%,-50%) scale(.8)";
 
-  visualizerRings.forEach(ring=>{
-    ring.style.transform = "scale(1)";
-    ring.style.opacity = ".48";
-  });
+
+  visualizerRings.forEach(
+    ring=>{
+
+      ring.style.transform =
+        "scale(1)";
+
+      ring.style.opacity =
+        ".48";
+
+    }
+  );
+
 }
+
 
 
 /* =========================================
@@ -2459,7 +2801,9 @@ sleepOpen.addEventListener(
 sleepMenu.addEventListener(
   "click",
   event=>{
+
     event.stopPropagation();
+
   }
 );
 
@@ -2467,9 +2811,11 @@ sleepMenu.addEventListener(
 document.addEventListener(
   "click",
   ()=>{
+
     sleepMenu.classList.remove(
       "open"
     );
+
   }
 );
 
@@ -2487,7 +2833,9 @@ sleepOptions.forEach(
           );
 
 
-        if(minutes === 0){
+        if(
+          minutes === 0
+        ){
 
           cancelSleepTimer();
 
@@ -2513,7 +2861,9 @@ sleepOptions.forEach(
 
 
 
-function startSleepTimer(minutes){
+function startSleepTimer(
+  minutes
+){
 
   cancelSleepTimer();
 
@@ -2530,8 +2880,6 @@ function startSleepTimer(minutes){
   sleepOpen.style.background =
     "rgba(168,79,34,.18)";
 
-
-  /* Selected option */
 
   sleepOptions.forEach(
     button=>{
@@ -2577,7 +2925,9 @@ function updateSleepTimer(){
     );
 
 
-  if(remaining <= 0){
+  if(
+    remaining <= 0
+  ){
 
     finishSleepTimer();
 
@@ -2644,19 +2994,8 @@ function finishSleepTimer(){
   );
 
 
-  if(
-    youtubeReady &&
-    youtube
-  ){
-
-    try{
-
-      youtube.pauseVideo();
-
-    }
-    catch(e){}
-
-  }
+  if(youtubeReady && youtube){ try{ youtube.pauseVideo(); }catch(e){} }
+  if(soundcloudWidget){ try{ soundcloudWidget.pause(); }catch(e){} }
 
 
   setPlaying(false);
@@ -2704,6 +3043,102 @@ function cancelSleepTimer(){
 
 
 /* =========================================
+   SOUNDCLOUD WIDGET
+========================================= */
+
+function loadSoundCloudAPI(){
+  if(document.getElementById("sc-api")) return;
+  const script=document.createElement("script");
+  script.id="sc-api";
+  script.src="https://w.soundcloud.com/player/api.js";
+  script.onload=()=>initSoundCloudWidget();
+  document.head.appendChild(script);
+}
+
+function initSoundCloudWidget(){
+  if(!window.SC || !SC.Widget) return;
+  const iframe=document.getElementById("soundcloud-player");
+  soundcloudWidget=SC.Widget(iframe);
+  soundcloudWidget.bind(SC.Widget.Events.READY,()=>{
+    soundcloudReady=true;
+    if(selectedPlaylist && selectedPlaylist.source === "soundcloud") loadSoundCloudPlaylist();
+  });
+  soundcloudWidget.bind(SC.Widget.Events.PLAY,()=>{
+    setPlaying(true);
+    soundcloudWidget.getCurrentSound(sound=>{
+      if(sound){
+        activeVideoId="sc:"+(sound.id||sound.permalink_url||sound.title);
+        songTitle.textContent=sound.title||"SoundCloud";
+        artist.textContent=sound.user?.username||"SoundCloud";
+        setSoundCloudArtwork(sound);
+        updateSoundCloudMediaSession(sound);
+        highlightActiveSong();
+        highlightActiveFavourite();
+      }
+    });
+  });
+  soundcloudWidget.bind(SC.Widget.Events.PAUSE,()=>setPlaying(false));
+  soundcloudWidget.bind(SC.Widget.Events.FINISH,()=>setPlaying(false));
+  soundcloudWidget.bind(SC.Widget.Events.PLAY_PROGRESS,e=>{
+    if(selectedPlaylist?.source !== "soundcloud") return;
+    currentTime.textContent=formatTime(e.currentPosition||0);
+    duration.textContent=formatTime(e.loadedProgress ? 0 : (e.soundDuration||0));
+    const d=e.soundDuration||0;
+    progressFill.style.width=d?((e.currentPosition/d)*100)+"%":"0%";
+  });
+}
+
+function setSoundCloudArtwork(sound){
+  const art=sound?.artwork_url||sound?.user?.avatar_url||"";
+  if(art){
+    miniCD.style.backgroundImage=`url("${art}")`;
+    miniCD.style.backgroundSize="cover";
+    miniCD.style.backgroundPosition="center";
+    miniCD.style.backgroundRepeat="no-repeat";
+  }
+}
+
+function updateSoundCloudMediaSession(sound){
+  if("mediaSession" in navigator){
+    navigator.mediaSession.metadata=new MediaMetadata({
+      title:sound?.title||"SabRanG FM",
+      artist:sound?.user?.username||"SoundCloud",
+      album:"SabRanG FM",
+      artwork:sound?.artwork_url?[{src:sound.artwork_url,sizes:"500x500",type:"image/jpeg"}]:[]
+    });
+    navigator.mediaSession.setActionHandler("play",()=>soundcloudWidget?.play());
+    navigator.mediaSession.setActionHandler("pause",()=>soundcloudWidget?.pause());
+    navigator.mediaSession.setActionHandler("previoustrack",()=>soundcloudPrevious());
+    navigator.mediaSession.setActionHandler("nexttrack",()=>soundcloudNext());
+  }
+}
+
+function loadSoundCloudPlaylist(){
+  if(!soundcloudWidget || !selectedPlaylist?.url) return;
+  soundcloudReady=true;
+  const target=selectedPlaylist.url;
+  soundcloudWidget.load(target,{auto_play:false,show_artwork:false,hide_related:true,visual:false,sharing:false,show_comments:false,show_user:false});
+  soundcloudWidget.getSounds(sounds=>{
+    soundcloudSongs=Array.isArray(sounds)?sounds:[];
+    currentSongs=soundcloudSongs;
+    soundcloudIndex=0;
+    renderSongs();
+    soundcloudWidget.skip(0);
+    soundcloudWidget.play();
+  });
+}
+
+function soundcloudPlay(){ if(soundcloudWidget) soundcloudWidget.play(); }
+function soundcloudPause(){ if(soundcloudWidget) soundcloudWidget.pause(); }
+function soundcloudNext(){ if(soundcloudWidget) soundcloudWidget.next(); }
+function soundcloudPrevious(){ if(soundcloudWidget) soundcloudWidget.prev(); }
+
+function loadSoundCloudScript(){
+  if(window.SC && SC.Widget) initSoundCloudWidget();
+  else loadSoundCloudAPI();
+}
+
+/* =========================================
    YOUTUBE API
 ========================================= */
 
@@ -2743,10 +3178,38 @@ function(){
 
           onReady:()=>{
 
-            youtubeReady = true;
+            youtubeReady =
+              true;
 
 
-            if(selectedPlaylist){
+            if("mediaSession" in navigator){
+
+              navigator.mediaSession.setActionHandler(
+                "play",
+                ()=>{ try{ youtube.playVideo(); }catch(e){} }
+              );
+
+              navigator.mediaSession.setActionHandler(
+                "pause",
+                ()=>{ try{ youtube.pauseVideo(); }catch(e){} }
+              );
+
+              navigator.mediaSession.setActionHandler(
+                "previoustrack",
+                ()=>{ try{ youtube.previousVideo(); }catch(e){} }
+              );
+
+              navigator.mediaSession.setActionHandler(
+                "nexttrack",
+                ()=>{ try{ youtube.nextVideo(); }catch(e){} }
+              );
+
+            }
+
+
+            if(
+              selectedPlaylist
+            ){
 
               playSelectedPlaylist();
 
@@ -2827,23 +3290,27 @@ function loadYouTubeAPI(){
    PLAYER STATE
 ========================================= */
 
-function onPlayerStateChange(event){
+function onPlayerStateChange(
+  event
+){
 
   if(
     event.data ===
     YT.PlayerState.PLAYING
   ){
 
-    pendingAutoplay = false;
+    pendingAutoplay =
+      false;
+
 
     playingRequestId =
       playRequestId;
 
+
     setPlaying(true);
 
-    updateCurrentVideo();
 
-    saveCurrentToRecentlyPlayed();
+    updateCurrentVideo();
 
   }
 
@@ -2890,7 +3357,9 @@ function updateCurrentVideo(){
       youtube.getVideoData();
 
 
-    if(data?.title){
+    if(
+      data?.title
+    ){
 
       songTitle.textContent =
         data.title;
@@ -2898,7 +3367,9 @@ function updateCurrentVideo(){
     }
 
 
-    if(data?.author){
+    if(
+      data?.author
+    ){
 
       artist.textContent =
         data.author;
@@ -2906,16 +3377,41 @@ function updateCurrentVideo(){
     }
 
 
-    if(data?.video_id){
+    if(
+      data?.video_id
+    ){
 
-      activeVideoId = data.video_id;
+      activeVideoId =
+        data.video_id;
+
 
       setMiniCDThumbnail(
         data.video_id
       );
 
+
       highlightActiveSong();
+
       highlightActiveFavourite();
+
+    }
+
+
+    if("mediaSession" in navigator){
+
+      navigator.mediaSession.metadata =
+        new MediaMetadata({
+          title: data?.title || "SabRanG FM",
+          artist: data?.author || "SabRanG FM",
+          album: "SabRanG FM",
+          artwork: data?.video_id ? [
+            {
+              src:`https://img.youtube.com/vi/${data.video_id}/hqdefault.jpg`,
+              sizes:"480x360",
+              type:"image/jpeg"
+            }
+          ] : []
+        });
 
     }
 
@@ -2930,7 +3426,9 @@ function updateCurrentVideo(){
    MINI CD
 ========================================= */
 
-function setMiniCDThumbnail(videoId){
+function setMiniCDThumbnail(
+  videoId
+){
 
   if(!videoId){
 
@@ -2986,14 +3484,17 @@ async function loadPlaylists(){
 
 
     const snapshot =
-      await getDocs(q);
+      await getDocs(
+        q
+      );
 
 
     playlists =
       snapshot.docs.map(
         doc=>({
 
-          id:doc.id,
+          id:
+            doc.id,
 
           ...doc.data()
 
@@ -3003,16 +3504,23 @@ async function loadPlaylists(){
 
     playlists.sort(
       (a,b)=>
-        (a.order ?? 999) -
-        (b.order ?? 999)
+        (
+          a.order ??
+          999
+        ) -
+        (
+          b.order ??
+          999
+        )
     );
 
 
     renderPlaylists();
-    renderFavorites();
 
 
-    if(playlists.length){
+    if(
+      playlists.length
+    ){
 
       selectedPlaylist =
         playlists[0];
@@ -3024,18 +3532,17 @@ async function loadPlaylists(){
       loadSongs();
 
 
-      if(youtubeReady){
-
-        playSelectedPlaylist();
-
-      }
+      if(selectedPlaylist.source === "soundcloud") loadSoundCloudPlaylist();
+      else if(youtubeReady) playSelectedPlaylist();
 
     }
 
   }
   catch(error){
 
-    console.error(error);
+    console.error(
+      error
+    );
 
 
     playlistList.innerHTML =
@@ -3055,7 +3562,9 @@ async function loadPlaylists(){
 
 function renderPlaylists(){
 
-  if(!playlists.length){
+  if(
+    !playlists.length
+  ){
 
     playlistList.innerHTML =
       `<div class="empty">
@@ -3080,10 +3589,8 @@ function renderPlaylists(){
         </div>
 
         <div class="pl-name">
-          ${escapeHTML(
-            p.name ||
-            "Playlist"
-          )}
+          ${escapeHTML(p.name || "Playlist")}
+          <small style="display:block;opacity:.55;font-size:9px;margin-top:2px;">${p.source === "soundcloud" ? "SOUNDCLOUD" : "YOUTUBE"}</small>
         </div>
 
       </button>
@@ -3096,57 +3603,56 @@ function renderPlaylists(){
     .querySelectorAll(
       ".playlist-item"
     )
-    .forEach(button=>{
+    .forEach(
+      button=>{
 
-      button.addEventListener(
-        "click",
-        ()=>{
+        button.addEventListener(
+          "click",
+          ()=>{
 
-          selectedPlaylist =
-            playlists[
-              Number(
-                button.dataset.index
-              )
-            ];
-
-
-          playRequestId++;
+            selectedPlaylist =
+              playlists[
+                Number(
+                  button.dataset.index
+                )
+              ];
 
 
-          pendingAutoplay =
-            false;
+            playRequestId++;
 
 
-          if(
-            youtubeReady &&
-            youtube
-          ){
+            pendingAutoplay =
+              false;
 
-            try{
 
-              youtube.stopVideo();
+            activeVideoId =
+              "";
 
+
+            if(youtubeReady && youtube){
+              try{ youtube.stopVideo(); }catch(e){}
             }
-            catch(e){}
+            if(soundcloudWidget){
+              try{ soundcloudWidget.pause(); }catch(e){}
+            }
+
+
+            updatePlaylistUI();
+
+
+            closePlaylist();
+
+
+            loadSongs();
+
+
+            playSelectedPlaylist();
 
           }
+        );
 
-
-          updatePlaylistUI();
-
-
-          closePlaylist();
-
-
-          loadSongs();
-
-
-          playSelectedPlaylist();
-
-        }
-      );
-
-    });
+      }
+    );
 
 }
 
@@ -3184,10 +3690,11 @@ function updatePlaylistUI(){
 
 function playSelectedPlaylist(){
 
+  if(!selectedPlaylist || selectedPlaylist.source === "soundcloud") return;
+
   if(
     !youtubeReady ||
-    !youtube ||
-    !selectedPlaylist
+    !youtube
   ){
 
     return;
@@ -3212,6 +3719,10 @@ function playSelectedPlaylist(){
 
   pendingAutoplay =
     true;
+
+
+  activeVideoId =
+    "";
 
 
   try{
@@ -3239,7 +3750,10 @@ function playSelectedPlaylist(){
   }
   catch(error){
 
-    console.error(error);
+    console.error(
+      error
+    );
+
 
     pendingAutoplay =
       false;
@@ -3292,7 +3806,9 @@ function playSelectedPlaylist(){
       catch(e){}
 
 
-      if(attempts < 20){
+      if(
+        attempts < 20
+      ){
 
         setTimeout(
           waitForNewPlaylist,
@@ -3327,15 +3843,15 @@ playBtn.addEventListener(
   "click",
   ()=>{
 
-    if(!youtubeReady){
-
+    if(selectedPlaylist?.source === "soundcloud"){
+      if(!soundcloudWidget) return;
+      soundcloudWidget.isPaused(paused=> paused ? soundcloudPlay() : soundcloudPause());
       return;
-
     }
 
+    if(!youtubeReady) return;
 
-    const state =
-      youtube.getPlayerState();
+    const state = youtube.getPlayerState();
 
 
     if(
@@ -3360,13 +3876,8 @@ playBtn.addEventListener(
 prevBtn.addEventListener(
   "click",
   ()=>{
-
-    if(youtubeReady){
-
-      youtube.previousVideo();
-
-    }
-
+    if(selectedPlaylist?.source === "soundcloud"){ soundcloudPrevious(); return; }
+    if(youtubeReady) youtube.previousVideo();
   }
 );
 
@@ -3375,13 +3886,8 @@ prevBtn.addEventListener(
 nextBtn.addEventListener(
   "click",
   ()=>{
-
-    if(youtubeReady){
-
-      youtube.nextVideo();
-
-    }
-
+    if(selectedPlaylist?.source === "soundcloud"){ soundcloudNext(); return; }
+    if(youtubeReady) youtube.nextVideo();
   }
 );
 
@@ -3391,10 +3897,14 @@ nextBtn.addEventListener(
    TIME FORMAT
 ========================================= */
 
-function formatTime(seconds){
+function formatTime(
+  seconds
+){
 
   if(
-    !Number.isFinite(seconds) ||
+    !Number.isFinite(
+      seconds
+    ) ||
     seconds < 0
   ){
 
@@ -3430,6 +3940,11 @@ function formatTime(seconds){
    PROGRESS
 ========================================= */
 
+let isSeeking = false;
+
+let seekPercent = 0;
+
+
 function updateProgress(){
 
   if(
@@ -3448,7 +3963,9 @@ function updateProgress(){
         youtube.getCurrentTime();
 
 
-      if(total > 0){
+      if(
+        total > 0
+      ){
 
         const percent =
           Math.max(
@@ -3498,11 +4015,6 @@ updateProgress();
    SEEK
 ========================================= */
 
-let isSeeking = false;
-
-let seekPercent = 0;
-
-
 function percentFromEvent(
   event,
   rect
@@ -3524,7 +4036,9 @@ function percentFromEvent(
 
 
 
-function updateSeekVisual(event){
+function updateSeekVisual(
+  event
+){
 
   const rect =
     progress.getBoundingClientRect();
@@ -3541,7 +4055,9 @@ function updateSeekVisual(event){
     `scaleX(${seekPercent})`;
 
 
-  if(youtubeReady){
+  if(
+    youtubeReady
+  ){
 
     try{
 
@@ -3549,7 +4065,9 @@ function updateSeekVisual(event){
         youtube.getDuration();
 
 
-      if(total > 0){
+      if(
+        total > 0
+      ){
 
         currentTime.textContent =
           formatTime(
@@ -3641,7 +4159,9 @@ function finishSeek(){
       youtube.getDuration();
 
 
-    if(total > 0){
+    if(
+      total > 0
+    ){
 
       youtube.seekTo(
         total *
@@ -3741,10 +4261,6 @@ document
         "open"
       );
 
-      recentSheet.classList.remove(
-        "open"
-      );
-
       songsSheet.classList.add(
         "open"
       );
@@ -3782,9 +4298,18 @@ favoritesOpen.addEventListener(
   "click",
   ()=>{
 
-    playlistSheet.classList.remove("open");
-    songsSheet.classList.remove("open");
-    favoritesSheet.classList.add("open");
+    playlistSheet.classList.remove(
+      "open"
+    );
+
+    songsSheet.classList.remove(
+      "open"
+    );
+
+    favoritesSheet.classList.add(
+      "open"
+    );
+
     renderFavorites();
 
   }
@@ -3794,46 +4319,8 @@ favoritesOpen.addEventListener(
 favoritesClose.addEventListener(
   "click",
   ()=>{
-    favoritesSheet.classList.remove("open");
-  }
-);
-
-
-/* =========================================
-   RECENTLY PLAYED SHEET
-========================================= */
-
-recentOpen.addEventListener(
-  "click",
-  ()=>{
-
-    playlistSheet.classList.remove(
-      "open"
-    );
-
-    songsSheet.classList.remove(
-      "open"
-    );
 
     favoritesSheet.classList.remove(
-      "open"
-    );
-
-    recentSheet.classList.add(
-      "open"
-    );
-
-    renderRecentlyPlayed();
-
-  }
-);
-
-
-recentClose.addEventListener(
-  "click",
-  ()=>{
-
-    recentSheet.classList.remove(
       "open"
     );
 
@@ -3848,7 +4335,9 @@ recentClose.addEventListener(
 
 async function loadSongs(){
 
-  if(!selectedPlaylist){
+  if(
+    !selectedPlaylist
+  ){
 
     songsList.innerHTML =
       `<div class="empty">
@@ -3860,9 +4349,21 @@ async function loadSongs(){
   }
 
 
-  const playlistId =
-    selectedPlaylist.youtubeId;
+  if(selectedPlaylist.source === "soundcloud"){
+    if(!soundcloudWidget){
+      songsList.innerHTML=`<div class="empty">SoundCloud loading...</div>`;
+      loadSoundCloudScript();
+      return;
+    }
+    soundcloudWidget.getSounds(sounds=>{
+      soundcloudSongs=Array.isArray(sounds)?sounds:[];
+      currentSongs=soundcloudSongs;
+      renderSongs();
+    });
+    return;
+  }
 
+  const playlistId = selectedPlaylist.youtubeId;
 
   songsList.innerHTML =
     `<div class="empty">
@@ -3909,7 +4410,9 @@ async function loadSongs(){
       );
 
 
-      if(pageToken){
+      if(
+        pageToken
+      ){
 
         url.searchParams.set(
           "pageToken",
@@ -3920,14 +4423,18 @@ async function loadSongs(){
 
 
       const response =
-        await fetch(url);
+        await fetch(
+          url
+        );
 
 
       const data =
         await response.json();
 
 
-      if(!response.ok){
+      if(
+        !response.ok
+      ){
 
         throw new Error(
           data?.error?.message ||
@@ -3949,7 +4456,9 @@ async function loadSongs(){
 
 
     }
-    while(pageToken);
+    while(
+      pageToken
+    );
 
 
     currentSongs =
@@ -3964,7 +4473,9 @@ async function loadSongs(){
   }
   catch(error){
 
-    console.error(error);
+    console.error(
+      error
+    );
 
 
     songsList.innerHTML =
@@ -3983,6 +4494,31 @@ async function loadSongs(){
 ========================================= */
 
 function renderSongs(){
+
+  if(selectedPlaylist?.source === "soundcloud"){
+    if(!currentSongs.length){ songsList.innerHTML=`<div class="empty">No SoundCloud tracks found.</div>`; return; }
+    songsList.innerHTML=currentSongs.map((song,index)=>{
+      const id="sc:"+(song.id||song.permalink_url||index);
+      const title=song.title||"Unknown Track";
+      const channel=song.user?.username||"SoundCloud";
+      const thumb=song.artwork_url||song.user?.avatar_url||"";
+      const isActive=activeVideoId===id;
+      const isFav=favoriteSongs.some(item=>item.videoId===id);
+      return `<div class="song-item ${isActive?"active-song":""}" data-video="${escapeAttr(id)}" data-sc-index="${index}">
+        <div class="song-number">${index+1}</div>
+        <img class="thumb" src="${escapeAttr(thumb)}" alt="">
+        <div class="song-info"><div class="song-name">${escapeHTML(title)} ${isActive?`<span class="song-playing"><i></i><i></i><i></i></span>`:""}</div><div class="song-channel">${escapeHTML(channel)}</div></div>
+        <button class="favorite-btn ${isFav?"active":""}" data-fav-video="${escapeAttr(id)}">${isFav?"♥":"♡"}</button>
+        <div class="song-play-icon">${isActive?"❚❚":"▶"}</div>
+      </div>`;
+    }).join("");
+    songsList.querySelectorAll(".song-item").forEach(item=>item.addEventListener("click",e=>{
+      if(e.target.closest(".favorite-btn")) return;
+      playSoundCloudSong(Number(item.dataset.scIndex));
+    }));
+    songsList.querySelectorAll(".favorite-btn").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();toggleFavorite(btn.dataset.favVideo);}));
+    return;
+  }
 
   if(!currentSongs.length){
 
@@ -4004,30 +4540,40 @@ function renderSongs(){
           song.snippet ||
           {};
 
+
         const videoId =
           song.contentDetails.videoId;
+
 
         const thumbnail =
           s.thumbnails?.medium?.url ||
           s.thumbnails?.default?.url ||
           "";
 
+
         const title =
           s.title ||
           "Unknown Song";
+
 
         const channel =
           s.videoOwnerChannelTitle ||
           s.channelTitle ||
           "";
 
+
         const isFav =
           favoriteSongs.some(
-            item=>item.videoId === videoId
+            item=>
+              item.videoId ===
+              videoId
           );
 
+
         const isActive =
-          activeVideoId === videoId;
+          activeVideoId ===
+          videoId;
+
 
         return `
 
@@ -4047,28 +4593,63 @@ function renderSongs(){
             <div class="song-info">
 
               <div class="song-name">
+
                 ${escapeHTML(title)}
-                ${isActive ? `
-                  <span class="song-playing" aria-label="Playing">
-                    <i></i><i></i><i></i>
-                  </span>` : ""}
+
+                ${
+                  isActive
+                  ? `
+                    <span
+                      class="song-playing"
+                      aria-label="Playing">
+
+                      <i></i>
+                      <i></i>
+                      <i></i>
+
+                    </span>
+                  `
+                  : ""
+                }
+
               </div>
 
               <div class="song-channel">
+
                 ${escapeHTML(channel)}
+
               </div>
 
             </div>
 
+
             <button
               class="favorite-btn ${isFav ? "active" : ""}"
               data-fav-video="${escapeAttr(videoId)}"
-              title="Favourite">
-              ${isFav ? "♥" : "♡"}
+              title="${
+                isFav
+                  ? "Remove Favourite"
+                  : "Add Favourite"
+              }">
+
+              ${
+                isFav
+                  ? "♥"
+                  : "♡"
+              }
+
             </button>
 
-            <div class="song-play-icon">
-              ${isActive ? "❚❚" : "▶"}
+
+            <div
+              class="song-play-icon">
+
+              ${
+                isActive
+                  ? "❚❚"
+                  : "▶"
+              }
+
             </div>
 
           </div>
@@ -4095,13 +4676,19 @@ function renderSongs(){
                 ".favorite-btn"
               )
             ){
+
               return;
+
             }
+
 
             const videoId =
               item.dataset.video;
 
-            playSong(videoId);
+
+            playSong(
+              videoId
+            );
 
           }
         );
@@ -4123,6 +4710,7 @@ function renderSongs(){
 
             event.stopPropagation();
 
+
             toggleFavorite(
               button.dataset.favVideo
             );
@@ -4136,95 +4724,219 @@ function renderSongs(){
 }
 
 
+
+/* =========================================
+   ACTIVE SONG HIGHLIGHT
+========================================= */
+
 function highlightActiveSong(){
 
-  if(!songsList) return;
+  if(
+    !songsList
+  ){
+
+    return;
+
+  }
+
 
   songsList
-    .querySelectorAll(".song-item")
-    .forEach(item=>{
+    .querySelectorAll(
+      ".song-item"
+    )
+    .forEach(
+      item=>{
 
-      const active =
-        item.dataset.video === activeVideoId;
+        const active =
+          item.dataset.video ===
+          activeVideoId;
 
-      item.classList.toggle(
-        "active-song",
-        active
-      );
 
-      const icon =
-        item.querySelector(".song-play-icon");
+        item.classList.toggle(
+          "active-song",
+          active
+        );
 
-      if(icon){
-        icon.textContent =
-          active ? "❚❚" : "▶";
-      }
 
-      const name =
-        item.querySelector(".song-name");
-
-      if(name){
-        const old =
-          name.querySelector(".song-playing");
-
-        if(active && !old){
-          name.insertAdjacentHTML(
-            "beforeend",
-            `<span class="song-playing" aria-label="Playing"><i></i><i></i><i></i></span>`
+        const icon =
+          item.querySelector(
+            ".song-play-icon"
           );
+
+
+        if(icon){
+
+          icon.textContent =
+            active
+              ? "❚❚"
+              : "▶";
+
         }
 
-        if(!active && old){
-          old.remove();
+
+        const name =
+          item.querySelector(
+            ".song-name"
+          );
+
+
+        if(name){
+
+          const old =
+            name.querySelector(
+              ".song-playing"
+            );
+
+
+          if(
+            active &&
+            !old
+          ){
+
+            name.insertAdjacentHTML(
+              "beforeend",
+              `
+              <span
+                class="song-playing"
+                aria-label="Playing">
+
+                <i></i>
+                <i></i>
+                <i></i>
+
+              </span>
+              `
+            );
+
+          }
+
+
+          if(
+            !active &&
+            old
+          ){
+
+            old.remove();
+
+          }
+
         }
+
       }
-
-    });
+    );
 
 }
 
+
+
+/* =========================================
+   ACTIVE FAVOURITE HIGHLIGHT
+========================================= */
 
 function highlightActiveFavourite(){
 
-  if(!favoritesList) return;
+  if(
+    !favoritesList
+  ){
+
+    return;
+
+  }
+
 
   favoritesList
-    .querySelectorAll(".song-item")
-    .forEach(item=>{
+    .querySelectorAll(
+      ".song-item"
+    )
+    .forEach(
+      item=>{
 
-      const active =
-        item.dataset.video === activeVideoId;
+        const active =
+          item.dataset.video ===
+          activeVideoId;
 
-      item.classList.toggle(
-        "active-song",
-        active
-      );
 
-    });
+        item.classList.toggle(
+          "active-song",
+          active
+        );
+
+
+        const icon =
+          item.querySelector(
+            ".song-play-icon"
+          );
+
+
+        if(icon){
+
+          icon.textContent =
+            active
+              ? "❚❚"
+              : "▶";
+
+        }
+
+      }
+    );
 
 }
 
+
+
+/* =========================================
+   SAVE FAVOURITES
+========================================= */
 
 function saveFavorites(){
 
-  localStorage.setItem(
-    "sabrang_favourites",
-    JSON.stringify(favoriteSongs)
-  );
+  try{
+
+    localStorage.setItem(
+      "sabrang_favourites",
+      JSON.stringify(
+        favoriteSongs
+      )
+    );
+
+  }
+  catch(e){
+
+    console.error(
+      "Favourite save error",
+      e
+    );
+
+  }
 
 }
 
 
-function toggleFavorite(videoId){
+
+/* =========================================
+   TOGGLE FAVOURITE
+========================================= */
+
+function toggleFavorite(
+  videoId
+){
 
   const index =
     favoriteSongs.findIndex(
-      item=>item.videoId === videoId
+      item=>
+        item.videoId ===
+        videoId
     );
 
-  if(index >= 0){
 
-    favoriteSongs.splice(index,1);
+  if(
+    index >= 0
+  ){
+
+    favoriteSongs.splice(
+      index,
+      1
+    );
 
   }
   else{
@@ -4232,85 +4944,178 @@ function toggleFavorite(videoId){
     const song =
       currentSongs.find(
         item=>
-          item.contentDetails?.videoId === videoId
+          item.contentDetails?.videoId ===
+          videoId
       );
+
 
     if(song){
 
-      const s = song.snippet || {};
+      const s =
+        song.snippet ||
+        {};
+
 
       favoriteSongs.push({
-        videoId,
-        title:s.title || "Unknown Song",
+
+        videoId:
+
+          videoId,
+
+
+        title:
+
+          s.title ||
+          "Unknown Song",
+
+
         channel:
+
           s.videoOwnerChannelTitle ||
           s.channelTitle ||
           "",
+
+
         thumbnail:
+
           s.thumbnails?.medium?.url ||
           s.thumbnails?.default?.url ||
           ""
+
       });
 
     }
 
   }
 
+
   saveFavorites();
+
+
   renderSongs();
+
+
   renderFavorites();
 
 }
 
 
+
+/* =========================================
+   RENDER FAVOURITES
+========================================= */
+
 function renderFavorites(){
 
-  if(!favoriteSongs.length){
+  if(
+    !favoriteSongs.length
+  ){
 
     favoritesList.innerHTML =
       `<div class="fav-empty">
-        ❤️ Favourite songs yahan dikhenge.
+
+        ❤️ Favourite songs
+        yahan dikhenge.
+
       </div>`;
 
     return;
 
   }
 
+
   favoritesList.innerHTML =
     favoriteSongs.map(
       (song,index)=>`
 
         <div
-          class="song-item ${activeVideoId === song.videoId ? "active-song" : ""}"
-          data-video="${escapeAttr(song.videoId)}">
+          class="song-item ${
+            activeVideoId ===
+            song.videoId
+              ? "active-song"
+              : ""
+          }"
+          data-video="${escapeAttr(
+            song.videoId
+          )}">
+
 
           <div class="song-number">
+
             ${index+1}
+
           </div>
+
 
           <img
             class="thumb"
-            src="${escapeAttr(song.thumbnail)}"
+            src="${escapeAttr(
+              song.thumbnail
+            )}"
             alt="">
 
+
           <div class="song-info">
+
             <div class="song-name">
-              ${escapeHTML(song.title)}
+
+              ${escapeHTML(
+                song.title
+              )}
+
+              ${
+                activeVideoId ===
+                song.videoId
+                ? `
+                  <span
+                    class="song-playing"
+                    aria-label="Playing">
+
+                    <i></i>
+                    <i></i>
+                    <i></i>
+
+                  </span>
+                `
+                : ""
+              }
+
             </div>
+
+
             <div class="song-channel">
-              ${escapeHTML(song.channel)}
+
+              ${escapeHTML(
+                song.channel
+              )}
+
             </div>
+
           </div>
+
 
           <button
             class="favorite-btn active"
-            data-fav-video="${escapeAttr(song.videoId)}"
-            title="Remove favourite">
+            data-fav-video="${escapeAttr(
+              song.videoId
+            )}"
+            title="Remove Favourite">
+
             ♥
+
           </button>
 
-          <div class="song-play-icon">
-            ${activeVideoId === song.videoId ? "❚❚" : "▶"}
+
+          <div
+            class="song-play-icon">
+
+            ${
+              activeVideoId ===
+              song.videoId
+                ? "❚❚"
+                : "▶"
+            }
+
           </div>
 
         </div>
@@ -4318,53 +5123,98 @@ function renderFavorites(){
       `
     ).join("");
 
+
   favoritesList
-    .querySelectorAll(".song-item")
-    .forEach(item=>{
+    .querySelectorAll(
+      ".song-item"
+    )
+    .forEach(
+      item=>{
 
-      item.addEventListener(
-        "click",
-        event=>{
+        item.addEventListener(
+          "click",
+          event=>{
 
-          if(event.target.closest(".favorite-btn")){
-            return;
+            if(
+              event.target.closest(
+                ".favorite-btn"
+              )
+            ){
+
+              return;
+
+            }
+
+
+            playSong(
+              item.dataset.video
+            );
+
           }
+        );
 
-          playSong(item.dataset.video);
+      }
+    );
 
-        }
-      );
-
-    });
 
   favoritesList
-    .querySelectorAll(".favorite-btn")
-    .forEach(button=>{
+    .querySelectorAll(
+      ".favorite-btn"
+    )
+    .forEach(
+      button=>{
 
-      button.addEventListener(
-        "click",
-        event=>{
-          event.stopPropagation();
-          toggleFavorite(button.dataset.favVideo);
-        }
-      );
+        button.addEventListener(
+          "click",
+          event=>{
 
-    });
+            event.stopPropagation();
+
+
+            toggleFavorite(
+              button.dataset.favVideo
+            );
+
+          }
+        );
+
+      }
+    );
+
 
   highlightActiveFavourite();
 
 }
 
 
+
 /* =========================================
    PLAY SINGLE SONG
 ========================================= */
 
-function playSong(videoId){
+function playSoundCloudSong(index){
+  if(!soundcloudWidget || !Number.isFinite(index)) return;
+  soundcloudIndex=index;
+  soundcloudWidget.skip(index);
+  soundcloudWidget.play();
+  songsSheet.classList.remove("open");
+  favoritesSheet.classList.remove("open");
+}
 
-  activeVideoId = videoId;
+function playSong(
+  videoId
+){
+
+  if(selectedPlaylist?.source === "soundcloud") return;
+
+  activeVideoId =
+    videoId;
+
+
   highlightActiveSong();
+
   highlightActiveFavourite();
+
 
   if(
     !youtubeReady ||
@@ -4387,10 +5237,16 @@ function playSong(videoId){
       "open"
     );
 
+    favoritesSheet.classList.remove(
+      "open"
+    );
+
   }
   catch(error){
 
-    console.error(error);
+    console.error(
+      error
+    );
 
   }
 
@@ -4399,10 +5255,12 @@ function playSong(videoId){
 
 
 /* =========================================
-   ESCAPE
+   ESCAPE HTML
 ========================================= */
 
-function escapeHTML(value){
+function escapeHTML(
+  value
+){
 
   return String(
     value ?? ""
@@ -4411,15 +5269,20 @@ function escapeHTML(value){
     /[&<>"']/g,
     char=>({
 
-      "&":"&amp;",
+      "&":
+        "&amp;",
 
-      "<":"&lt;",
+      "<":
+        "&lt;",
 
-      ">":"&gt;",
+      ">":
+        "&gt;",
 
-      '"':"&quot;",
+      '"':
+        "&quot;",
 
-      "'":"&#039;"
+      "'":
+        "&#039;"
 
     }[char])
   );
@@ -4428,9 +5291,13 @@ function escapeHTML(value){
 
 
 
-function escapeAttr(value){
+function escapeAttr(
+  value
+){
 
-  return escapeHTML(value);
+  return escapeHTML(
+    value
+  );
 
 }
 
@@ -4440,10 +5307,8 @@ function escapeAttr(value){
    START
 ========================================= */
 
-renderRecentlyPlayed();
-
 loadYouTubeAPI();
-
+loadSoundCloudScript();
 loadPlaylists();
 
 </script>
