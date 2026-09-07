@@ -924,10 +924,6 @@ body:before{
   color:var(--orange);
 }
 
-.recent-open{
-  font-size:18px;
-}
-
 
 /* =========================
    SONGS BUTTON
@@ -1840,16 +1836,6 @@ body:before{
 
 
       <button
-        class="control recent-open"
-        id="recent-open"
-        title="Recently Played">
-
-        🕘
-
-      </button>
-
-
-      <button
         class="control"
         id="prev">
 
@@ -1997,46 +1983,6 @@ body:before{
   </div>
 
 </div>
-
-
-
-<!-- =========================
-     RECENTLY PLAYED SHEET
-========================= -->
-
-<section
-  class="sheet"
-  id="recent-sheet">
-
-  <div class="handle"></div>
-
-  <div class="sheet-head">
-
-    <div class="sheet-title">
-      🕘 Recently Played
-    </div>
-
-    <button
-      class="close"
-      id="recent-close">
-
-      ✕
-
-    </button>
-
-  </div>
-
-  <div
-    class="list"
-    id="recent-list">
-
-    <div class="fav-empty">
-      Abhi koi recently played song nahi hai.
-    </div>
-
-  </div>
-
-</section>
 
 
 
@@ -2264,7 +2210,6 @@ let playingRequestId = -1;
 let activeVideoId = "";
 
 
-
 /* =========================================
    FAVOURITES
 ========================================= */
@@ -2280,7 +2225,6 @@ try{
       ) || "[]"
     );
 
-
   if(
     !Array.isArray(
       favoriteSongs
@@ -2295,41 +2239,6 @@ try{
 catch(e){
 
   favoriteSongs = [];
-
-}
-
-
-
-/* =========================================
-   RECENTLY PLAYED
-========================================= */
-
-let recentlyPlayed = [];
-
-try{
-
-  recentlyPlayed =
-    JSON.parse(
-      localStorage.getItem(
-        "sabrang_recently_played"
-      ) || "[]"
-    );
-
-
-  if(
-    !Array.isArray(
-      recentlyPlayed
-    )
-  ){
-
-    recentlyPlayed = [];
-
-  }
-
-}
-catch(e){
-
-  recentlyPlayed = [];
 
 }
 
@@ -2481,27 +2390,6 @@ const favoritesClose =
   );
 
 
-const recentOpen =
-  document.getElementById(
-    "recent-open"
-  );
-
-const recentSheet =
-  document.getElementById(
-    "recent-sheet"
-  );
-
-const recentClose =
-  document.getElementById(
-    "recent-close"
-  );
-
-const recentList =
-  document.getElementById(
-    "recent-list"
-  );
-
-
 const playlistList =
   document.getElementById(
     "playlist-list"
@@ -2567,9 +2455,7 @@ function setPlaying(
   );
 
 
-  if(
-    playing
-  ){
+  if(playing){
 
     startPremiumVisualizer();
 
@@ -2603,8 +2489,6 @@ function setPlaying(
 
   highlightActiveFavourite();
 
-  highlightActiveRecent();
-
 }
 
 
@@ -2615,9 +2499,7 @@ function setPlaying(
 
 function startPremiumVisualizer(){
 
-  if(
-    visualizerFrame
-  ){
+  if(visualizerFrame){
 
     return;
 
@@ -2637,8 +2519,7 @@ function startPremiumVisualizer(){
         )
       ){
 
-        visualizerFrame =
-          null;
+        visualizerFrame = null;
 
         return;
 
@@ -2664,6 +2545,14 @@ function startPremiumVisualizer(){
 
       }
 
+
+      /*
+        YouTube IFrame API actual audio
+        FFT/waveform data provide nahi karta.
+
+        Isliye visualizer playback-time
+        synchronized beat-style motion use karta hai.
+      */
 
       const t =
         songTime * 2.05 +
@@ -2809,16 +2698,13 @@ function startPremiumVisualizer(){
 
 function stopPremiumVisualizer(){
 
-  if(
-    visualizerFrame
-  ){
+  if(visualizerFrame){
 
     cancelAnimationFrame(
       visualizerFrame
     );
 
-    visualizerFrame =
-      null;
+    visualizerFrame = null;
 
   }
 
@@ -2986,9 +2872,7 @@ function startSleepTimer(
 
 function updateSleepTimer(){
 
-  if(
-    !sleepEndTime
-  ){
+  if(!sleepEndTime){
 
     return;
 
@@ -3039,22 +2923,18 @@ function updateSleepTimer(){
 
 function finishSleepTimer(){
 
-  if(
-    sleepTimer
-  ){
+  if(sleepTimer){
 
     clearInterval(
       sleepTimer
     );
 
-    sleepTimer =
-      null;
+    sleepTimer = null;
 
   }
 
 
-  sleepEndTime =
-    0;
+  sleepEndTime = 0;
 
 
   sleepStatus.textContent =
@@ -3099,22 +2979,18 @@ function finishSleepTimer(){
 
 function cancelSleepTimer(){
 
-  if(
-    sleepTimer
-  ){
+  if(sleepTimer){
 
     clearInterval(
       sleepTimer
     );
 
-    sleepTimer =
-      null;
+    sleepTimer = null;
 
   }
 
 
-  sleepEndTime =
-    0;
+  sleepEndTime = 0;
 
 
   sleepStatus.textContent =
@@ -3288,9 +3164,6 @@ function onPlayerStateChange(
 
     updateCurrentVideo();
 
-
-    saveCurrentToRecentlyPlayed();
-
   }
 
 
@@ -3323,9 +3196,7 @@ function onPlayerStateChange(
 
 function updateCurrentVideo(){
 
-  if(
-    !youtubeReady
-  ){
+  if(!youtubeReady){
 
     return;
 
@@ -3375,8 +3246,6 @@ function updateCurrentVideo(){
 
       highlightActiveFavourite();
 
-      highlightActiveRecent();
-
     }
 
   }
@@ -3394,9 +3263,7 @@ function setMiniCDThumbnail(
   videoId
 ){
 
-  if(
-    !videoId
-  ){
+  if(!videoId){
 
     return;
 
@@ -3685,9 +3552,7 @@ function playSelectedPlaylist(){
     selectedPlaylist.youtubeId;
 
 
-  if(
-    !id
-  ){
+  if(!id){
 
     return;
 
@@ -3824,9 +3689,7 @@ playBtn.addEventListener(
   "click",
   ()=>{
 
-    if(
-      !youtubeReady
-    ){
+    if(!youtubeReady){
 
       return;
 
@@ -3860,9 +3723,7 @@ prevBtn.addEventListener(
   "click",
   ()=>{
 
-    if(
-      youtubeReady
-    ){
+    if(youtubeReady){
 
       youtube.previousVideo();
 
@@ -3877,9 +3738,7 @@ nextBtn.addEventListener(
   "click",
   ()=>{
 
-    if(
-      youtubeReady
-    ){
+    if(youtubeReady){
 
       youtube.nextVideo();
 
@@ -4087,9 +3946,7 @@ progress.addEventListener(
   "pointerdown",
   event=>{
 
-    if(
-      !youtubeReady
-    ){
+    if(!youtubeReady){
 
       return;
 
@@ -4117,9 +3974,7 @@ progress.addEventListener(
   "pointermove",
   event=>{
 
-    if(
-      !isSeeking
-    ){
+    if(!isSeeking){
 
       return;
 
@@ -4137,9 +3992,7 @@ progress.addEventListener(
 
 function finishSeek(){
 
-  if(
-    !isSeeking
-  ){
+  if(!isSeeking){
 
     return;
 
@@ -4149,9 +4002,7 @@ function finishSeek(){
   isSeeking = false;
 
 
-  if(
-    !youtubeReady
-  ){
+  if(!youtubeReady){
 
     return;
 
@@ -4216,10 +4067,6 @@ document
         "open"
       );
 
-      recentSheet.classList.remove(
-        "open"
-      );
-
       playlistSheet.classList.add(
         "open"
       );
@@ -4270,10 +4117,6 @@ document
         "open"
       );
 
-      recentSheet.classList.remove(
-        "open"
-      );
-
       songsSheet.classList.add(
         "open"
       );
@@ -4319,10 +4162,6 @@ favoritesOpen.addEventListener(
       "open"
     );
 
-    recentSheet.classList.remove(
-      "open"
-    );
-
     favoritesSheet.classList.add(
       "open"
     );
@@ -4338,49 +4177,6 @@ favoritesClose.addEventListener(
   ()=>{
 
     favoritesSheet.classList.remove(
-      "open"
-    );
-
-  }
-);
-
-
-
-/* =========================================
-   RECENTLY PLAYED SHEET
-========================================= */
-
-recentOpen.addEventListener(
-  "click",
-  ()=>{
-
-    playlistSheet.classList.remove(
-      "open"
-    );
-
-    songsSheet.classList.remove(
-      "open"
-    );
-
-    favoritesSheet.classList.remove(
-      "open"
-    );
-
-    recentSheet.classList.add(
-      "open"
-    );
-
-    renderRecentlyPlayed();
-
-  }
-);
-
-
-recentClose.addEventListener(
-  "click",
-  ()=>{
-
-    recentSheet.classList.remove(
       "open"
     );
 
@@ -4603,14 +4399,8 @@ function renderSongs(){
         return `
 
           <div
-            class="song-item ${
-              isActive
-                ? "active-song"
-                : ""
-            }"
-            data-video="${escapeAttr(
-              videoId
-            )}">
+            class="song-item ${isActive ? "active-song" : ""}"
+            data-video="${escapeAttr(videoId)}">
 
             <div class="song-number">
               ${index+1}
@@ -4618,42 +4408,36 @@ function renderSongs(){
 
             <img
               class="thumb"
-              src="${escapeAttr(
-                thumbnail
-              )}"
+              src="${escapeAttr(thumbnail)}"
               alt="">
 
             <div class="song-info">
 
               <div class="song-name">
 
-                ${escapeHTML(
-                  title
-                )}
+                ${escapeHTML(title)}
 
                 ${
                   isActive
-                    ? `
-                      <span
-                        class="song-playing"
-                        aria-label="Playing">
+                  ? `
+                    <span
+                      class="song-playing"
+                      aria-label="Playing">
 
-                        <i></i>
-                        <i></i>
-                        <i></i>
+                      <i></i>
+                      <i></i>
+                      <i></i>
 
-                      </span>
-                    `
-                    : ""
+                    </span>
+                  `
+                  : ""
                 }
 
               </div>
 
               <div class="song-channel">
 
-                ${escapeHTML(
-                  channel
-                )}
+                ${escapeHTML(channel)}
 
               </div>
 
@@ -4661,14 +4445,8 @@ function renderSongs(){
 
 
             <button
-              class="favorite-btn ${
-                isFav
-                  ? "active"
-                  : ""
-              }"
-              data-fav-video="${escapeAttr(
-                videoId
-              )}"
+              class="favorite-btn ${isFav ? "active" : ""}"
+              data-fav-video="${escapeAttr(videoId)}"
               title="${
                 isFav
                   ? "Remove Favourite"
@@ -4807,9 +4585,7 @@ function highlightActiveSong(){
           );
 
 
-        if(
-          icon
-        ){
+        if(icon){
 
           icon.textContent =
             active
@@ -4825,9 +4601,7 @@ function highlightActiveSong(){
           );
 
 
-        if(
-          name
-        ){
+        if(name){
 
           const old =
             name.querySelector(
@@ -4915,66 +4689,7 @@ function highlightActiveFavourite(){
           );
 
 
-        if(
-          icon
-        ){
-
-          icon.textContent =
-            active
-              ? "❚❚"
-              : "▶";
-
-        }
-
-      }
-    );
-
-}
-
-
-
-/* =========================================
-   ACTIVE RECENT HIGHLIGHT
-========================================= */
-
-function highlightActiveRecent(){
-
-  if(
-    !recentList
-  ){
-
-    return;
-
-  }
-
-
-  recentList
-    .querySelectorAll(
-      ".song-item"
-    )
-    .forEach(
-      item=>{
-
-        const active =
-          item.dataset.video ===
-          activeVideoId;
-
-
-        item.classList.toggle(
-          "active-song",
-          active
-        );
-
-
-        const icon =
-          item.querySelector(
-            ".song-play-icon"
-          );
-
-
-        if(
-          icon
-        ){
+        if(icon){
 
           icon.textContent =
             active
@@ -5055,9 +4770,7 @@ function toggleFavorite(
       );
 
 
-    if(
-      song
-    ){
+    if(song){
 
       const s =
         song.snippet ||
@@ -5067,18 +4780,25 @@ function toggleFavorite(
       favoriteSongs.push({
 
         videoId:
+
           videoId,
 
+
         title:
+
           s.title ||
           "Unknown Song",
 
+
         channel:
+
           s.videoOwnerChannelTitle ||
           s.channelTitle ||
           "",
 
+
         thumbnail:
+
           s.thumbnails?.medium?.url ||
           s.thumbnails?.default?.url ||
           ""
@@ -5097,377 +4817,6 @@ function toggleFavorite(
 
 
   renderFavorites();
-
-
-  renderRecentlyPlayed();
-
-}
-
-
-
-/* =========================================
-   SAVE RECENTLY PLAYED
-========================================= */
-
-function saveRecentlyPlayed(){
-
-  try{
-
-    localStorage.setItem(
-      "sabrang_recently_played",
-      JSON.stringify(
-        recentlyPlayed
-      )
-    );
-
-  }
-  catch(e){
-
-    console.error(
-      "Recently played save error",
-      e
-    );
-
-  }
-
-}
-
-
-
-/* =========================================
-   ADD CURRENT SONG TO RECENTLY PLAYED
-========================================= */
-
-function saveCurrentToRecentlyPlayed(){
-
-  if(
-    !activeVideoId
-  ){
-
-    return;
-
-  }
-
-
-  const found =
-    currentSongs.find(
-      item=>
-        item.contentDetails?.videoId ===
-        activeVideoId
-    );
-
-
-  let song = null;
-
-
-  if(
-    found
-  ){
-
-    const sn =
-      found.snippet ||
-      {};
-
-
-    song = {
-
-      videoId:
-        activeVideoId,
-
-      title:
-        sn.title ||
-        songTitle.textContent ||
-        "Unknown Song",
-
-      channel:
-        sn.videoOwnerChannelTitle ||
-        sn.channelTitle ||
-        artist.textContent ||
-        "",
-
-      thumbnail:
-        sn.thumbnails?.medium?.url ||
-        sn.thumbnails?.default?.url ||
-        "",
-
-      playedAt:
-        Date.now()
-
-    };
-
-  }
-  else{
-
-    const old =
-      recentlyPlayed.find(
-        item=>
-          item.videoId ===
-          activeVideoId
-      );
-
-
-    song = {
-
-      videoId:
-        activeVideoId,
-
-      title:
-        old?.title ||
-        songTitle.textContent ||
-        "Unknown Song",
-
-      channel:
-        old?.channel ||
-        artist.textContent ||
-        "",
-
-      thumbnail:
-        old?.thumbnail ||
-        `https://img.youtube.com/vi/${activeVideoId}/hqdefault.jpg`,
-
-      playedAt:
-        Date.now()
-
-    };
-
-  }
-
-
-  recentlyPlayed =
-    recentlyPlayed.filter(
-      item=>
-        item.videoId !==
-        activeVideoId
-    );
-
-
-  recentlyPlayed.unshift(
-    song
-  );
-
-
-  recentlyPlayed =
-    recentlyPlayed.slice(
-      0,
-      30
-    );
-
-
-  saveRecentlyPlayed();
-
-
-  renderRecentlyPlayed();
-
-}
-
-
-
-/* =========================================
-   RENDER RECENTLY PLAYED
-========================================= */
-
-function renderRecentlyPlayed(){
-
-  if(
-    !recentlyPlayed.length
-  ){
-
-    recentList.innerHTML =
-      `<div class="fav-empty">
-
-        🕘 Recently played songs
-        yahan dikhenge.
-
-      </div>`;
-
-    return;
-
-  }
-
-
-  recentList.innerHTML =
-    recentlyPlayed.map(
-      (song,index)=>{
-
-        const isFav =
-          favoriteSongs.some(
-            item=>
-              item.videoId ===
-              song.videoId
-          );
-
-
-        const isActive =
-          activeVideoId ===
-          song.videoId;
-
-
-        return `
-
-          <div
-            class="song-item ${
-              isActive
-                ? "active-song"
-                : ""
-            }"
-            data-video="${escapeAttr(
-              song.videoId
-            )}">
-
-            <div class="song-number">
-              ${index+1}
-            </div>
-
-
-            <img
-              class="thumb"
-              src="${escapeAttr(
-                song.thumbnail ||
-                `https://img.youtube.com/vi/${song.videoId}/hqdefault.jpg`
-              )}"
-              alt="">
-
-
-            <div class="song-info">
-
-              <div class="song-name">
-
-                ${escapeHTML(
-                  song.title
-                )}
-
-                ${
-                  isActive
-                    ? `
-                      <span
-                        class="song-playing"
-                        aria-label="Playing">
-
-                        <i></i>
-                        <i></i>
-                        <i></i>
-
-                      </span>
-                    `
-                    : ""
-                }
-
-              </div>
-
-
-              <div class="song-channel">
-
-                ${escapeHTML(
-                  song.channel
-                )}
-
-              </div>
-
-            </div>
-
-
-            <button
-              class="favorite-btn ${
-                isFav
-                  ? "active"
-                  : ""
-              }"
-              data-fav-video="${escapeAttr(
-                song.videoId
-              )}"
-              title="${
-                isFav
-                  ? "Remove Favourite"
-                  : "Add Favourite"
-              }">
-
-              ${
-                isFav
-                  ? "♥"
-                  : "♡"
-              }
-
-            </button>
-
-
-            <div
-              class="song-play-icon">
-
-              ${
-                isActive
-                  ? "❚❚"
-                  : "▶"
-              }
-
-            </div>
-
-          </div>
-
-        `;
-
-      }
-    ).join("");
-
-
-  recentList
-    .querySelectorAll(
-      ".song-item"
-    )
-    .forEach(
-      item=>{
-
-        item.addEventListener(
-          "click",
-          event=>{
-
-            if(
-              event.target.closest(
-                ".favorite-btn"
-              )
-            ){
-
-              return;
-
-            }
-
-
-            playSong(
-              item.dataset.video
-            );
-
-          }
-        );
-
-      }
-    );
-
-
-  recentList
-    .querySelectorAll(
-      ".favorite-btn"
-    )
-    .forEach(
-      button=>{
-
-        button.addEventListener(
-          "click",
-          event=>{
-
-            event.stopPropagation();
-
-
-            toggleFavorite(
-              button.dataset.favVideo
-            );
-
-          }
-        );
-
-      }
-    );
-
-
-  highlightActiveRecent();
 
 }
 
@@ -5538,18 +4887,18 @@ function renderFavorites(){
               ${
                 activeVideoId ===
                 song.videoId
-                  ? `
-                    <span
-                      class="song-playing"
-                      aria-label="Playing">
+                ? `
+                  <span
+                    class="song-playing"
+                    aria-label="Playing">
 
-                      <i></i>
-                      <i></i>
-                      <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
 
-                    </span>
-                  `
-                  : ""
+                  </span>
+                `
+                : ""
               }
 
             </div>
@@ -5676,8 +5025,6 @@ function playSong(
 
   highlightActiveFavourite();
 
-  highlightActiveRecent();
-
 
   if(
     !youtubeReady ||
@@ -5701,10 +5048,6 @@ function playSong(
     );
 
     favoritesSheet.classList.remove(
-      "open"
-    );
-
-    recentSheet.classList.remove(
       "open"
     );
 
@@ -5773,8 +5116,6 @@ function escapeAttr(
 /* =========================================
    START
 ========================================= */
-
-renderRecentlyPlayed();
 
 loadYouTubeAPI();
 
