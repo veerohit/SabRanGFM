@@ -103,6 +103,86 @@ body:after{
 .divider:before,.divider:after{ content:""; height:1px; flex:1; background:var(--brown); }
 .divider-mark{ font-size:10px; }
 
+
+/* =========================
+   SOURCE SELECT
+========================= */
+.source-field{
+  position:relative;
+  z-index:1;
+}
+
+.source-select-wrap{
+  position:relative;
+}
+
+#playlist-source{
+  position:relative;
+  z-index:1;
+  width:100%;
+  appearance:none;
+  -webkit-appearance:none;
+  padding:13px 42px 13px 44px;
+  border:1px solid rgba(57,37,24,.25);
+  border-radius:11px;
+  background:
+    linear-gradient(145deg, rgba(255,248,232,.82), rgba(229,207,168,.72));
+  color:var(--brown);
+  font-family:inherit;
+  font-size:13px;
+  font-weight:bold;
+  outline:none;
+  box-shadow:inset 0 2px 5px rgba(57,37,24,.07);
+}
+
+#playlist-source:focus{
+  border-color:var(--orange);
+  box-shadow:0 0 0 2px rgba(168,79,34,.10);
+}
+
+.source-select-wrap:before{
+  content:"◉";
+  position:absolute;
+  z-index:3;
+  left:15px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--orange);
+  font-size:13px;
+  pointer-events:none;
+}
+
+.source-select-wrap:after{
+  content:"⌄";
+  position:absolute;
+  z-index:3;
+  right:15px;
+  top:50%;
+  transform:translateY(-55%);
+  color:var(--brown);
+  font-size:16px;
+  pointer-events:none;
+}
+
+.source-hint{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  margin-top:7px;
+  color:rgba(57,37,24,.52);
+  font-family:Arial,sans-serif;
+  font-size:9px;
+  letter-spacing:.3px;
+}
+
+.source-hint-dot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--orange);
+  box-shadow:0 0 0 3px rgba(168,79,34,.09);
+}
+
 /* FORM */
 label{ position:relative; z-index:1; display:block; color:rgba(57,37,24,.72); font-size:12px; font-weight:bold; margin:15px 0 7px; }
 input{
@@ -214,6 +294,38 @@ button{ border:0; cursor:pointer; font-family:inherit; }
 }
 
 .playlist-name{ flex:1; min-width:0; font-size:15px; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+.source-badge{
+  display:inline-flex;
+  align-items:center;
+  width:max-content;
+  margin-top:5px;
+  padding:3px 7px;
+  border-radius:20px;
+  font-family:Arial,sans-serif;
+  font-size:7px;
+  font-weight:800;
+  letter-spacing:1px;
+  background:rgba(168,79,34,.10);
+  color:var(--orange);
+  border:1px solid rgba(168,79,34,.16);
+}
+
+.source-badge:before{
+  content:"●";
+  margin-right:4px;
+  font-size:6px;
+}
+
+.source-badge.youtube{
+  background:rgba(168,79,34,.10);
+  color:var(--orange);
+}
+
+.source-badge.soundcloud{
+  background:rgba(101,69,45,.11);
+  color:var(--brown2);
+}
 
 .status{ display:inline-block; margin-top:10px; padding:5px 9px; border-radius:20px; font-family:Arial,sans-serif; font-size:9px; font-weight:bold; }
 .status.active{ background:rgba(50,130,65,.12); color:var(--green); }
@@ -410,10 +522,18 @@ button{ border:0; cursor:pointer; font-family:inherit; }
     <input id="playlist-name" type="text" placeholder="Bhojpuri" autocomplete="off">
 
     <label>Playlist Source</label>
-    <select id="playlist-source">
-      <option value="youtube">YouTube</option>
-      <option value="soundcloud">SoundCloud</option>
-    </select>
+    <div class="source-field">
+      <div class="source-select-wrap">
+        <select id="playlist-source">
+          <option value="youtube">YouTube Playlist</option>
+          <option value="soundcloud">SoundCloud Playlist</option>
+        </select>
+      </div>
+      <div class="source-hint">
+        <span class="source-hint-dot"></span>
+        <span id="source-hint-text">YouTube playlist se station add hoga</span>
+      </div>
+    </div>
 
     <label id="playlist-url-label">YouTube Playlist Link</label>
     <input id="playlist-url" type="text" placeholder="https://youtube.com/playlist?list=..." autocomplete="off">
@@ -504,6 +624,7 @@ const nameInput = document.getElementById("playlist-name");
 const urlInput = document.getElementById("playlist-url");
 const sourceInput = document.getElementById("playlist-source");
 const urlLabel = document.getElementById("playlist-url-label");
+const sourceHintText = document.getElementById("source-hint-text");
 const addBtn = document.getElementById("add-btn");
 const addMessage = document.getElementById("add-message");
 
@@ -668,11 +789,25 @@ function getPlaylistId(value){
 let playlists = [];   // [{id, ...data}], kept sorted by order
 let searchTerm = "";
 
-sourceInput.addEventListener("change", ()=>{
-  const sc=sourceInput.value === "soundcloud";
-  urlLabel.textContent=sc ? "SoundCloud Playlist Link" : "YouTube Playlist Link";
-  urlInput.placeholder=sc ? "https://soundcloud.com/.../sets/..." : "https://youtube.com/playlist?list=...";
-});
+function updateSourceUI(){
+  const sc = sourceInput.value === "soundcloud";
+
+  urlLabel.textContent =
+    sc ? "SoundCloud Playlist Link" : "YouTube Playlist Link";
+
+  urlInput.placeholder =
+    sc
+      ? "https://soundcloud.com/.../sets/..."
+      : "https://youtube.com/playlist?list=...";
+
+  sourceHintText.textContent =
+    sc
+      ? "SoundCloud playlist se station add hoga"
+      : "YouTube playlist se station add hoga";
+}
+
+sourceInput.addEventListener("change", updateSourceUI);
+updateSourceUI();
 
 function getSourceValue(value){
   return value === "soundcloud" ? "soundcloud" : "youtube";
@@ -933,7 +1068,7 @@ function createPlaylistCard(item, realIndex, visibleIndex, visibleCount){
   nameEl.className = "playlist-name";
   nameEl.textContent = name;
   const sourceBadge = document.createElement("span");
-  sourceBadge.style.cssText = "display:block;font-size:9px;opacity:.55;margin-top:2px;letter-spacing:1px;";
+  sourceBadge.className = "source-badge " + source;
   sourceBadge.textContent = source === "soundcloud" ? "SOUNDCLOUD" : "YOUTUBE";
   nameEl.appendChild(sourceBadge);
 
@@ -1078,7 +1213,7 @@ function createPlaylistCard(item, realIndex, visibleIndex, visibleCount){
   cancelBtn.type = "button";
   cancelBtn.onclick = ()=>{
     editNameInput.value = name;
-    editUrlInput.value = youtubeId;
+    editUrlInput.value = source === "soundcloud" ? url : youtubeId;
     editPanel.classList.remove("open");
   };
 
@@ -1107,7 +1242,7 @@ function createPlaylistCard(item, realIndex, visibleIndex, visibleCount){
     saveBtn.disabled = true;
 
     try{
-      await updateDoc(doc(db,"playlists",id), { name:newName, youtubeId:newId });
+      await updateDoc(doc(db,"playlists",id), { name:newName, youtubeId:newId, url:newScUrl });
       showToast("Playlist update ho gayi", "success");
       await loadPlaylists();
     }catch(error){
