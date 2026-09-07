@@ -2489,6 +2489,11 @@ function setPlaying(
 
   highlightActiveFavourite();
 
+  if("mediaSession" in navigator){
+    navigator.mediaSession.playbackState =
+      playing ? "playing" : "paused";
+  }
+
 }
 
 
@@ -3059,6 +3064,31 @@ function(){
               true;
 
 
+            if("mediaSession" in navigator){
+
+              navigator.mediaSession.setActionHandler(
+                "play",
+                ()=>{ try{ youtube.playVideo(); }catch(e){} }
+              );
+
+              navigator.mediaSession.setActionHandler(
+                "pause",
+                ()=>{ try{ youtube.pauseVideo(); }catch(e){} }
+              );
+
+              navigator.mediaSession.setActionHandler(
+                "previoustrack",
+                ()=>{ try{ youtube.previousVideo(); }catch(e){} }
+              );
+
+              navigator.mediaSession.setActionHandler(
+                "nexttrack",
+                ()=>{ try{ youtube.nextVideo(); }catch(e){} }
+              );
+
+            }
+
+
             if(
               selectedPlaylist
             ){
@@ -3245,6 +3275,25 @@ function updateCurrentVideo(){
       highlightActiveSong();
 
       highlightActiveFavourite();
+
+    }
+
+
+    if("mediaSession" in navigator){
+
+      navigator.mediaSession.metadata =
+        new MediaMetadata({
+          title: data?.title || "SabRanG FM",
+          artist: data?.author || "SabRanG FM",
+          album: "SabRanG FM",
+          artwork: data?.video_id ? [
+            {
+              src:`https://img.youtube.com/vi/${data.video_id}/hqdefault.jpg`,
+              sizes:"480x360",
+              type:"image/jpeg"
+            }
+          ] : []
+        });
 
     }
 
