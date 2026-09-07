@@ -3117,14 +3117,27 @@ function loadSoundCloudPlaylist(){
   if(!soundcloudWidget || !selectedPlaylist?.url) return;
   soundcloudReady=true;
   const target=selectedPlaylist.url;
-  soundcloudWidget.load(target,{auto_play:false,show_artwork:false,hide_related:true,visual:false,sharing:false,show_comments:false,show_user:false});
-  soundcloudWidget.getSounds(sounds=>{
-    soundcloudSongs=Array.isArray(sounds)?sounds:[];
-    currentSongs=soundcloudSongs;
-    soundcloudIndex=0;
-    renderSongs();
-    soundcloudWidget.skip(0);
-    soundcloudWidget.play();
+  const requestId = ++playRequestId;
+  soundcloudWidget.load(target,{
+    auto_play:false,
+    show_artwork:false,
+    hide_related:true,
+    visual:false,
+    sharing:false,
+    show_comments:false,
+    show_user:false,
+    callback:()=>{
+      if(requestId !== playRequestId) return;
+      soundcloudWidget.getSounds(sounds=>{
+        if(requestId !== playRequestId) return;
+        soundcloudSongs=Array.isArray(sounds)?sounds:[];
+        currentSongs=soundcloudSongs;
+        soundcloudIndex=0;
+        renderSongs();
+        soundcloudWidget.skip(0);
+        soundcloudWidget.play();
+      });
+    }
   });
 }
 
@@ -3646,7 +3659,7 @@ function renderPlaylists(){
             loadSongs();
 
 
-            playSelectedPlaylist();
+            playSelectedSourcePlaylist();
 
           }
         );
@@ -3679,6 +3692,33 @@ function updatePlaylistUI(){
 
       }
     );
+
+}
+
+
+
+/* =========================================
+   PLAY SELECTED PLAYLIST (SOURCE ROUTER)
+========================================= */
+
+function playSelectedSourcePlaylist(){
+
+  if(!selectedPlaylist) return;
+
+  if(selectedPlaylist.source === "soundcloud"){
+
+    if(!soundcloudWidget){
+      loadSoundCloudScript();
+      return;
+    }
+
+    loadSoundCloudPlaylist();
+
+    return;
+
+  }
+
+  playSelectedPlaylist();
 
 }
 
