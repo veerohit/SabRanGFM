@@ -3046,18 +3046,50 @@ function cancelSleepTimer(){
    SOUNDCLOUD WIDGET
 ========================================= */
 
-function loadSoundCloudAPI(){
+function prepareSoundCloudIframe(url){
+  const iframe=document.getElementById("soundcloud-player");
+  if(!iframe || !url) return false;
+
+  const playerUrl =
+    "https://w.soundcloud.com/player/?url=" +
+    encodeURIComponent(url) +
+    "&auto_play=false&show_artwork=false&hide_related=true&visual=false&sharing=false&show_comments=false&show_user=false";
+
+  if(iframe.dataset.scUrl !== url){
+    iframe.dataset.scUrl = url;
+    iframe.src = playerUrl;
+  }
+  return true;
+}
+
+function loadSoundCloudAPI(url){
+  if(url) prepareSoundCloudIframe(url);
+
+  const iframe=document.getElementById("soundcloud-player");
+  if(iframe && !iframe.dataset.scBound){
+    iframe.dataset.scBound="1";
+    iframe.addEventListener("load",()=>{
+      if(window.SC && SC.Widget) initSoundCloudWidget();
+    });
+  }
+
+  if(window.SC && SC.Widget){
+    if(iframe && iframe.contentWindow) initSoundCloudWidget();
+    return;
+  }
+
   if(document.getElementById("sc-api")) return;
   const script=document.createElement("script");
   script.id="sc-api";
   script.src="https://w.soundcloud.com/player/api.js";
-  script.onload=()=>initSoundCloudWidget();
   document.head.appendChild(script);
 }
 
 function initSoundCloudWidget(){
   if(!window.SC || !SC.Widget) return;
   const iframe=document.getElementById("soundcloud-player");
+  if(!iframe || iframe.src === "about:blank") return;
+  if(soundcloudWidget) return;
   soundcloudWidget=SC.Widget(iframe);
   soundcloudWidget.bind(SC.Widget.Events.READY,()=>{
     soundcloudReady=true;
@@ -3114,10 +3146,16 @@ function updateSoundCloudMediaSession(sound){
 }
 
 function loadSoundCloudPlaylist(){
-  if(!soundcloudWidget || !selectedPlaylist?.url) return;
+  if(!selectedPlaylist?.url) return;
+
+  if(!soundcloudWidget){
+    loadSoundCloudAPI(selectedPlaylist.url);
+    return;
+  }
+
   soundcloudReady=true;
   const target=selectedPlaylist.url;
-  const requestId = ++playRequestId;
+
   soundcloudWidget.load(target,{
     auto_play:false,
     show_artwork:false,
@@ -3127,15 +3165,15 @@ function loadSoundCloudPlaylist(){
     show_comments:false,
     show_user:false,
     callback:()=>{
-      if(requestId !== playRequestId) return;
       soundcloudWidget.getSounds(sounds=>{
-        if(requestId !== playRequestId) return;
         soundcloudSongs=Array.isArray(sounds)?sounds:[];
         currentSongs=soundcloudSongs;
         soundcloudIndex=0;
         renderSongs();
-        soundcloudWidget.skip(0);
-        soundcloudWidget.play();
+        if(soundcloudSongs.length){
+          soundcloudWidget.skip(0);
+          soundcloudWidget.play();
+        }
       });
     }
   });
@@ -3542,11 +3580,11 @@ async function loadPlaylists(){
       updatePlaylistUI();
 
 
-      loadSongs();
-
-
       if(selectedPlaylist.source === "soundcloud") loadSoundCloudPlaylist();
-      else if(youtubeReady) playSelectedPlaylist();
+      else {
+        loadSongs();
+        if(youtubeReady) playSelectedPlaylist();
+      }
 
     }
 
@@ -3656,10 +3694,12 @@ function renderPlaylists(){
             closePlaylist();
 
 
-            loadSongs();
-
-
-            playSelectedSourcePlaylist();
+            if(selectedPlaylist.source === "soundcloud") {
+              loadSoundCloudPlaylist();
+            } else {
+              loadSongs();
+              playSelectedPlaylist();
+            }
 
           }
         );
@@ -3692,33 +3732,6 @@ function updatePlaylistUI(){
 
       }
     );
-
-}
-
-
-
-/* =========================================
-   PLAY SELECTED PLAYLIST (SOURCE ROUTER)
-========================================= */
-
-function playSelectedSourcePlaylist(){
-
-  if(!selectedPlaylist) return;
-
-  if(selectedPlaylist.source === "soundcloud"){
-
-    if(!soundcloudWidget){
-      loadSoundCloudScript();
-      return;
-    }
-
-    loadSoundCloudPlaylist();
-
-    return;
-
-  }
-
-  playSelectedPlaylist();
 
 }
 
@@ -4390,16 +4403,8 @@ async function loadSongs(){
 
 
   if(selectedPlaylist.source === "soundcloud"){
-    if(!soundcloudWidget){
-      songsList.innerHTML=`<div class="empty">SoundCloud loading...</div>`;
-      loadSoundCloudScript();
-      return;
-    }
-    soundcloudWidget.getSounds(sounds=>{
-      soundcloudSongs=Array.isArray(sounds)?sounds:[];
-      currentSongs=soundcloudSongs;
-      renderSongs();
-    });
+    songsList.innerHTML=`<div class="empty">SoundCloud loading...</div>`;
+    loadSoundCloudPlaylist();
     return;
   }
 
@@ -5348,7 +5353,6 @@ function escapeAttr(
 ========================================= */
 
 loadYouTubeAPI();
-loadSoundCloudScript();
 loadPlaylists();
 
 </script>
