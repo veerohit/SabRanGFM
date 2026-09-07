@@ -2164,6 +2164,8 @@ import {
   getFirestore,
   collection,
   getDocs,
+  getDoc,
+  doc,
   query,
   where
 }
@@ -2450,7 +2452,7 @@ const sleepStatus =
     "sleep-status"
   );
 
-const sleepOptions =
+let sleepOptions =
   document.querySelectorAll(
     ".sleep-option"
   );
@@ -2785,6 +2787,181 @@ function stopPremiumVisualizer(){
    SLEEP TIMER
 ========================================= */
 
+const DEFAULT_SLEEP_OPTIONS = [15, 30, 45, 60];
+
+function cleanSleepTimerOptions(values){
+
+  if(!Array.isArray(values)){
+
+    return [...DEFAULT_SLEEP_OPTIONS];
+
+  }
+
+  const cleaned =
+    values
+      .map(Number)
+      .filter(
+        n =>
+          Number.isFinite(n) &&
+          n > 0 &&
+          n <= 1440
+      )
+      .map(
+        n =>
+          Math.round(n)
+      );
+
+  const unique =
+    Array.from(
+      new Set(cleaned)
+    );
+
+  return unique.length
+    ? unique.sort((a,b)=>a-b)
+    : [...DEFAULT_SLEEP_OPTIONS];
+
+}
+
+
+function renderSleepOptions(
+  values
+){
+
+  const container =
+    document.querySelector(
+      ".sleep-options"
+    );
+
+  if(!container){
+
+    return;
+
+  }
+
+  const options =
+    cleanSleepTimerOptions(
+      values
+    );
+
+  container.innerHTML =
+    options.map(
+      minutes=>`
+
+        <button
+          class="sleep-option"
+          data-minutes="${minutes}">
+
+          ${minutes} min
+
+        </button>
+
+      `
+    ).join("") +
+
+    `
+
+      <button
+        class="sleep-option off"
+        data-minutes="0">
+
+        ✕ Turn Off
+
+      </button>
+
+    `;
+
+  sleepOptions =
+    container.querySelectorAll(
+      ".sleep-option"
+    );
+
+  sleepOptions.forEach(
+    button=>{
+
+      button.addEventListener(
+        "click",
+        ()=>{
+
+          const minutes =
+            Number(
+              button.dataset.minutes
+            );
+
+          if(
+            minutes === 0
+          ){
+
+            cancelSleepTimer();
+
+          }
+          else{
+
+            startSleepTimer(
+              minutes
+            );
+
+          }
+
+          sleepMenu.classList.remove(
+            "open"
+          );
+
+        }
+      );
+
+    }
+  );
+
+}
+
+
+async function loadSleepTimerSettings(){
+
+  renderSleepOptions(
+    DEFAULT_SLEEP_OPTIONS
+  );
+
+  try{
+
+    const snapshot =
+      await getDoc(
+        doc(
+          db,
+          "settings",
+          "app"
+        )
+      );
+
+    if(
+      snapshot.exists() &&
+      Array.isArray(
+        snapshot.data()
+          .sleepTimerOptions
+      )
+    ){
+
+      renderSleepOptions(
+        snapshot.data()
+          .sleepTimerOptions
+      );
+
+    }
+
+  }
+  catch(error){
+
+    console.error(
+      "Sleep Timer settings load failed:",
+      error
+    );
+
+    // Default options remain visible.
+
+  }
+
+}
+
+
 sleepOpen.addEventListener(
   "click",
   event=>{
@@ -2819,47 +2996,6 @@ document.addEventListener(
 
   }
 );
-
-
-sleepOptions.forEach(
-  button=>{
-
-    button.addEventListener(
-      "click",
-      ()=>{
-
-        const minutes =
-          Number(
-            button.dataset.minutes
-          );
-
-
-        if(
-          minutes === 0
-        ){
-
-          cancelSleepTimer();
-
-        }
-        else{
-
-          startSleepTimer(
-            minutes
-          );
-
-        }
-
-
-        sleepMenu.classList.remove(
-          "open"
-        );
-
-      }
-    );
-
-  }
-);
-
 
 
 function startSleepTimer(
@@ -5430,6 +5566,7 @@ function escapeAttr(
 loadYouTubeAPI();
 loadSoundCloudScript();
 loadPlaylists();
+loadSleepTimerSettings();
 
 </script>
 
