@@ -1227,6 +1227,44 @@ body:before{
   font-weight:bold;
 }
 
+.shuffle-btn{
+  margin-left:auto;
+  margin-right:6px;
+
+  min-width:38px;
+  height:34px;
+
+  padding:0 10px;
+
+  border:1px solid rgba(57,37,24,.22);
+  border-radius:17px;
+
+  background:rgba(255,248,232,.65);
+
+  color:var(--brown);
+
+  font-family:inherit;
+  font-size:16px;
+  font-weight:bold;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  transition:.15s;
+}
+
+.shuffle-btn.active{
+  background:var(--orange);
+  color:var(--cream);
+  border-color:var(--orange);
+  box-shadow:0 2px 6px rgba(57,37,24,.25);
+}
+
+.shuffle-btn:active{
+  transform:scale(.94);
+}
+
 .close{
   width:34px;
   height:34px;
@@ -2116,6 +2154,15 @@ body:before{
       🎵 Songs
     </div>
 
+    <button
+      class="shuffle-btn"
+      id="shuffle"
+      title="Shuffle">
+
+      🔀
+
+    </button>
+
 
     <button
       class="close"
@@ -2164,8 +2211,6 @@ import {
   getFirestore,
   collection,
   getDocs,
-  getDoc,
-  doc,
   query,
   where
 }
@@ -2244,6 +2289,8 @@ let playRequestId = 0;
 let playingRequestId = -1;
 
 let activeVideoId = "";
+
+let shuffleEnabled = false;
 
 
 /* =========================================
@@ -2436,6 +2483,11 @@ const songsList =
     "songs-list"
   );
 
+const shuffleBtn =
+  document.getElementById(
+    "shuffle"
+  );
+
 
 const sleepOpen =
   document.getElementById(
@@ -2452,7 +2504,7 @@ const sleepStatus =
     "sleep-status"
   );
 
-let sleepOptions =
+const sleepOptions =
   document.querySelectorAll(
     ".sleep-option"
   );
@@ -2787,181 +2839,6 @@ function stopPremiumVisualizer(){
    SLEEP TIMER
 ========================================= */
 
-const DEFAULT_SLEEP_OPTIONS = [15, 30, 45, 60];
-
-function cleanSleepTimerOptions(values){
-
-  if(!Array.isArray(values)){
-
-    return [...DEFAULT_SLEEP_OPTIONS];
-
-  }
-
-  const cleaned =
-    values
-      .map(Number)
-      .filter(
-        n =>
-          Number.isFinite(n) &&
-          n > 0 &&
-          n <= 1440
-      )
-      .map(
-        n =>
-          Math.round(n)
-      );
-
-  const unique =
-    Array.from(
-      new Set(cleaned)
-    );
-
-  return unique.length
-    ? unique.sort((a,b)=>a-b)
-    : [...DEFAULT_SLEEP_OPTIONS];
-
-}
-
-
-function renderSleepOptions(
-  values
-){
-
-  const container =
-    document.querySelector(
-      ".sleep-options"
-    );
-
-  if(!container){
-
-    return;
-
-  }
-
-  const options =
-    cleanSleepTimerOptions(
-      values
-    );
-
-  container.innerHTML =
-    options.map(
-      minutes=>`
-
-        <button
-          class="sleep-option"
-          data-minutes="${minutes}">
-
-          ${minutes} min
-
-        </button>
-
-      `
-    ).join("") +
-
-    `
-
-      <button
-        class="sleep-option off"
-        data-minutes="0">
-
-        ✕ Turn Off
-
-      </button>
-
-    `;
-
-  sleepOptions =
-    container.querySelectorAll(
-      ".sleep-option"
-    );
-
-  sleepOptions.forEach(
-    button=>{
-
-      button.addEventListener(
-        "click",
-        ()=>{
-
-          const minutes =
-            Number(
-              button.dataset.minutes
-            );
-
-          if(
-            minutes === 0
-          ){
-
-            cancelSleepTimer();
-
-          }
-          else{
-
-            startSleepTimer(
-              minutes
-            );
-
-          }
-
-          sleepMenu.classList.remove(
-            "open"
-          );
-
-        }
-      );
-
-    }
-  );
-
-}
-
-
-async function loadSleepTimerSettings(){
-
-  renderSleepOptions(
-    DEFAULT_SLEEP_OPTIONS
-  );
-
-  try{
-
-    const snapshot =
-      await getDoc(
-        doc(
-          db,
-          "settings",
-          "app"
-        )
-      );
-
-    if(
-      snapshot.exists() &&
-      Array.isArray(
-        snapshot.data()
-          .sleepTimerOptions
-      )
-    ){
-
-      renderSleepOptions(
-        snapshot.data()
-          .sleepTimerOptions
-      );
-
-    }
-
-  }
-  catch(error){
-
-    console.error(
-      "Sleep Timer settings load failed:",
-      error
-    );
-
-    // Default options remain visible.
-
-  }
-
-}
-
-
 sleepOpen.addEventListener(
   "click",
   event=>{
@@ -2996,6 +2873,47 @@ document.addEventListener(
 
   }
 );
+
+
+sleepOptions.forEach(
+  button=>{
+
+    button.addEventListener(
+      "click",
+      ()=>{
+
+        const minutes =
+          Number(
+            button.dataset.minutes
+          );
+
+
+        if(
+          minutes === 0
+        ){
+
+          cancelSleepTimer();
+
+        }
+        else{
+
+          startSleepTimer(
+            minutes
+          );
+
+        }
+
+
+        sleepMenu.classList.remove(
+          "open"
+        );
+
+      }
+    );
+
+  }
+);
+
 
 
 function startSleepTimer(
@@ -3225,7 +3143,12 @@ function initSoundCloudWidget(){
     });
   });
   soundcloudWidget.bind(SC.Widget.Events.PAUSE,()=>setPlaying(false));
-  soundcloudWidget.bind(SC.Widget.Events.FINISH,()=>setPlaying(false));
+  soundcloudWidget.bind(SC.Widget.Events.FINISH,()=>{
+    setPlaying(false);
+    if(shuffleEnabled){
+      setTimeout(()=>shuffleSoundCloud(),50);
+    }
+  });
   soundcloudWidget.bind(SC.Widget.Events.PLAY_PROGRESS,e=>{
     if(selectedPlaylist?.source !== "soundcloud") return;
     if(isSeeking) return;
@@ -3297,7 +3220,14 @@ function loadSoundCloudPlaylist(){
 
 function soundcloudPlay(){ if(soundcloudWidget) soundcloudWidget.play(); }
 function soundcloudPause(){ if(soundcloudWidget) soundcloudWidget.pause(); }
-function soundcloudNext(){ if(soundcloudWidget) soundcloudWidget.next(); }
+function soundcloudNext(){
+  if(!soundcloudWidget) return;
+  if(shuffleEnabled){
+    shuffleSoundCloud();
+    return;
+  }
+  soundcloudWidget.next();
+}
 function soundcloudPrevious(){ if(soundcloudWidget) soundcloudWidget.prev(); }
 
 function loadSoundCloudScript(){
@@ -3796,7 +3726,16 @@ function renderPlaylists(){
               "";
 
 
+            shuffleEnabled =
+              false;
+
+            shuffleBtn.classList.remove(
+              "active"
+            );
+
             if(youtubeReady && youtube){
+              try{ youtube.setShuffle(false); }catch(e){}
+
               try{ youtube.stopVideo(); }catch(e){}
             }
             if(soundcloudWidget){
@@ -4444,6 +4383,111 @@ progress.addEventListener(
   "pointercancel",
   finishSeek
 );
+
+
+
+/* =========================================
+   SHUFFLE
+========================================= */
+
+shuffleBtn.addEventListener(
+  "click",
+  event=>{
+
+    event.stopPropagation();
+
+    shuffleEnabled =
+      !shuffleEnabled;
+
+    shuffleBtn.classList.toggle(
+      "active",
+      shuffleEnabled
+    );
+
+    if(
+      selectedPlaylist?.source === "soundcloud"
+    ){
+
+      if(
+        soundcloudWidget &&
+        soundcloudReady
+      ){
+
+        if(shuffleEnabled){
+
+          shuffleSoundCloud();
+
+        }
+
+      }
+
+      return;
+
+    }
+
+    if(
+      youtubeReady &&
+      youtube
+    ){
+
+      try{
+
+        youtube.setShuffle(
+          shuffleEnabled
+        );
+
+      }
+      catch(e){}
+
+    }
+
+  }
+);
+
+
+function shuffleSoundCloud(){
+
+  if(
+    !soundcloudWidget ||
+    !soundcloudSongs.length
+  ){
+
+    return;
+
+  }
+
+  let nextIndex =
+    Math.floor(
+      Math.random() *
+      soundcloudSongs.length
+    );
+
+  if(
+    soundcloudSongs.length > 1 &&
+    nextIndex === soundcloudIndex
+  ){
+
+    nextIndex =
+      (nextIndex + 1) %
+      soundcloudSongs.length;
+
+  }
+
+  soundcloudIndex =
+    nextIndex;
+
+  try{
+
+    soundcloudWidget.skip(
+      nextIndex
+    );
+
+    soundcloudWidget.play();
+
+  }
+  catch(e){}
+
+}
 
 
 
@@ -5566,7 +5610,6 @@ function escapeAttr(
 loadYouTubeAPI();
 loadSoundCloudScript();
 loadPlaylists();
-loadSleepTimerSettings();
 
 </script>
 
