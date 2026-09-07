@@ -3148,6 +3148,8 @@ function updateSoundCloudMediaSession(sound){
 function loadSoundCloudPlaylist(){
   if(!selectedPlaylist?.url) return;
 
+  resetPlayerProgress();
+
   if(!soundcloudWidget){
     loadSoundCloudAPI(selectedPlaylist.url);
     return;
@@ -3156,8 +3158,10 @@ function loadSoundCloudPlaylist(){
   soundcloudReady=true;
   const target=selectedPlaylist.url;
 
+  // Start immediately after the widget loads. Waiting for getSounds()+skip(0)
+  // before play adds unnecessary delay when switching playlists.
   soundcloudWidget.load(target,{
-    auto_play:false,
+    auto_play:true,
     show_artwork:false,
     hide_related:true,
     visual:false,
@@ -3170,10 +3174,8 @@ function loadSoundCloudPlaylist(){
         currentSongs=soundcloudSongs;
         soundcloudIndex=0;
         renderSongs();
-        if(soundcloudSongs.length){
-          soundcloudWidget.skip(0);
-          soundcloudWidget.play();
-        }
+        highlightActiveSong();
+        highlightActiveFavourite();
       });
     }
   });
@@ -3679,6 +3681,7 @@ function renderPlaylists(){
             activeVideoId =
               "";
 
+            resetPlayerProgress();
 
             if(youtubeReady && youtube){
               try{ youtube.stopVideo(); }catch(e){}
@@ -3769,6 +3772,7 @@ function playSelectedPlaylist(){
   const requestId =
     ++playRequestId;
 
+  resetPlayerProgress();
 
   pendingAutoplay =
     true;
@@ -3779,14 +3783,6 @@ function playSelectedPlaylist(){
 
 
   try{
-
-    try{
-
-      youtube.stopVideo();
-
-    }
-    catch(e){}
-
 
     youtube.loadPlaylist({
 
@@ -3860,12 +3856,12 @@ function playSelectedPlaylist(){
 
 
       if(
-        attempts < 20
+        attempts < 30
       ){
 
         setTimeout(
           waitForNewPlaylist,
-          300
+          100
         );
 
       }
@@ -3992,6 +3988,15 @@ function formatTime(
 /* =========================================
    PROGRESS
 ========================================= */
+
+function resetPlayerProgress(){
+  if(currentTime) currentTime.textContent="0:00";
+  if(duration) duration.textContent="0:00";
+  if(progressFill){
+    progressFill.style.width="0%";
+    progressFill.style.transform="scaleX(0)";
+  }
+}
 
 let isSeeking = false;
 
