@@ -3075,6 +3075,16 @@ function initSoundCloudWidget(){
         updateSoundCloudMediaSession(sound);
         highlightActiveSong();
         highlightActiveFavourite();
+        if(sound.duration){
+          soundcloudDurationMs=sound.duration;
+          duration.textContent=formatTime(sound.duration/1000);
+        }
+      }
+    });
+    soundcloudWidget.getDuration(ms=>{
+      if(ms){
+        soundcloudDurationMs=ms;
+        duration.textContent=formatTime(ms/1000);
       }
     });
   });
@@ -3083,7 +3093,9 @@ function initSoundCloudWidget(){
   soundcloudWidget.bind(SC.Widget.Events.PLAY_PROGRESS,e=>{
     if(selectedPlaylist?.source !== "soundcloud") return;
     if(isSeeking) return;
-    soundcloudDurationMs = e.soundDuration||0;
+    if(e.soundDuration){
+      soundcloudDurationMs = e.soundDuration;
+    }
     const currentSec = (e.currentPosition||0)/1000;
     const totalSec = soundcloudDurationMs/1000;
     currentTime.textContent=formatTime(currentSec);
