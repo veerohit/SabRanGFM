@@ -51,6 +51,7 @@ body:before{
   mix-blend-mode:multiply;
 }
 
+
 /* =========================
    TOP BAR
 ========================= */
@@ -177,9 +178,6 @@ body:before{
   margin-top:2px;
 }
 
-
-/* Wooden / vintage base */
-
 .table-body{
   position:absolute;
 
@@ -212,9 +210,6 @@ body:before{
     0 12px 20px rgba(50,30,15,.35);
 }
 
-
-/* Front edge */
-
 .table-body:after{
   content:"";
 
@@ -234,9 +229,6 @@ body:before{
       #17100c
     );
 }
-
-
-/* Platter */
 
 .platter{
   position:absolute;
@@ -266,9 +258,6 @@ body:before{
     0 12px 20px rgba(0,0,0,.55),
     inset 0 0 15px rgba(255,255,255,.06);
 }
-
-
-/* Vinyl */
 
 .record{
   position:absolute;
@@ -303,9 +292,6 @@ body:before{
   transition:.3s;
 }
 
-
-/* Record shine */
-
 .record:before{
   content:"";
 
@@ -330,9 +316,6 @@ body:before{
 
   mix-blend-mode:screen;
 }
-
-
-/* Record center label */
 
 .record-label{
   position:absolute;
@@ -368,9 +351,6 @@ body:before{
   z-index:2;
 }
 
-
-/* Label text */
-
 .record-label span{
   color:#fff4dc;
 
@@ -386,9 +366,6 @@ body:before{
   text-shadow:
     0 1px 2px #000;
 }
-
-
-/* Spindle */
 
 .spindle{
   position:absolute;
@@ -409,9 +386,6 @@ body:before{
 
   z-index:5;
 }
-
-
-/* Record rotation */
 
 .record.playing{
   animation:recordSpin 4.5s linear infinite;
@@ -447,9 +421,6 @@ body:before{
   transition:.4s;
 }
 
-
-/* Arm pivot */
-
 .arm-pivot{
   position:absolute;
 
@@ -474,9 +445,6 @@ body:before{
   box-shadow:
     0 4px 8px rgba(0,0,0,.5);
 }
-
-
-/* Arm */
 
 .arm{
   position:absolute;
@@ -505,9 +473,6 @@ body:before{
   transform-origin:top center;
 }
 
-
-/* Arm golden detail */
-
 .arm:before{
   content:"";
 
@@ -520,9 +485,6 @@ body:before{
 
   background:#d7b65d;
 }
-
-
-/* Cartridge */
 
 .cartridge{
   position:absolute;
@@ -549,9 +511,6 @@ body:before{
     2px 3px 5px rgba(0,0,0,.6);
 }
 
-
-/* Needle */
-
 .cartridge:after{
   content:"";
 
@@ -567,9 +526,6 @@ body:before{
 
   transform:rotate(-8deg);
 }
-
-
-/* Arm playing position */
 
 .tonearm.playing{
   transform:rotate(9deg);
@@ -687,9 +643,6 @@ body:before{
   align-items:center;
 }
 
-
-/* Mini CD */
-
 .mini-cd{
   width:42px;
   height:42px;
@@ -728,7 +681,6 @@ body:before{
   animation:recordSpin 5s linear infinite;
 }
 
-
 .info{
   min-width:0;
   flex:1;
@@ -756,7 +708,6 @@ body:before{
   overflow:hidden;
   text-overflow:ellipsis;
 }
-
 
 .controls{
   display:flex;
@@ -799,6 +750,26 @@ body:before{
 
   box-shadow:
     0 3px 7px rgba(57,37,24,.25);
+}
+
+
+/* =========================
+   SONGS BUTTON
+========================= */
+
+.songs-btn{
+  width:auto;
+  min-width:58px;
+  padding:0 8px;
+  gap:4px;
+  border-radius:18px;
+  font-size:13px;
+  font-weight:bold;
+}
+
+.songs-btn span{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:10px;
 }
 
 
@@ -864,6 +835,112 @@ body:before{
   background:var(--orange);
 
   will-change:transform;
+}
+
+
+/* ==================================================
+   SLEEP TIMER
+================================================== */
+
+.sleep-menu{
+  position:fixed;
+
+  left:50%;
+  bottom:128px;
+
+  width:220px;
+
+  transform:translateX(-50%) translateY(10px);
+
+  z-index:80;
+
+  display:none;
+
+  padding:13px;
+
+  border:1px solid rgba(57,37,24,.25);
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,248,232,.99),
+      rgba(227,207,169,.99)
+    );
+
+  box-shadow:
+    0 10px 35px rgba(57,37,24,.3);
+
+  backdrop-filter:blur(15px);
+
+  opacity:0;
+
+  transition:.2s;
+}
+
+.sleep-menu.open{
+  display:block;
+
+  opacity:1;
+
+  transform:translateX(-50%) translateY(0);
+}
+
+.sleep-title{
+  text-align:center;
+
+  font-size:14px;
+
+  font-weight:bold;
+
+  margin-bottom:10px;
+}
+
+.sleep-status{
+  text-align:center;
+
+  font-size:10px;
+
+  opacity:.65;
+
+  margin-bottom:10px;
+}
+
+.sleep-options{
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
+
+  gap:7px;
+}
+
+.sleep-option{
+  border:1px solid rgba(57,37,24,.22);
+
+  border-radius:10px;
+
+  padding:9px 5px;
+
+  background:rgba(255,248,232,.65);
+
+  color:var(--brown);
+
+  font-family:inherit;
+
+  font-size:11px;
+
+  font-weight:bold;
+}
+
+.sleep-option:active{
+  transform:scale(.97);
+}
+
+.sleep-option.off{
+  grid-column:1 / -1;
+
+  background:rgba(168,79,34,.12);
 }
 
 
@@ -1107,6 +1184,10 @@ body:before{
 
     transform:translateX(-50%);
   }
+
+  .sleep-menu{
+    bottom:128px;
+  }
 }
 
 
@@ -1138,6 +1219,10 @@ body:before{
 
   .air{
     margin-top:-3px;
+  }
+
+  .sleep-menu{
+    bottom:122px;
   }
 }
 
@@ -1207,17 +1292,11 @@ body:before{
   <div class="turntable">
 
 
-    <!-- Wooden base -->
-
     <div class="table-body"></div>
 
 
-    <!-- Platter -->
-
     <div class="platter">
 
-
-      <!-- Rotating record -->
 
       <div
         class="record"
@@ -1241,8 +1320,6 @@ body:before{
 
     </div>
 
-
-    <!-- Tone arm -->
 
     <div
       class="tonearm"
@@ -1305,7 +1382,7 @@ body:before{
   <div class="player-top">
 
 
-    <!-- Mini YouTube thumbnail -->
+    <!-- Mini CD -->
 
     <div
       class="mini-cd"
@@ -1340,14 +1417,31 @@ body:before{
     <div class="controls">
 
 
+      <!-- SLEEP -->
+
       <button
         class="control"
-        id="songs-open">
+        id="sleep-open"
+        title="Sleep Timer">
 
-        ♪
+        🌙
 
       </button>
 
+
+      <!-- SONGS BUTTON -->
+
+      <button
+        class="control songs-btn"
+        id="songs-open"
+        title="Songs List">
+
+        ☷ <span>Songs</span>
+
+      </button>
+
+
+      <!-- PREVIOUS -->
 
       <button
         class="control"
@@ -1358,6 +1452,8 @@ body:before{
       </button>
 
 
+      <!-- PLAY -->
+
       <button
         class="control play"
         id="play">
@@ -1366,6 +1462,8 @@ body:before{
 
       </button>
 
+
+      <!-- NEXT -->
 
       <button
         class="control"
@@ -1425,6 +1523,83 @@ body:before{
   </div>
 
 </section>
+
+
+
+<!-- =========================
+     SLEEP TIMER MENU
+========================= -->
+
+<div
+  class="sleep-menu"
+  id="sleep-menu">
+
+
+  <div class="sleep-title">
+    🌙 Sleep Timer
+  </div>
+
+
+  <div
+    class="sleep-status"
+    id="sleep-status">
+
+    Timer Off
+
+  </div>
+
+
+  <div class="sleep-options">
+
+
+    <button
+      class="sleep-option"
+      data-minutes="15">
+
+      15 min
+
+    </button>
+
+
+    <button
+      class="sleep-option"
+      data-minutes="30">
+
+      30 min
+
+    </button>
+
+
+    <button
+      class="sleep-option"
+      data-minutes="45">
+
+      45 min
+
+    </button>
+
+
+    <button
+      class="sleep-option"
+      data-minutes="60">
+
+      60 min
+
+    </button>
+
+
+    <button
+      class="sleep-option off"
+      data-minutes="0">
+
+      ✕ Turn Off
+
+    </button>
+
+
+  </div>
+
+</div>
 
 
 
@@ -1608,6 +1783,15 @@ let playRequestId = 0;
 let playingRequestId = -1;
 
 
+/* =========================================
+   SLEEP TIMER VARIABLES
+========================================= */
+
+let sleepTimer = null;
+
+let sleepEndTime = 0;
+
+
 
 /* =========================================
    ELEMENTS
@@ -1668,6 +1852,16 @@ const songsList =
   document.getElementById("songs-list");
 
 
+const sleepOpen =
+  document.getElementById("sleep-open");
+
+const sleepMenu =
+  document.getElementById("sleep-menu");
+
+const sleepStatus =
+  document.getElementById("sleep-status");
+
+
 
 /* =========================================
    PLAYING STATE
@@ -1709,6 +1903,204 @@ function setPlaying(playing){
     playing
       ? "❚❚"
       : "▶";
+
+}
+
+
+
+/* =========================================
+   SLEEP TIMER
+========================================= */
+
+sleepOpen.addEventListener(
+  "click",
+  event=>{
+
+    event.stopPropagation();
+
+    sleepMenu.classList.toggle(
+      "open"
+    );
+
+  }
+);
+
+
+sleepMenu.addEventListener(
+  "click",
+  event=>{
+    event.stopPropagation();
+  }
+);
+
+
+document.addEventListener(
+  "click",
+  ()=>{
+    sleepMenu.classList.remove(
+      "open"
+    );
+  }
+);
+
+
+document
+  .querySelectorAll(
+    ".sleep-option"
+  )
+  .forEach(
+    button=>{
+
+      button.addEventListener(
+        "click",
+        ()=>{
+
+          const minutes =
+            Number(
+              button.dataset.minutes
+            );
+
+
+          if(minutes === 0){
+
+            cancelSleepTimer();
+
+          }
+          else{
+
+            startSleepTimer(
+              minutes
+            );
+
+          }
+
+          sleepMenu.classList.remove(
+            "open"
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+function startSleepTimer(minutes){
+
+  cancelSleepTimer();
+
+
+  sleepEndTime =
+    Date.now() +
+    minutes * 60 * 1000;
+
+
+  sleepStatus.textContent =
+    `Music will stop in ${minutes} min`;
+
+
+  sleepOpen.style.background =
+    "rgba(168,79,34,.18)";
+
+
+  sleepTimer =
+    setInterval(
+      updateSleepTimer,
+      1000
+    );
+
+
+  updateSleepTimer();
+
+}
+
+
+function updateSleepTimer(){
+
+  if(!sleepEndTime){
+
+    return;
+
+  }
+
+
+  const remaining =
+    Math.max(
+      0,
+      sleepEndTime -
+      Date.now()
+    );
+
+
+  if(remaining <= 0){
+
+    cancelSleepTimer();
+
+
+    if(
+      youtubeReady &&
+      youtube
+    ){
+
+      try{
+
+        youtube.pauseVideo();
+
+      }
+      catch(e){}
+
+    }
+
+
+    return;
+
+  }
+
+
+  const totalSeconds =
+    Math.ceil(
+      remaining / 1000
+    );
+
+
+  const minutes =
+    Math.floor(
+      totalSeconds / 60
+    );
+
+
+  const seconds =
+    totalSeconds % 60;
+
+
+  sleepStatus.textContent =
+    `Stops in ${minutes}:${String(seconds).padStart(2,"0")}`;
+
+}
+
+
+function cancelSleepTimer(){
+
+  if(sleepTimer){
+
+    clearInterval(
+      sleepTimer
+    );
+
+    sleepTimer = null;
+
+  }
+
+
+  sleepEndTime = 0;
+
+
+  sleepStatus.textContent =
+    "Timer Off";
+
+
+  sleepOpen.style.background =
+    "transparent";
 
 }
 
