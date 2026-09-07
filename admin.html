@@ -409,7 +409,13 @@ button{ border:0; cursor:pointer; font-family:inherit; }
     <label>Playlist Name</label>
     <input id="playlist-name" type="text" placeholder="Bhojpuri" autocomplete="off">
 
-    <label>YouTube Playlist Link</label>
+    <label>Playlist Source</label>
+    <select id="playlist-source">
+      <option value="youtube">YouTube</option>
+      <option value="soundcloud">SoundCloud</option>
+    </select>
+
+    <label id="playlist-url-label">YouTube Playlist Link</label>
     <input id="playlist-url" type="text" placeholder="https://youtube.com/playlist?list=..." autocomplete="off">
 
     <button id="add-btn" class="primary">➕ ADD PLAYLIST</button>
@@ -496,6 +502,8 @@ const logoutBtn = document.getElementById("logout");
 
 const nameInput = document.getElementById("playlist-name");
 const urlInput = document.getElementById("playlist-url");
+const sourceInput = document.getElementById("playlist-source");
+const urlLabel = document.getElementById("playlist-url-label");
 const addBtn = document.getElementById("add-btn");
 const addMessage = document.getElementById("add-message");
 
@@ -660,6 +668,26 @@ function getPlaylistId(value){
 let playlists = [];   // [{id, ...data}], kept sorted by order
 let searchTerm = "";
 
+sourceInput.addEventListener("change", ()=>{
+  const sc=sourceInput.value === "soundcloud";
+  urlLabel.textContent=sc ? "SoundCloud Playlist Link" : "YouTube Playlist Link";
+  urlInput.placeholder=sc ? "https://soundcloud.com/.../sets/..." : "https://youtube.com/playlist?list=...";
+});
+
+function getSourceValue(value){
+  return value === "soundcloud" ? "soundcloud" : "youtube";
+}
+
+function getSoundCloudUrl(value){
+  value=value.trim();
+  if(!value) return null;
+  try{
+    const u=new URL(value);
+    if(u.hostname.includes("soundcloud.com")) return value;
+    return null;
+  }catch(e){ return null; }
+}
+
 /* =========================
    ADD PLAYLIST
 ========================= */
@@ -675,15 +703,24 @@ addBtn.onclick = async function(){
     return;
   }
 
-  const youtubeId = getPlaylistId(url);
+  const source = getSourceValue(sourceInput.value);
+  const youtubeId = source === "youtube" ? getPlaylistId(url) : "";
+  const soundcloudUrl = source === "soundcloud" ? getSoundCloudUrl(url) : "";
 
-  if(!youtubeId){
+  if(source === "youtube" && !youtubeId){
     addMessage.textContent = "Valid YouTube playlist link dalo.";
     urlInput.focus();
     return;
   }
+  if(source === "soundcloud" && !soundcloudUrl){
+    addMessage.textContent = "Valid SoundCloud playlist link dalo.";
+    urlInput.focus();
+    return;
+  }
 
-  const duplicate = playlists.some(p=>p.youtubeId === youtubeId);
+  const duplicate = playlists.some(p=>
+    source === "youtube" ? (p.source !== "soundcloud" && p.youtubeId === youtubeId) : (p.source === "soundcloud" && p.url === soundcloudUrl)
+  );
 
   if(duplicate){
     addMessage.textContent = "Ye playlist pehle se maujood hai.";
@@ -702,7 +739,9 @@ addBtn.onclick = async function(){
 
     await addDoc(collection(db,"playlists"), {
       name:name,
+      source:source,
       youtubeId:youtubeId,
+      url:soundcloudUrl,
       active:true,
       order:maxOrder + 1
     });
@@ -744,7 +783,9 @@ async function loadPlaylists(){
       return {
         id: docItem.id,
         name: data.name || "Unnamed Playlist",
+        source: data.source === "soundcloud" ? "soundcloud" : "youtube",
         youtubeId: data.youtubeId || "",
+        url: data.url || "",
         active: !!data.active,
         order: Number.isFinite(data.order) ? data.order : index
       };
@@ -857,7 +898,8 @@ async function moveItem(realIndex, direction){
 
 function createPlaylistCard(item, realIndex, visibleIndex, visibleCount){
 
-  const { id, name, youtubeId, active } = item;
+  const { id, name, source, youtubeId, url } = item;
+  const active = !!item.active;
 
   const card = document.createElement("div");
   card.className = "playlist" + (active ? "" : " is-inactive");
@@ -890,6 +932,10 @@ function createPlaylistCard(item, realIndex, visibleIndex, visibleCount){
   const nameEl = document.createElement("div");
   nameEl.className = "playlist-name";
   nameEl.textContent = name;
+  const sourceBadge = document.createElement("span");
+  sourceBadge.style.cssText = "display:block;font-size:9px;opacity:.55;margin-top:2px;letter-spacing:1px;";
+  sourceBadge.textContent = source === "soundcloud" ? "SOUNDCLOUD" : "YOUTUBE";
+  nameEl.appendChild(sourceBadge);
 
   top.appendChild(reorder);
   top.appendChild(number);
@@ -908,16 +954,16 @@ function createPlaylistCard(item, realIndex, visibleIndex, visibleCount){
 
   const idText = document.createElement("div");
   idText.className = "playlist-id";
-  idText.textContent = youtubeId;
+  idText.textContent = source === "soundcloud" ? url : youtubeId;
 
   const copyBtn = document.createElement("button");
   copyBtn.className = "icon-btn";
-  copyBtn.title = "Copy ID";
+  copyBtn.title = source === "soundcloud" ? "Copy Link" : "Copy ID";
   copyBtn.textContent = "📋";
   copyBtn.onclick = async ()=>{
     try{
-      await navigator.clipboard.writeText(youtubeId);
-      showToast("ID copy ho gayi", "success");
+      await navigator.clipboard.writeText(source === "soundcloud" ? url : youtubeId);
+      showToast(source === "soundcloud" ? "Link copy ho gayi" : "ID copy ho gayi", "success");
     }catch(error){
       showToast("Copy nahi hui", "error");
     }
@@ -925,9 +971,9 @@ function createPlaylistCard(item, realIndex, visibleIndex, visibleCount){
 
   const openBtn = document.createElement("a");
   openBtn.className = "icon-btn";
-  openBtn.title = "Open in YouTube";
+  openBtn.title = source === "soundcloud" ? "Open in SoundCloud" : "Open in YouTube";
   openBtn.textContent = "↗";
-  openBtn.href = "https://www.youtube.com/playlist?list=" + encodeURIComponent(youtubeId);
+  openBtn.href = source === "soundcloud" ? url : ("https://www.youtube.com/playlist?list=" + encodeURIComponent(youtubeId));
   openBtn.target = "_blank";
   openBtn.rel = "noopener noreferrer";
   openBtn.style.textDecoration = "none";
@@ -1013,11 +1059,11 @@ function createPlaylistCard(item, realIndex, visibleIndex, visibleCount){
   editNameInput.value = name;
 
   const editUrlLabel = document.createElement("label");
-  editUrlLabel.textContent = "YouTube Playlist Link / ID";
+  editUrlLabel.textContent = source === "soundcloud" ? "SoundCloud Playlist Link" : "YouTube Playlist Link / ID";
 
   const editUrlInput = document.createElement("input");
   editUrlInput.type = "text";
-  editUrlInput.value = youtubeId;
+  editUrlInput.value = source === "soundcloud" ? url : youtubeId;
 
   const editActions = document.createElement("div");
   editActions.className = "edit-actions";
@@ -1045,10 +1091,16 @@ function createPlaylistCard(item, realIndex, visibleIndex, visibleCount){
       return;
     }
 
-    const newId = getPlaylistId(editUrlInput.value);
+    const newValue = editUrlInput.value.trim();
+    const newId = source === "soundcloud" ? "" : getPlaylistId(newValue);
+    const newScUrl = source === "soundcloud" ? getSoundCloudUrl(newValue) : "";
 
-    if(!newId){
+    if(source === "youtube" && !newId){
       showToast("Valid YouTube playlist link dalo", "error");
+      return;
+    }
+    if(source === "soundcloud" && !newScUrl){
+      showToast("Valid SoundCloud playlist link dalo", "error");
       return;
     }
 
