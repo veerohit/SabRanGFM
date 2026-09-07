@@ -1781,7 +1781,7 @@ body:before{
       allow="autoplay"
       scrolling="no"
       frameborder="no"
-      src="about:blank">
+      src="https://w.soundcloud.com/player/?url=https%3A%2F%2Fsoundcloud.com&auto_play=false&show_artwork=false&visual=false">
     </iframe>
   </div>
 
@@ -2225,6 +2225,7 @@ let youtubeReady = false;
 
 let soundcloudWidget = null;
 let soundcloudReady = false;
+let soundcloudDurationMs = 0;
 let soundcloudIndex = 0;
 let soundcloudSongs = [];
 
@@ -3046,50 +3047,18 @@ function cancelSleepTimer(){
    SOUNDCLOUD WIDGET
 ========================================= */
 
-function prepareSoundCloudIframe(url){
-  const iframe=document.getElementById("soundcloud-player");
-  if(!iframe || !url) return false;
-
-  const playerUrl =
-    "https://w.soundcloud.com/player/?url=" +
-    encodeURIComponent(url) +
-    "&auto_play=false&show_artwork=false&hide_related=true&visual=false&sharing=false&show_comments=false&show_user=false";
-
-  if(iframe.dataset.scUrl !== url){
-    iframe.dataset.scUrl = url;
-    iframe.src = playerUrl;
-  }
-  return true;
-}
-
-function loadSoundCloudAPI(url){
-  if(url) prepareSoundCloudIframe(url);
-
-  const iframe=document.getElementById("soundcloud-player");
-  if(iframe && !iframe.dataset.scBound){
-    iframe.dataset.scBound="1";
-    iframe.addEventListener("load",()=>{
-      if(window.SC && SC.Widget) initSoundCloudWidget();
-    });
-  }
-
-  if(window.SC && SC.Widget){
-    if(iframe && iframe.contentWindow) initSoundCloudWidget();
-    return;
-  }
-
+function loadSoundCloudAPI(){
   if(document.getElementById("sc-api")) return;
   const script=document.createElement("script");
   script.id="sc-api";
   script.src="https://w.soundcloud.com/player/api.js";
+  script.onload=()=>initSoundCloudWidget();
   document.head.appendChild(script);
 }
 
 function initSoundCloudWidget(){
   if(!window.SC || !SC.Widget) return;
   const iframe=document.getElementById("soundcloud-player");
-  if(!iframe || iframe.src === "about:blank") return;
-  if(soundcloudWidget) return;
   soundcloudWidget=SC.Widget(iframe);
   soundcloudWidget.bind(SC.Widget.Events.READY,()=>{
     soundcloudReady=true;
@@ -3113,10 +3082,14 @@ function initSoundCloudWidget(){
   soundcloudWidget.bind(SC.Widget.Events.FINISH,()=>setPlaying(false));
   soundcloudWidget.bind(SC.Widget.Events.PLAY_PROGRESS,e=>{
     if(selectedPlaylist?.source !== "soundcloud") return;
-    currentTime.textContent=formatTime(e.currentPosition||0);
-    duration.textContent=formatTime(e.loadedProgress ? 0 : (e.soundDuration||0));
-    const d=e.soundDuration||0;
-    progressFill.style.width=d?((e.currentPosition/d)*100)+"%":"0%";
+    if(isSeeking) return;
+    soundcloudDurationMs = e.soundDuration||0;
+    const currentSec = (e.currentPosition||0)/1000;
+    const totalSec = soundcloudDurationMs/1000;
+    currentTime.textContent=formatTime(currentSec);
+    duration.textContent=formatTime(totalSec);
+    const percent = totalSec ? Math.max(0,Math.min(1,currentSec/totalSec)) : 0;
+    progressFill.style.transform = `scaleX(${percent})`;
   });
 }
 
@@ -3146,22 +3119,13 @@ function updateSoundCloudMediaSession(sound){
 }
 
 function loadSoundCloudPlaylist(){
-  if(!selectedPlaylist?.url) return;
-
-  resetPlayerProgress();
-
-  if(!soundcloudWidget){
-    loadSoundCloudAPI(selectedPlaylist.url);
-    return;
-  }
-
+  if(!soundcloudWidget || !selectedPlaylist?.url) return;
   soundcloudReady=true;
+  soundcloudDurationMs=0;
   const target=selectedPlaylist.url;
-
-  // Start immediately after the widget loads. Waiting for getSounds()+skip(0)
-  // before play adds unnecessary delay when switching playlists.
+  const requestId = ++playRequestId;
   soundcloudWidget.load(target,{
-    auto_play:true,
+    auto_play:false,
     show_artwork:false,
     hide_related:true,
     visual:false,
@@ -3169,13 +3133,15 @@ function loadSoundCloudPlaylist(){
     show_comments:false,
     show_user:false,
     callback:()=>{
+      if(requestId !== playRequestId) return;
       soundcloudWidget.getSounds(sounds=>{
+        if(requestId !== playRequestId) return;
         soundcloudSongs=Array.isArray(sounds)?sounds:[];
         currentSongs=soundcloudSongs;
         soundcloudIndex=0;
         renderSongs();
-        highlightActiveSong();
-        highlightActiveFavourite();
+        soundcloudWidget.skip(0);
+        soundcloudWidget.play();
       });
     }
   });
@@ -3582,11 +3548,11 @@ async function loadPlaylists(){
       updatePlaylistUI();
 
 
+      loadSongs();
+
+
       if(selectedPlaylist.source === "soundcloud") loadSoundCloudPlaylist();
-      else {
-        loadSongs();
-        if(youtubeReady) playSelectedPlaylist();
-      }
+      else if(youtubeReady) playSelectedPlaylist();
 
     }
 
@@ -3681,7 +3647,6 @@ function renderPlaylists(){
             activeVideoId =
               "";
 
-            resetPlayerProgress();
 
             if(youtubeReady && youtube){
               try{ youtube.stopVideo(); }catch(e){}
@@ -3697,12 +3662,10 @@ function renderPlaylists(){
             closePlaylist();
 
 
-            if(selectedPlaylist.source === "soundcloud") {
-              loadSoundCloudPlaylist();
-            } else {
-              loadSongs();
-              playSelectedPlaylist();
-            }
+            loadSongs();
+
+
+            playSelectedSourcePlaylist();
 
           }
         );
@@ -3741,6 +3704,33 @@ function updatePlaylistUI(){
 
 
 /* =========================================
+   PLAY SELECTED PLAYLIST (SOURCE ROUTER)
+========================================= */
+
+function playSelectedSourcePlaylist(){
+
+  if(!selectedPlaylist) return;
+
+  if(selectedPlaylist.source === "soundcloud"){
+
+    if(!soundcloudWidget){
+      loadSoundCloudScript();
+      return;
+    }
+
+    loadSoundCloudPlaylist();
+
+    return;
+
+  }
+
+  playSelectedPlaylist();
+
+}
+
+
+
+/* =========================================
    PLAY SELECTED PLAYLIST
 ========================================= */
 
@@ -3772,7 +3762,6 @@ function playSelectedPlaylist(){
   const requestId =
     ++playRequestId;
 
-  resetPlayerProgress();
 
   pendingAutoplay =
     true;
@@ -3783,6 +3772,14 @@ function playSelectedPlaylist(){
 
 
   try{
+
+    try{
+
+      youtube.stopVideo();
+
+    }
+    catch(e){}
+
 
     youtube.loadPlaylist({
 
@@ -3856,12 +3853,12 @@ function playSelectedPlaylist(){
 
 
       if(
-        attempts < 30
+        attempts < 20
       ){
 
         setTimeout(
           waitForNewPlaylist,
-          100
+          300
         );
 
       }
@@ -3989,15 +3986,6 @@ function formatTime(
    PROGRESS
 ========================================= */
 
-function resetPlayerProgress(){
-  if(currentTime) currentTime.textContent="0:00";
-  if(duration) duration.textContent="0:00";
-  if(progressFill){
-    progressFill.style.width="0%";
-    progressFill.style.transform="scaleX(0)";
-  }
-}
-
 let isSeeking = false;
 
 let seekPercent = 0;
@@ -4114,6 +4102,28 @@ function updateSeekVisual(
 
 
   if(
+    selectedPlaylist?.source === "soundcloud"
+  ){
+
+    const totalSec =
+      soundcloudDurationMs / 1000;
+
+    if(totalSec > 0){
+
+      currentTime.textContent =
+        formatTime(
+          totalSec *
+          seekPercent
+        );
+
+    }
+
+    return;
+
+  }
+
+
+  if(
     youtubeReady
   ){
 
@@ -4148,7 +4158,22 @@ progress.addEventListener(
   "pointerdown",
   event=>{
 
-    if(!youtubeReady){
+    const isSoundCloud =
+      selectedPlaylist?.source === "soundcloud";
+
+    if(
+      !isSoundCloud &&
+      !youtubeReady
+    ){
+
+      return;
+
+    }
+
+    if(
+      isSoundCloud &&
+      !soundcloudWidget
+    ){
 
       return;
 
@@ -4202,6 +4227,31 @@ function finishSeek(){
 
 
   isSeeking = false;
+
+
+  if(
+    selectedPlaylist?.source === "soundcloud"
+  ){
+
+    if(!soundcloudWidget) return;
+
+    if(soundcloudDurationMs > 0){
+
+      try{
+
+        soundcloudWidget.seekTo(
+          soundcloudDurationMs *
+          seekPercent
+        );
+
+      }
+      catch(e){}
+
+    }
+
+    return;
+
+  }
 
 
   if(!youtubeReady){
@@ -4408,8 +4458,16 @@ async function loadSongs(){
 
 
   if(selectedPlaylist.source === "soundcloud"){
-    songsList.innerHTML=`<div class="empty">SoundCloud loading...</div>`;
-    loadSoundCloudPlaylist();
+    if(!soundcloudWidget){
+      songsList.innerHTML=`<div class="empty">SoundCloud loading...</div>`;
+      loadSoundCloudScript();
+      return;
+    }
+    soundcloudWidget.getSounds(sounds=>{
+      soundcloudSongs=Array.isArray(sounds)?sounds:[];
+      currentSongs=soundcloudSongs;
+      renderSongs();
+    });
     return;
   }
 
@@ -5358,6 +5416,7 @@ function escapeAttr(
 ========================================= */
 
 loadYouTubeAPI();
+loadSoundCloudScript();
 loadPlaylists();
 
 </script>
