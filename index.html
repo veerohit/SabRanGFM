@@ -1781,7 +1781,7 @@ body:before{
       allow="autoplay"
       scrolling="no"
       frameborder="no"
-      src="about:blank">
+      src="https://w.soundcloud.com/player/">
     </iframe>
   </div>
 
@@ -3047,22 +3047,37 @@ function cancelSleepTimer(){
 ========================================= */
 
 function loadSoundCloudAPI(){
-  if(document.getElementById("sc-api")) return;
-  const script=document.createElement("script");
-  script.id="sc-api";
-  script.src="https://w.soundcloud.com/player/api.js";
-  script.onload=()=>initSoundCloudWidget();
-  document.head.appendChild(script);
+  if(!window.SC || !SC.Widget){
+    if(document.getElementById("sc-api")) return;
+    const script=document.createElement("script");
+    script.id="sc-api";
+    script.src="https://w.soundcloud.com/player/api.js";
+    script.onload=()=>prepareSoundCloudWidget();
+    document.head.appendChild(script);
+    return;
+  }
+  prepareSoundCloudWidget();
 }
 
-function initSoundCloudWidget(){
-  if(!window.SC || !SC.Widget) return;
+function prepareSoundCloudWidget(){
+  if(!window.SC || !SC.Widget || !selectedPlaylist?.url) return;
+
   const iframe=document.getElementById("soundcloud-player");
+  const target=selectedPlaylist.url;
+
+  iframe.src =
+    "https://w.soundcloud.com/player/?url=" +
+    encodeURIComponent(target) +
+    "&auto_play=false&hide_related=true&visual=false&show_comments=false&show_user=false&sharing=false";
+
+  soundcloudReady=false;
   soundcloudWidget=SC.Widget(iframe);
+
   soundcloudWidget.bind(SC.Widget.Events.READY,()=>{
     soundcloudReady=true;
-    if(selectedPlaylist && selectedPlaylist.source === "soundcloud") loadSoundCloudPlaylist();
+    loadSoundCloudTracks(true);
   });
+
   soundcloudWidget.bind(SC.Widget.Events.PLAY,()=>{
     setPlaying(true);
     soundcloudWidget.getCurrentSound(sound=>{
@@ -3077,14 +3092,31 @@ function initSoundCloudWidget(){
       }
     });
   });
+
   soundcloudWidget.bind(SC.Widget.Events.PAUSE,()=>setPlaying(false));
   soundcloudWidget.bind(SC.Widget.Events.FINISH,()=>setPlaying(false));
+
   soundcloudWidget.bind(SC.Widget.Events.PLAY_PROGRESS,e=>{
     if(selectedPlaylist?.source !== "soundcloud") return;
-    currentTime.textContent=formatTime(e.currentPosition||0);
-    duration.textContent=formatTime(e.loadedProgress ? 0 : (e.soundDuration||0));
-    const d=e.soundDuration||0;
-    progressFill.style.width=d?((e.currentPosition/d)*100)+"%":"0%";
+    const pos=e.currentPosition||0;
+    const total=e.soundDuration||0;
+    currentTime.textContent=formatTime(pos/1000);
+    duration.textContent=formatTime(total/1000);
+    progressFill.style.transform=total
+      ? `scaleX(${Math.max(0,Math.min(1,pos/total))})`
+      : "scaleX(0)";
+  });
+}
+
+function loadSoundCloudTracks(autoplay){
+  if(!soundcloudWidget || !soundcloudReady) return;
+
+  soundcloudWidget.getSounds(sounds=>{
+    soundcloudSongs=Array.isArray(sounds)?sounds:[];
+    currentSongs=soundcloudSongs;
+    soundcloudIndex=0;
+    renderSongs();
+    if(autoplay) soundcloudWidget.play();
   });
 }
 
@@ -3104,39 +3136,50 @@ function updateSoundCloudMediaSession(sound){
       title:sound?.title||"SabRanG FM",
       artist:sound?.user?.username||"SoundCloud",
       album:"SabRanG FM",
-      artwork:sound?.artwork_url?[{src:sound.artwork_url,sizes:"500x500",type:"image/jpeg"}]:[]
+      artwork:sound?.artwork_url
+        ? [{src:sound.artwork_url,sizes:"500x500",type:"image/jpeg"}]
+        : []
     });
-    navigator.mediaSession.setActionHandler("play",()=>soundcloudWidget?.play());
-    navigator.mediaSession.setActionHandler("pause",()=>soundcloudWidget?.pause());
-    navigator.mediaSession.setActionHandler("previoustrack",()=>soundcloudPrevious());
-    navigator.mediaSession.setActionHandler("nexttrack",()=>soundcloudNext());
+    try{navigator.mediaSession.setActionHandler("play",()=>soundcloudWidget?.play())}catch(e){}
+    try{navigator.mediaSession.setActionHandler("pause",()=>soundcloudWidget?.pause())}catch(e){}
+    try{navigator.mediaSession.setActionHandler("previoustrack",()=>soundcloudPrevious())}catch(e){}
+    try{navigator.mediaSession.setActionHandler("nexttrack",()=>soundcloudNext())}catch(e){}
   }
 }
 
-function loadSoundCloudPlaylist(){
-  if(!soundcloudWidget || !selectedPlaylist?.url) return;
-  soundcloudReady=true;
-  const target=selectedPlaylist.url;
-  soundcloudWidget.load(target,{auto_play:false,show_artwork:false,hide_related:true,visual:false,sharing:false,show_comments:false,show_user:false});
-  soundcloudWidget.getSounds(sounds=>{
-    soundcloudSongs=Array.isArray(sounds)?sounds:[];
-    currentSongs=soundcloudSongs;
-    soundcloudIndex=0;
-    renderSongs();
-    soundcloudWidget.skip(0);
-    soundcloudWidget.play();
+function loadSoundCloudPlaylist(autoplay=true){
+  if(!selectedPlaylist?.url) return;
+  if(!soundcloudWidget || !soundcloudReady){
+    loadSoundCloudAPI();
+    return;
+  }
+  soundcloudWidget.load(selectedPlaylist.url,{
+    auto_play:false,
+    show_artwork:false,
+    hide_related:true,
+    visual:false,
+    sharing:false,
+    show_comments:false,
+    show_user:false
+  },()=>{
+    loadSoundCloudTracks(autoplay);
   });
 }
 
-function soundcloudPlay(){ if(soundcloudWidget) soundcloudWidget.play(); }
-function soundcloudPause(){ if(soundcloudWidget) soundcloudWidget.pause(); }
-function soundcloudNext(){ if(soundcloudWidget) soundcloudWidget.next(); }
-function soundcloudPrevious(){ if(soundcloudWidget) soundcloudWidget.prev(); }
-
-function loadSoundCloudScript(){
-  if(window.SC && SC.Widget) initSoundCloudWidget();
-  else loadSoundCloudAPI();
+function playSoundCloudSong(index){
+  if(!soundcloudWidget || !soundcloudReady) return;
+  soundcloudIndex=index;
+  try{
+    soundcloudWidget.skip(index);
+    soundcloudWidget.play();
+  }catch(e){console.error("SoundCloud play error",e)}
 }
+
+function soundcloudPlay(){if(soundcloudWidget)soundcloudWidget.play()}
+function soundcloudPause(){if(soundcloudWidget)soundcloudWidget.pause()}
+function soundcloudNext(){if(soundcloudWidget)soundcloudWidget.next()}
+function soundcloudPrevious(){if(soundcloudWidget)soundcloudWidget.prev()}
+function loadSoundCloudScript(){loadSoundCloudAPI()}
 
 /* =========================================
    YOUTUBE API
@@ -3532,7 +3575,7 @@ async function loadPlaylists(){
       loadSongs();
 
 
-      if(selectedPlaylist.source === "soundcloud") loadSoundCloudPlaylist();
+      if(selectedPlaylist.source === "soundcloud") loadSoundCloudPlaylist(true);
       else if(youtubeReady) playSelectedPlaylist();
 
     }
@@ -3645,8 +3688,11 @@ function renderPlaylists(){
 
             loadSongs();
 
-
-            playSelectedPlaylist();
+            if(selectedPlaylist.source === "soundcloud"){
+              loadSoundCloudPlaylist(true);
+            }else{
+              playSelectedPlaylist();
+            }
 
           }
         );
@@ -4350,7 +4396,7 @@ async function loadSongs(){
 
 
   if(selectedPlaylist.source === "soundcloud"){
-    if(!soundcloudWidget){
+    if(!soundcloudWidget || !soundcloudReady){
       songsList.innerHTML=`<div class="empty">SoundCloud loading...</div>`;
       loadSoundCloudScript();
       return;
