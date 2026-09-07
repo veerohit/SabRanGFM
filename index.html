@@ -931,16 +931,40 @@ body:before{
   font-size:11px;
 
   font-weight:bold;
+
+  transition:.15s;
+}
+
+
+/* =========================
+   SELECTED TIMER
+========================= */
+
+.sleep-option.active{
+  background:var(--brown);
+  color:var(--cream);
+  border-color:var(--brown);
+
+  box-shadow:
+    0 2px 6px rgba(57,37,24,.3);
+
+  transform:scale(.98);
 }
 
 .sleep-option:active{
-  transform:scale(.97);
+  transform:scale(.96);
 }
 
 .sleep-option.off{
   grid-column:1 / -1;
 
   background:rgba(168,79,34,.12);
+}
+
+.sleep-option.off.active{
+  background:var(--brown);
+  color:var(--cream);
+  border-color:var(--brown);
 }
 
 
@@ -1285,23 +1309,16 @@ body:before{
 
 
 
-  <!-- =================================
-       TURNTABLE
-  ================================== -->
-
   <div class="turntable">
-
 
     <div class="table-body"></div>
 
 
     <div class="platter">
 
-
       <div
         class="record"
         id="main-cd">
-
 
         <div class="record-label">
 
@@ -1325,7 +1342,6 @@ body:before{
       class="tonearm"
       id="tonearm">
 
-
       <div class="arm-pivot"></div>
 
       <div class="arm">
@@ -1336,12 +1352,9 @@ body:before{
 
     </div>
 
-
   </div>
 
 
-
-  <!-- AIR -->
 
   <div
     class="air"
@@ -1356,8 +1369,6 @@ body:before{
   </div>
 
 
-
-  <!-- Hidden YouTube -->
 
   <div class="youtube-box">
 
@@ -1378,17 +1389,13 @@ body:before{
 
 <section class="player">
 
-
   <div class="player-top">
 
-
-    <!-- Mini CD -->
 
     <div
       class="mini-cd"
       id="mini-cd">
     </div>
-
 
 
     <div class="info">
@@ -1417,8 +1424,6 @@ body:before{
     <div class="controls">
 
 
-      <!-- SLEEP -->
-
       <button
         class="control"
         id="sleep-open"
@@ -1428,8 +1433,6 @@ body:before{
 
       </button>
 
-
-      <!-- SONGS BUTTON -->
 
       <button
         class="control songs-btn"
@@ -1441,8 +1444,6 @@ body:before{
       </button>
 
 
-      <!-- PREVIOUS -->
-
       <button
         class="control"
         id="prev">
@@ -1452,8 +1453,6 @@ body:before{
       </button>
 
 
-      <!-- PLAY -->
-
       <button
         class="control play"
         id="play">
@@ -1462,8 +1461,6 @@ body:before{
 
       </button>
 
-
-      <!-- NEXT -->
 
       <button
         class="control"
@@ -1476,15 +1473,11 @@ body:before{
 
     </div>
 
-
   </div>
 
 
 
-  <!-- Progress -->
-
   <div class="progress-row">
-
 
     <span
       class="time"
@@ -1519,7 +1512,6 @@ body:before{
 
     </span>
 
-
   </div>
 
 </section>
@@ -1527,7 +1519,7 @@ body:before{
 
 
 <!-- =========================
-     SLEEP TIMER MENU
+     SLEEP TIMER
 ========================= -->
 
 <div
@@ -1851,7 +1843,6 @@ const playlistList =
 const songsList =
   document.getElementById("songs-list");
 
-
 const sleepOpen =
   document.getElementById("sleep-open");
 
@@ -1860,6 +1851,11 @@ const sleepMenu =
 
 const sleepStatus =
   document.getElementById("sleep-status");
+
+const sleepOptions =
+  document.querySelectorAll(
+    ".sleep-option"
+  );
 
 
 
@@ -1944,45 +1940,43 @@ document.addEventListener(
 );
 
 
-document
-  .querySelectorAll(
-    ".sleep-option"
-  )
-  .forEach(
-    button=>{
+sleepOptions.forEach(
+  button=>{
 
-      button.addEventListener(
-        "click",
-        ()=>{
+    button.addEventListener(
+      "click",
+      ()=>{
 
-          const minutes =
-            Number(
-              button.dataset.minutes
-            );
+        const minutes =
+          Number(
+            button.dataset.minutes
+          );
 
 
-          if(minutes === 0){
+        if(minutes === 0){
 
-            cancelSleepTimer();
+          cancelSleepTimer();
 
-          }
-          else{
+        }
+        else{
 
-            startSleepTimer(
-              minutes
-            );
-
-          }
-
-          sleepMenu.classList.remove(
-            "open"
+          startSleepTimer(
+            minutes
           );
 
         }
-      );
 
-    }
-  );
+
+        sleepMenu.classList.remove(
+          "open"
+        );
+
+      }
+    );
+
+  }
+);
+
 
 
 function startSleepTimer(minutes){
@@ -2003,6 +1997,22 @@ function startSleepTimer(minutes){
     "rgba(168,79,34,.18)";
 
 
+  /* Selected option */
+
+  sleepOptions.forEach(
+    button=>{
+
+      button.classList.toggle(
+        "active",
+        Number(
+          button.dataset.minutes
+        ) === minutes
+      );
+
+    }
+  );
+
+
   sleepTimer =
     setInterval(
       updateSleepTimer,
@@ -2013,6 +2023,7 @@ function startSleepTimer(minutes){
   updateSleepTimer();
 
 }
+
 
 
 function updateSleepTimer(){
@@ -2034,23 +2045,7 @@ function updateSleepTimer(){
 
   if(remaining <= 0){
 
-    cancelSleepTimer();
-
-
-    if(
-      youtubeReady &&
-      youtube
-    ){
-
-      try{
-
-        youtube.pauseVideo();
-
-      }
-      catch(e){}
-
-    }
-
+    finishSleepTimer();
 
     return;
 
@@ -2079,6 +2074,63 @@ function updateSleepTimer(){
 }
 
 
+
+function finishSleepTimer(){
+
+  if(sleepTimer){
+
+    clearInterval(
+      sleepTimer
+    );
+
+    sleepTimer = null;
+
+  }
+
+
+  sleepEndTime = 0;
+
+
+  sleepStatus.textContent =
+    "Music stopped • Timer finished";
+
+
+  sleepOpen.style.background =
+    "transparent";
+
+
+  sleepOptions.forEach(
+    button=>{
+
+      button.classList.remove(
+        "active"
+      );
+
+    }
+  );
+
+
+  if(
+    youtubeReady &&
+    youtube
+  ){
+
+    try{
+
+      youtube.pauseVideo();
+
+    }
+    catch(e){}
+
+  }
+
+
+  setPlaying(false);
+
+}
+
+
+
 function cancelSleepTimer(){
 
   if(sleepTimer){
@@ -2101,6 +2153,17 @@ function cancelSleepTimer(){
 
   sleepOpen.style.background =
     "transparent";
+
+
+  sleepOptions.forEach(
+    button=>{
+
+      button.classList.remove(
+        "active"
+      );
+
+    }
+  );
 
 }
 
@@ -2323,7 +2386,7 @@ function updateCurrentVideo(){
 
 
 /* =========================================
-   MINI CD THUMBNAIL
+   MINI CD
 ========================================= */
 
 function setMiniCDThumbnail(videoId){
