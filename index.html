@@ -76,19 +76,53 @@ body:before{
   backdrop-filter:blur(8px);
 }
 
+.brand-wrap{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  min-width:0;
+}
+
 .logo{
   font-weight:bold;
   font-size:18px;
   letter-spacing:1px;
+  line-height:1;
 }
 
 .logo span{
   color:var(--orange);
 }
 
+.live-time{
+  display:inline-flex;
+  align-items:center;
+  width:max-content;
+  margin-top:5px;
+  padding:3px 8px 3px 6px;
+  border:1px solid rgba(101,69,45,.38);
+  border-radius:999px;
+  background:rgba(245,232,205,.72);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.28);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:10px;
+  font-weight:bold;
+  letter-spacing:1px;
+  color:var(--brown);
+  white-space:nowrap;
+}
+
+.live-time::before{
+  content:"◷";
+  margin-right:5px;
+  font-size:12px;
+  color:var(--orange);
+}
+
 .actions{
   display:flex;
   gap:7px;
+  align-items:center;
 }
 
 .top-btn{
@@ -1210,6 +1244,69 @@ body:before{
   display:flex;
 }
 
+.about-sheet{
+  height:auto;
+  max-height:calc(100dvh - 24px);
+  overflow:hidden;
+}
+
+.about-content{
+  overflow:visible;
+  padding:10px 4px 2px;
+  text-align:center;
+}
+
+.about-brand{
+  font-size:26px;
+  font-weight:900;
+  letter-spacing:-1px;
+}
+
+.about-brand span{
+  color:var(--orange);
+}
+
+.about-tagline{
+  margin-top:6px;
+  font-size:9px;
+  font-weight:bold;
+  letter-spacing:3px;
+  opacity:.78;
+}
+
+.about-divider{
+  width:46px;
+  height:1px;
+  margin:13px auto;
+  background:var(--brown2);
+  opacity:.35;
+}
+
+.about-text{
+  margin:0 auto;
+  max-width:460px;
+  font-size:12px;
+  line-height:1.48;
+  text-align:left;
+  color:var(--brown);
+}
+
+.about-made{
+  margin-top:9px;
+  padding-top:8px;
+  border-top:1px solid var(--line);
+  font-size:12px;
+  font-weight:bold;
+}
+
+.about-motto{
+  margin-top:8px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-style:italic;
+  font-size:12px;
+  opacity:.78;
+}
+
 .handle{
   width:42px;
   height:4px;
@@ -1605,11 +1702,31 @@ body:before{
 
 <header class="topbar">
 
-  <div class="logo">
-    Sab<span>RanG</span> FM
+  <div class="brand-wrap">
+
+    <div class="logo">
+      Sab<span>RanG</span> FM
+    </div>
+
+    <div
+      class="live-time"
+      id="live-time"
+      aria-label="Current time">
+      --:--
+    </div>
+
   </div>
 
   <div class="actions">
+
+    <button
+      class="top-btn"
+      id="about-open"
+      aria-label="About SabRanG FM">
+
+      ⓘ About
+
+    </button>
 
     <button
       class="top-btn"
@@ -1948,6 +2065,81 @@ body:before{
 
 </section>
 
+
+
+<!-- =========================
+     ABOUT
+========================= -->
+
+<section
+  class="sheet about-sheet"
+  id="about-sheet">
+
+  <div class="handle"></div>
+
+  <div class="sheet-head">
+
+    <div class="sheet-title">
+      ⓘ About
+    </div>
+
+    <button
+      class="close"
+      id="about-close"
+      aria-label="Close About">
+
+      ✕
+
+    </button>
+
+  </div>
+
+  <div class="about-content">
+
+    <div class="about-brand">
+      Sab<span>RanG</span> FM
+    </div>
+
+    <div class="about-tagline">
+      DESI • DIL SE • FM
+    </div>
+
+    <div class="about-divider"></div>
+
+    <p class="about-text">
+      Kahi ek dhaba ka radio khadakta hai, kahi highway pe
+      truck ka horn “Please” bolta hai, aur kahi pahaadon ke
+      us paar ek purana FM signal dhundta hua aa jaata hai —
+      <strong>SabRanG FM wahi cheez hai.</strong> Ek radio jo
+      laptop ya studio se nahi, balki sadak, safar aur yaadon
+      se bana hai.
+      <br><br>
+      Ye us zamane ki yaad hai jab radio sirf gaana nahi
+      bajata tha — <strong>saath deta tha.</strong> Dhaba ki
+      bench par baithe, chai ke gilaas ke saath, purane
+      speaker se nikalti awaaz mein poora mohalla sun leta tha.
+      SabRanG FM usi jazbaat ko wapas laata hai — Bhojpuri,
+      Punjabi aur regional gaane, bina kisi tam-jham ke,
+      seedha dil se.
+      <br><br>
+      Koi shor-sharaba nahi, koi complicated app nahi —
+      bas ek playlist chuno, aur radio chalne do.
+      <strong>Purana andaaz, naya safar.</strong>
+    </p>
+
+    <div class="about-divider"></div>
+
+    <div class="about-tagline">
+      DESI • DIL SE • FM
+    </div>
+
+    <div class="about-made">
+      By ROHITVERMA ❤️
+    </div>
+
+  </div>
+
+</section>
 
 
 <!-- =========================
@@ -5434,6 +5626,77 @@ function escapeAttr(
 
 }
 
+
+
+/* =========================================
+   ABOUT + LIVE TIME
+========================================= */
+
+const aboutSheet =
+  document.getElementById(
+    "about-sheet"
+  );
+
+const aboutOpen =
+  document.getElementById(
+    "about-open"
+  );
+
+const aboutClose =
+  document.getElementById(
+    "about-close"
+  );
+
+const liveTime =
+  document.getElementById(
+    "live-time"
+  );
+
+
+function updateLiveTime(){
+
+  if(!liveTime) return;
+
+  const now = new Date();
+
+  liveTime.textContent =
+    now.toLocaleTimeString(
+      [],
+      {
+        hour:"numeric",
+        minute:"2-digit",
+        hour12:true
+      }
+    );
+
+}
+
+
+updateLiveTime();
+
+setInterval(
+  updateLiveTime,
+  1000
+);
+
+
+aboutOpen.addEventListener(
+  "click",
+  ()=>{
+    /* About is informational only — playback continues uninterrupted. */
+    aboutSheet.classList.add("open");
+  }
+);
+
+
+aboutClose.addEventListener(
+  "click",
+  ()=>{
+
+    aboutSheet.classList.remove("open");
+
+  }
+);
 
 
 /* =========================================
